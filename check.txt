@@ -1,2 +1,0 @@
-﻿+Xử lí text
-+Xử lí độ tin cậy

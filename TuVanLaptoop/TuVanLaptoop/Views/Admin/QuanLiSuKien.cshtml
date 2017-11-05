@@ -1,0 +1,53 @@
+﻿@using TuVanLaptoop.Models
+@using PagedList
+@using PagedList.Mvc
+@model PagedList.PagedList<SuKien>
+
+@{
+    ViewBag.Title = "QuanLiSuKien";
+    Layout = "~/Views/Layout/_LayoutAdmin.cshtml";
+}
+
+<h2>Quản lí sự kiện</h2>
+
+<p>
+    <i class="fa fa-plus-circle"></i>@Html.ActionLink("Thêm sự kiện", "ThemSuKien", "Admin")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Name)
+        </th>
+        
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
+<div id="MenuPhanTrang">
+    @Html.PagedListPager(Model, page => Url.Action("QuanLiSuKien", new { page = page }))
+</div>
+<style>
+    #MenuPhanTrang li {
+        display: inline;
+        margin: 10px;
+    }
+</style>

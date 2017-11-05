@@ -1,0 +1,53 @@
+﻿@model TuVanLaptoop.ViewModels.SuKienViewModel
+<style>
+    .abc{width:170px;}
+    #xyz{background-color:#FFEBCD;
+         width:230px;    
+    }
+</style>
+<link href="~/Content/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<div id="xyz">
+    @using (Html.BeginForm("Index", "TuVan"))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <table style="margin-left:40px;margin-top:30px;" class="table">
+            <tr>
+                <td>
+                    <i class="fa fa-hand-o-right"></i>@Html.DropDownListFor(m => m.GioiTinhs, Model.GioiTinhs, "Giới tính", htmlAttributes: new { @class = "abc" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="fa fa-hand-o-right"></i>@Html.DropDownListFor(m => m.NgheNghieps, Model.NgheNghieps, "Nghề nghiệp", htmlAttributes: new { @class = "abc" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="fa fa-hand-o-right"></i>@Html.DropDownListFor(m => m.MucDichs, Model.MucDichs, "Mục đích sử dụng", htmlAttributes: new { @class = "abc" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="fa fa-hand-o-right"></i>@Html.DropDownListFor(m => m.YeuCauGiaTiens, Model.YeuCauGiaTiens, "Giá tiền", htmlAttributes: new { @class = "abc" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="fa fa-hand-o-right"></i>@Html.DropDownListFor(m => m.HangLaptops, Model.HangLaptops, "Hãng sản xuất", htmlAttributes: new { @class = "abc" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="fa fa-hand-o-right"></i>@Html.DropDownListFor(m => m.HeDieuHanhs, Model.HeDieuHanhs, "Hệ điều hành", htmlAttributes: new { @class = "abc" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="fa fa-smile-o"></i><input type="submit" name="submit" id="submit" value="Tư vấn"  />
+                </td>
+            </tr>
+
+        </table>
+    }
+</div>

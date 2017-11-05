@@ -1,0 +1,91 @@
+﻿@using TuVanLaptoop.Models;
+@using PagedList.Mvc
+@model PagedList.IPagedList<Laptop>
+
+
+<link href="~/Content/TrangChuCss.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Layout/_LayoutNguoiDung.cshtml";
+}
+
+<style>
+    .required{
+    font-size: 10px;
+    color: red;
+    float: right;
+    margin-right: 200px;
+    }
+</style>
+@*Phần BodyIndex*@
+<div style="text-align:center">
+    @if(TempData["message"]!=null){
+                //thông báo yêu cầu của người dùng
+                @TempData["message"]
+
+        //Gửi yêu cầu tới admin: nếu luật ko tồn tại( Admin thêm luật đó), 
+        //luật tồn tại mà ko có sản phẩm, gửi kèm theo độ tin cậy của luật đó
+        //(Admin sẽ sửa luật đó hoặc ....gợi ý sản phẩm khác(cụ thể hoặc ko cụ thể))
+        if (TempData["message"].ToString().Contains("Luật không tồn tại") ||
+            TempData["message"].ToString().Contains("Luật tồn tại-Chưa có sản phẩm gợi ý"))
+        {
+            @*string s = TempData["message"].ToString();
+            <form action="/Sms/SendSms" method="get">
+                <input type="text" id="sms" name="sms" value=@TempData["message"] /><br />
+                <input type="submit" name="BtnSave" value="Gửi yêu cầu tới admin!" />
+            </form>*@
+
+            @*<a  class="required" href="@Url.Action("MessageSend","Sms")">Gửi yêu cầu tới admin!<i class="fa fa-commenting-o"></i></a>*@
+            @Html.ActionLink(
+            linkText: "Gửi yêu cầu tới admin!",
+            actionName: "MessageSend",
+            controllerName: "Sms",
+            routeValues: new
+            {
+                message = TempData["message"].ToString()
+
+
+            },
+            htmlAttributes: new {@class= "required" }
+        )
+        }
+    }
+</div>
+
+@{int i = 0; }
+<div id="divBody">
+    @foreach (var item in Model)
+    {
+        i++;
+        <div id="SanPham">
+            <a href="@Url.Action("XemChiTiet","SanPham",new { @MaLaptop = item.Id })"><div id="AnhBia" title="@item.Name"><img src="@Url.Content("~/HinhAnhSanPham/"+item.AnhBia)"></div></a>
+            <div id="ThongTin">
+                <div>@item.Name</div>
+                <div id="GiaBan" style="color:orange;"><font color="green">Giá bán:</font>@string.Format("{0:0,0}", @item.gia) VNĐ</div>
+            </div>
+            <div id="GioHang">
+                @*@using (Html.BeginForm("ThemGioHang", "GioHang", new { @MaSach = item.MaSach, @strUrl = Request.Url.ToString() }))
+                {
+                    <input type="submit" style="cursor:pointer" value="Mua hàng &#xf07a" id="btnGioHang" class="btn btn-primary">
+                }*@
+            </div>
+        </div>
+        if (i % 4 == 0)
+        {
+            <div style="clear:both"></div>
+        }
+    }
+</div>
+<div style="clear:both"></div>
+
+@*Tạo link liên kết trang*@
+Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount
+
+<div id="MenuPhanTrang">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }))
+</div>
+<style>
+    #MenuPhanTrang li {
+        display: inline;
+    }
+</style>

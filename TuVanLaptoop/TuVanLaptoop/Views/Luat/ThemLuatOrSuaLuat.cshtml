@@ -1,0 +1,66 @@
+﻿@model TuVanLaptoop.Models.Luat
+
+@{
+    ViewBag.Title = "Thêm Luât";
+    Layout = "~/Views/Layout/_LayoutAdmin.cshtml";
+}
+@if (ViewBag.ThongBao != null)
+{
+<div style="text-align:center">@ViewBag.ThongBao</div>
+}
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal">
+        @Html.HiddenFor(model=>model.Id)
+        <div class="form-group">
+            
+                <label>Chọn sự kiện vế trái</label>
+                @*name là SuKienVT, id là normalDropdown, option là các giá trị của bảng SuKien*@
+                @*@Html.DropDownListFor(model=>model.SuKienVT,new SelectList (Model.SuKienCollection,"Id","Name"),new { id="normalDropdown"})*@
+                @*MultiSelect Dropdown*@
+                @Html.ListBoxFor(model => model.SuKienSelectedIDArray, new MultiSelectList(Model.SuKienCollection, "Id", "Name"), new { id = "multiSelectDropdown", multiple = "multiple" })
+
+</div>
+        <div class="form-horizontal">
+            <i class="fa fa-hand-pointer-o"> </i><label>Thêm sự kiện vế phải</label>
+                @Html.TextBoxFor(model => model.SukienVP)
+</div>
+        <div class="form-horizontal">
+
+            <label>Mô tả</label>
+            @Html.TextBoxFor(model => model.GiaiThich)
+        </div>
+        <div class="form-horizontal">
+
+            <label>Độ tin cậy</label>
+            @Html.EditorFor(model => model.DoTinCay)
+        </div>
+        <div class="form-horizontal">
+
+            <input type="submit" name="name" value="Thêm" />
+         </div>
+        </div>
+}
+@*Phần thuộc tính và Id của thuộc tính nếu có*@
+@*Do dùng model khác với luật nên sử dụng partial*@
+<div id="table-right" style="float:right;margin-top:-200px;">
+    @Html.Action("ThuoctinhPartial", "Thuoctinh")
+   
+</div>
+<i class="fa fa-backward" ></i>  @Html.ActionLink("Trở về", "QuanLiLuat", "Admin") 
+
+@*@section scripts{
+    <script>
+        $(function () {
+            $("#normalDropdown").chosen();
+        });
+    </script>
+    }*@
+@section scripts{
+    <script>
+        $(function () {
+            $("#multiSelectDropdown").chosen({ width: "70%" });
+        });
+    </script>
+    }
+

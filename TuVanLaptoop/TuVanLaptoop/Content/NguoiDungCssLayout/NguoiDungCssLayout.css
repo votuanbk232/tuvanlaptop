@@ -1,0 +1,115 @@
+﻿/*sử dụng độ rộng cho div toàn trang*/
+body{
+}
+div#ToanTrang{
+    position:relative;
+    font-family:'Segoe UI';
+    font-weight:bold;
+}
+/* Thiết kế link đăng kí đăng nhập*/
+.DangKyDangNhap{
+    float:right;
+    margin-top:-1%;
+}
+.DangKyDangNhap a:hover{
+    text-decoration:none;
+    color:green;
+}
+.icDienThoai{
+    float:left;
+    margin-top:-1%;
+}
+/*divDanhMuc*/
+#divDanhMuc{
+    height:30px;
+}
+/*menu */
+.navMenu{
+    float:right;
+    margin-right:10%;
+}
+.navMenu li{
+    display:inline;
+    border-right: solid  1px rgba(0,0,0,0.1);
+    padding:20px;
+    padding-top:19px;
+    padding-bottom:22px;
+    -webkit-transition:all 0.5s ease-out;
+    -moz-transition:all 0.5s ease-out;
+    -webkit-transition:all 0.5s ease-out;
+    -o-transition:all 0.5s ease-out;
+
+}
+.navMenu li a:hover{
+    text-decoration:none;
+    color:green;
+    -webkit-transition:all 0.5s ease-out;
+    -moz-transition:all 0.5s ease-out;
+    -webkit-transition:all 0.5s ease-out;
+    -o-transition:all 0.5s ease-out;
+   
+}
+.navMenu li:hover{
+    background-color:rgba(0,0,0,0.5);
+}
+/*Css tìm kiếm*/
+#txtTimKiem{
+    float : left;
+    mn
+}
+#txtTimKiem input{
+    height:0px;
+    margin-left:5%;
+}
+/*Css Hình ảnh tìm kiếm*/
+#HinhAnhTimKiem img{
+    height:30px;
+    width:30px;
+    
+}
+#HinhAnhTimKiem button{
+    padding:0 10px 0 10px;
+    margin-right:-60px;
+    background-color:#14a19a;
+}
+#HinhAnhTimKiem button:hover{
+    background-color:rgba(0,0,0,.5);
+     -webkit-transition:all 0.5s ease-out;
+    -moz-transition:all 0.5s ease-out;
+    -webkit-transition:all 0.5s ease-out;
+    -o-transition:all 0.5s ease-out;
+   
+}
+
+
+/*Cho nivoSlider*/
+
+div #slider{
+    float:right;
+    width:70%;
+    height:360px;
+}
+/*Chỉnh img bằng slider để khi load lại ko thấy hình ảnh khác kích thước*/
+#slider img{
+    width:100%;
+}
+#divMenuLeft{
+    float:left;
+    width:30%;   
+    
+}
+/*Nhà xuất bản*/
+#NxbLeft{
+    float:left;
+    width:30%;
+}
+/*Bỏ qua lỗi nxbleft bị mất kich thước*/
+#NxbLeft .item{
+    width:100%;
+}
+#NxbRight{
+    float:right;
+    width:70%;
+    background-color:	#F8F8FF;
+}
+

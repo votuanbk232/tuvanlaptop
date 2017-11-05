@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TuVanLaptopModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Admin">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Username" Type="nvarchar" MaxLength="50" />
+    <Property Name="Password" Type="binary" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="ChiTietDonHang">
+    <Key>
+      <PropertyRef Name="MaDonHang" />
+      <PropertyRef Name="MaSanPham" />
+    </Key>
+    <Property Name="MaDonHang" Type="int" Nullable="false" />
+    <Property Name="MaSanPham" Type="int" Nullable="false" />
+    <Property Name="SoLuong" Type="int" />
+    <Property Name="DonGia" Type="decimal" Precision="18" Scale="0" />
+  </EntityType>
+  <EntityType Name="DonHang">
+    <Key>
+      <PropertyRef Name="MaDonHang" />
+    </Key>
+    <Property Name="MaDonHang" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NgayGiao" Type="datetime" />
+    <Property Name="NgayDat" Type="datetime" />
+    <Property Name="TinhTrangGiaoHang" Type="bit" />
+    <Property Name="MaKH" Type="int" />
+  </EntityType>
+  <EntityType Name="GioiTinh">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="HangLapTop">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="HeDieuHanh">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="KhachHang">
+    <Key>
+      <PropertyRef Name="MaKH" />
+    </Key>
+    <Property Name="MaKH" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="HoTen" Type="nvarchar" MaxLength="50" />
+    <Property Name="NgaySinh" Type="datetime" />
+    <Property Name="DienThoai" Type="nvarchar" MaxLength="50" />
+    <Property Name="TaiKhoan" Type="nvarchar" MaxLength="50" />
+    <Property Name="MatKhau" Type="nvarchar" MaxLength="50" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="DiaChi" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Laptop">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="MoTa" Type="nvarchar" MaxLength="200" />
+    <Property Name="AnhBia" Type="nvarchar(max)" />
+    <Property Name="NgayCapNhat" Type="datetime" />
+    <Property Name="HangLaptopId" Type="int" />
+    <Property Name="HeDieuHanhId" Type="int" />
+    <Property Name="mausac" Type="nvarchar" MaxLength="50" />
+    <Property Name="gia" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="manhinh" Type="float" />
+    <Property Name="dophangiai" Type="bit" />
+    <Property Name="cpu" Type="nvarchar" MaxLength="10" />
+    <Property Name="ram" Type="int" />
+    <Property Name="ocung" Type="int" />
+    <Property Name="khoiluong" Type="float" />
+    <Property Name="pin" Type="float" />
+    <Property Name="cardroi" Type="bit" />
+  </EntityType>
+  <EntityType Name="Luat">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SuKienVT" Type="nvarchar" MaxLength="200" />
+    <Property Name="SukienVP" Type="nvarchar" MaxLength="200" />
+    <Property Name="GiaiThich" Type="nvarchar" MaxLength="200" />
+    <Property Name="DoTinCay" Type="int" />
+  </EntityType>
+  <EntityType Name="MucDich">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="NgheNghiep">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="SuKien">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="YeuCauGiaTien">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <Association Name="FK__Laptop__HangLapt__20C1E124">
+    <End Role="HangLapTop" Type="Self.HangLapTop" Multiplicity="0..1" />
+    <End Role="Laptop" Type="Self.Laptop" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HangLapTop">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Laptop">
+        <PropertyRef Name="HangLaptopId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Laptop__HeDieuHa__21B6055D">
+    <End Role="HeDieuHanh" Type="Self.HeDieuHanh" Multiplicity="0..1" />
+    <End Role="Laptop" Type="Self.Laptop" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HeDieuHanh">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Laptop">
+        <PropertyRef Name="HeDieuHanhId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="Sp_GetSanPham" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="mingiatien" Type="decimal" Mode="In" />
+    <Parameter Name="maxgiatien" Type="decimal" Mode="In" />
+    <Parameter Name="hanglaptop" Type="int" Mode="In" />
+    <Parameter Name="hedieuhanh" Type="int" Mode="In" />
+  </Function>
+  <EntityContainer Name="TuVanLaptopModelStoreContainer">
+    <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ChiTietDonHang" EntityType="Self.ChiTietDonHang" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DonHang" EntityType="Self.DonHang" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GioiTinh" EntityType="Self.GioiTinh" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="HangLapTop" EntityType="Self.HangLapTop" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="HeDieuHanh" EntityType="Self.HeDieuHanh" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="KhachHang" EntityType="Self.KhachHang" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Laptop" EntityType="Self.Laptop" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Luat" EntityType="Self.Luat" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MucDich" EntityType="Self.MucDich" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NgheNghiep" EntityType="Self.NgheNghiep" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SuKien" EntityType="Self.SuKien" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="YeuCauGiaTien" EntityType="Self.YeuCauGiaTien" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Laptop__HangLapt__20C1E124" Association="Self.FK__Laptop__HangLapt__20C1E124">
+      <End Role="HangLapTop" EntitySet="HangLapTop" />
+      <End Role="Laptop" EntitySet="Laptop" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Laptop__HeDieuHa__21B6055D" Association="Self.FK__Laptop__HeDieuHa__21B6055D">
+      <End Role="HeDieuHanh" EntitySet="HeDieuHanh" />
+      <End Role="Laptop" EntitySet="Laptop" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

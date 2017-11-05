@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TuVanLaptopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="TuVanLaptopEntities1" annotation:LazyLoadingEnabled="true">
+    <FunctionImport Name="Sp_GetSanPham" ReturnType="Collection(TuVanLaptopModel.Sp_GetSanPham_Result)">
+      <Parameter Name="mingiatien" Mode="In" Type="Decimal" />
+      <Parameter Name="maxgiatien" Mode="In" Type="Decimal" />
+      <Parameter Name="hanglaptop" Mode="In" Type="Int32" />
+      <Parameter Name="hedieuhanh" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <EntitySet Name="Admins" EntityType="TuVanLaptopModel.Admin" />
+    <EntitySet Name="ChiTietDonHangs" EntityType="TuVanLaptopModel.ChiTietDonHang" />
+    <EntitySet Name="DonHangs" EntityType="TuVanLaptopModel.DonHang" />
+    <EntitySet Name="GioiTinhs" EntityType="TuVanLaptopModel.GioiTinh" />
+    <EntitySet Name="HangLapTops" EntityType="TuVanLaptopModel.HangLapTop" />
+    <EntitySet Name="HeDieuHanhs" EntityType="TuVanLaptopModel.HeDieuHanh" />
+    <EntitySet Name="KhachHangs" EntityType="TuVanLaptopModel.KhachHang" />
+    <EntitySet Name="Laptops" EntityType="TuVanLaptopModel.Laptop" />
+    <EntitySet Name="Luats" EntityType="TuVanLaptopModel.Luat" />
+    <EntitySet Name="MucDiches" EntityType="TuVanLaptopModel.MucDich" />
+    <EntitySet Name="NgheNghieps" EntityType="TuVanLaptopModel.NgheNghiep" />
+    <EntitySet Name="SuKiens" EntityType="TuVanLaptopModel.SuKien" />
+    <EntitySet Name="YeuCauGiaTiens" EntityType="TuVanLaptopModel.YeuCauGiaTien" />
+    <AssociationSet Name="FK__Laptop__HangLapt__20C1E124" Association="TuVanLaptopModel.FK__Laptop__HangLapt__20C1E124">
+      <End Role="HangLapTop" EntitySet="HangLapTops" />
+      <End Role="Laptop" EntitySet="Laptops" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Laptop__HeDieuHa__21B6055D" Association="TuVanLaptopModel.FK__Laptop__HeDieuHa__21B6055D">
+      <End Role="HeDieuHanh" EntitySet="HeDieuHanhs" />
+      <End Role="Laptop" EntitySet="Laptops" />
+    </AssociationSet>
+  </EntityContainer>
+  <ComplexType Name="Sp_GetSanPham_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="Name" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="MoTa" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="AnhBia" Nullable="true" />
+    <Property Type="DateTime" Name="NgayCapNhat" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="HangLaptopId" Nullable="true" />
+    <Property Type="Int32" Name="HeDieuHanhId" Nullable="true" />
+    <Property Type="String" Name="mausac" Nullable="true" MaxLength="50" />
+    <Property Type="Decimal" Name="gia" Nullable="true" Precision="18" Scale="0" />
+    <Property Type="Double" Name="manhinh" Nullable="true" />
+    <Property Type="Boolean" Name="dophangiai" Nullable="true" />
+    <Property Type="String" Name="cpu" Nullable="true" MaxLength="10" />
+    <Property Type="Int32" Name="ram" Nullable="true" />
+    <Property Type="Int32" Name="ocung" Nullable="true" />
+    <Property Type="Double" Name="khoiluong" Nullable="true" />
+    <Property Type="Double" Name="pin" Nullable="true" />
+    <Property Type="Boolean" Name="cardroi" Nullable="true" />
+  </ComplexType>
+  <EntityType Name="Admin">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="Binary" MaxLength="20" FixedLength="true" />
+  </EntityType>
+  <EntityType Name="ChiTietDonHang">
+    <Key>
+      <PropertyRef Name="MaDonHang" />
+      <PropertyRef Name="MaSanPham" />
+    </Key>
+    <Property Name="MaDonHang" Type="Int32" Nullable="false" />
+    <Property Name="MaSanPham" Type="Int32" Nullable="false" />
+    <Property Name="SoLuong" Type="Int32" />
+    <Property Name="DonGia" Type="Decimal" Precision="18" Scale="0" />
+  </EntityType>
+  <EntityType Name="DonHang">
+    <Key>
+      <PropertyRef Name="MaDonHang" />
+    </Key>
+    <Property Name="MaDonHang" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NgayGiao" Type="DateTime" Precision="3" />
+    <Property Name="NgayDat" Type="DateTime" Precision="3" />
+    <Property Name="TinhTrangGiaoHang" Type="Boolean" />
+    <Property Name="MaKH" Type="Int32" />
+  </EntityType>
+  <EntityType Name="GioiTinh">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="HangLapTop">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Laptops" Relationship="TuVanLaptopModel.FK__Laptop__HangLapt__20C1E124" FromRole="HangLapTop" ToRole="Laptop" />
+  </EntityType>
+  <EntityType Name="HeDieuHanh">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Laptops" Relationship="TuVanLaptopModel.FK__Laptop__HeDieuHa__21B6055D" FromRole="HeDieuHanh" ToRole="Laptop" />
+  </EntityType>
+  <EntityType Name="KhachHang">
+    <Key>
+      <PropertyRef Name="MaKH" />
+    </Key>
+    <Property Name="MaKH" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="HoTen" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NgaySinh" Type="DateTime" Precision="3" />
+    <Property Name="DienThoai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TaiKhoan" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MatKhau" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DiaChi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Laptop">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MoTa" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="AnhBia" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="NgayCapNhat" Type="DateTime" Precision="3" />
+    <Property Name="HangLaptopId" Type="Int32" />
+    <Property Name="HeDieuHanhId" Type="Int32" />
+    <Property Name="mausac" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="gia" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="manhinh" Type="Double" />
+    <Property Name="dophangiai" Type="Boolean" />
+    <Property Name="cpu" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="ram" Type="Int32" />
+    <Property Name="ocung" Type="Int32" />
+    <Property Name="khoiluong" Type="Double" />
+    <Property Name="pin" Type="Double" />
+    <Property Name="cardroi" Type="Boolean" />
+    <NavigationProperty Name="HangLapTop" Relationship="TuVanLaptopModel.FK__Laptop__HangLapt__20C1E124" FromRole="Laptop" ToRole="HangLapTop" />
+    <NavigationProperty Name="HeDieuHanh" Relationship="TuVanLaptopModel.FK__Laptop__HeDieuHa__21B6055D" FromRole="Laptop" ToRole="HeDieuHanh" />
+  </EntityType>
+  <EntityType Name="Luat">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SuKienVT" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="SukienVP" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="GiaiThich" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="DoTinCay" Type="Int32" />
+  </EntityType>
+  <EntityType Name="MucDich">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="NgheNghiep">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="SuKien">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="YeuCauGiaTien">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="FK__Laptop__HangLapt__20C1E124">
+    <End Type="TuVanLaptopModel.HangLapTop" Role="HangLapTop" Multiplicity="0..1" />
+    <End Type="TuVanLaptopModel.Laptop" Role="Laptop" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HangLapTop">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Laptop">
+        <PropertyRef Name="HangLaptopId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Laptop__HeDieuHa__21B6055D">
+    <End Type="TuVanLaptopModel.HeDieuHanh" Role="HeDieuHanh" Multiplicity="0..1" />
+    <End Type="TuVanLaptopModel.Laptop" Role="Laptop" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HeDieuHanh">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Laptop">
+        <PropertyRef Name="HeDieuHanhId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

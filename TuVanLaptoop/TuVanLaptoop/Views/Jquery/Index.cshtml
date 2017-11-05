@@ -1,0 +1,20 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<h2>Index</h2>
+<button id="btn">Press for Toggle</button>
+<div id="div1" style="display:none">
+    Hello world
+</div>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#btn").click(function () {
+            $("#div1").toggle();
+        }); 
+    });
+</script>

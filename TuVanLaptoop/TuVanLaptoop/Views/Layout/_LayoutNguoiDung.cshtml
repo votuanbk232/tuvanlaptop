@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @*Css Download GiaoDienUI*@
+    <link href="~/Content/NguoiDungCssLayout/fonts.css" rel="stylesheet" />
+    <link href="~/Content/NguoiDungCssLayout/screen.css" rel="stylesheet" />
+    @*Chèn css Giao Dien NguoiDung*@
+    <link href="~/Content/NguoiDungCssLayout/NguoiDungCssLayout.css" rel="stylesheet" />
+    @*Css Icon*@
+    <link href="~/Content/Fontaesome/css/font-awesome.min.css" rel="stylesheet" />
+    @*js*@
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+    @*Nivo link, phải để sau file min.js*@
+    <script src="~/NivoSlider/jquery.nivo.slider.js"></script>
+    <script src="~/NivoSlider/jquery.nivo.slider.pack.js"></script>
+    <link href="~/NivoSlider/nivo-slider.css" rel="stylesheet" />
+
+    @*Ajax*@
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+</head>
+<body>
+    <div id="ToanTrang">
+        <section class="blank">
+            @*Xây dụng Đăng kí....*@
+            <div class="flash">
+                <div class="icDienThoai">
+                    <i class="fa fa-phone"></i>
+                    Tư vấn mua laptop
+                </div>
+
+                <div class="DangKyDangNhap">
+                    @Html.Action("GioHangPartial", "GioHang")
+                    @Html.Action("ChucNangPartial", "NguoiDung")
+                    @*@if (Session["TaiKhoan"]==null)
+                    {
+                    <i class="fa fa-sign-in"></i>
+                    @Html.ActionLink("Đăng Ký", "DangKy", "NguoiDung", null, htmlAttributes: new { @class = "DangKy" })
+                    <i class="fa fa-unlock"></i>
+
+                    @Html.ActionLink("Đăng Nhập", "DangNhap", "NguoiDung", null, htmlAttributes: new { @class = "DangNhap" })
+                    }
+
+                    else
+                    {
+                        @User.Identity.Name
+                    <i class="fa fa-sign-out"></i>
+                    @Html.ActionLink("Logout", "DangXuat", "NguoiDung", null, htmlAttributes: new { @class = "DangKy" })
+                }*@
+                </div>
+            </div>
+
+            @*Xây dựng Menu:Tìm kiếm,menu,... *@
+            <div class="flash success" id="divDanhMuc">
+                @*Hộp Thoại Tìm kiếm*@
+                <div id="txtTimKiem">
+                    @using (Html.BeginForm("KetQuaTimKiem", "TimKiem", FormMethod.Post))
+                    {
+                        @Html.TextBox("txtTimKiem", "", htmlAttributes: new { @class = "TextBoxTimKiem", @placeholder = "Nhập vào từ khóa cần tìm" })
+                        <div id="HinhAnhTimKiem">
+
+                            <button type="submit">
+
+                                <img src="~/HinhAnh/imgSearch.png" />
+
+                            </button>
+
+                        </div>
+                    }
+                </div>
+                <ul class="navMenu">
+                    <li>
+                        <a href="@Url.Action("Index","Home")">Trang chủ</a>
+
+                    </li>
+                    <li>
+                        <a href="@Url.Content("/ChatBot/Html/Index.html")">ChatBot</a>
+
+                    </li>
+                    <li>
+                        @*<a href="https://www.google.com/intl/en/chrome/demos/speech.html">Tư Vấn-Speech</a>*@
+                        <a href="http://localhost:28617/Speech/Index">Tư Vấn-Speech</a>
+
+                    </li>
+                    <li>
+                        <a href="#">Hướng dẫn</a>
+
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Login","Admin")">Admin</a>
+
+                    </li>
+
+
+                </ul>
+            </div>
+        </section>
+
+        @*Phần Header:Sách mới,....*@
+        <section>
+            @*Header bên trái*@
+
+            <div id="divMenuLeft">
+                @*Do ko hiểu model chuyền vào (Khi dùng db), nên dùng Action Result*@
+                <div class="activity">
+                    @Html.Action("SanphamMoiPartial", "SanPham")
+                </div>
+            </div>
+
+            @*Header bên phải*@
+            @*Sử dụng NivoSlider*@
+            <div id="slider" class="nivoSlider">
+
+                <img src="~/HinhAnh/Anh1.png" />
+                <img src="~/HinhAnh/Anh3.png" />
+                <img src="~/HinhAnh/Anh2.png" />
+
+            </div>
+            <div style="clear:both"></div>
+
+        </section>
+        @*Sử dụng RenderBody*@
+        <div id="NoiDung">
+            <div id="ND_Left">
+                @Html.Action("SuKienPartial","SuKien")
+            </div>
+            <div id="ND_Right">
+                @RenderBody()
+            </div>
+            <div style="clear:both"></div>
+        </div>
+
+        @*Các chủ đề*@
+        @*<section>
+            <div>
+                @Html.Action("ChuDePartial", "ChuDe")
+            </div>
+            <hr>
+        </section>*@
+
+        @*Nhà xuất bản*@
+        @*<section class="blank items">
+            <div id="NxbLeft">
+                <div class="item">
+                    <div class="item-info">
+                        @Html.Action("NhaXuatBanPartial", "NhaXuatBan")
+                    </div>
+                    <img src="http://lorempixel.com/400/300/" alt="Image">
+                </div>
+            </div>
+            <div id="NxbRight">
+                @RenderSection("NoiDungBenPhai", false)
+            </div>
+            <div style="clear:both"></div>
+            <div>
+                <a href="#" class="button button-buy">Chào mừng các bạn đến với siêu thị Laptop</a>
+            </div>
+        </section>*@
+    </div>
+
+    @*Gọi plugin nivo*@
+    <script type="text/javascript">
+
+        $(window).load(function() {
+
+            $('#slider').nivoSlider(
+                {
+                    controlNav: false,
+
+                });
+
+        });
+
+    </script>
+</body>
+</html>

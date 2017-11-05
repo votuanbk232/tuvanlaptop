@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TuVanLaptopModelStoreContainer" CdmEntityContainer="TuVanLaptopEntities1">
+    <FunctionImportMapping FunctionImportName="Sp_GetSanPham" FunctionName="TuVanLaptopModel.Store.Sp_GetSanPham">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TuVanLaptopModel.Sp_GetSanPham_Result">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="MoTa" ColumnName="MoTa" />
+          <ScalarProperty Name="AnhBia" ColumnName="AnhBia" />
+          <ScalarProperty Name="NgayCapNhat" ColumnName="NgayCapNhat" />
+          <ScalarProperty Name="HangLaptopId" ColumnName="HangLaptopId" />
+          <ScalarProperty Name="HeDieuHanhId" ColumnName="HeDieuHanhId" />
+          <ScalarProperty Name="mausac" ColumnName="mausac" />
+          <ScalarProperty Name="gia" ColumnName="gia" />
+          <ScalarProperty Name="manhinh" ColumnName="manhinh" />
+          <ScalarProperty Name="dophangiai" ColumnName="dophangiai" />
+          <ScalarProperty Name="cpu" ColumnName="cpu" />
+          <ScalarProperty Name="ram" ColumnName="ram" />
+          <ScalarProperty Name="ocung" ColumnName="ocung" />
+          <ScalarProperty Name="khoiluong" ColumnName="khoiluong" />
+          <ScalarProperty Name="pin" ColumnName="pin" />
+          <ScalarProperty Name="cardroi" ColumnName="cardroi" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="Admins">
+      <EntityTypeMapping TypeName="TuVanLaptopModel.Admin">
+        <MappingFragment StoreEntitySet="Admin">
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ChiTietDonHangs">
+      <EntityTypeMapping TypeName="TuVanLaptopModel.ChiTietDonHang">
+        <MappingFragment StoreEntitySet="ChiTietDonHang">
+          <ScalarProperty Name="DonGia" ColumnName="DonGia" />
+          <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+          <ScalarProperty Name="MaSanPham" ColumnName="MaSanPham" />
+          <ScalarProperty Name="MaDonHang" ColumnName="MaDonHang" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DonHangs">
+      <EntityTypeMapping TypeName="TuVanLaptopModel.DonHang">
+        <MappingFragment StoreEntitySet="DonHang">
+          <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+          <ScalarProperty Name="TinhTrangGiaoHang" ColumnName="TinhTrangGiaoHang" />
+          <ScalarProperty Name="NgayDat" ColumnName="NgayDat" />
+          <ScalarProperty Name="NgayGiao" ColumnName="NgayGiao" />
+          <ScalarProperty Name="MaDonHang" ColumnName="MaDonHang" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GioiTinhs">
+      <EntityTypeMapping TypeName="TuVanLaptopModel.GioiTinh">
+        <MappingFragment StoreEntitySet="GioiTinh">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HangLapTops">
+      <EntityTypeMapping TypeName="TuVanLaptopModel.HangLapTop">
+        <MappingFragment StoreEntitySet="HangLapTop">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HeDieuHanhs">
+      <EntityTypeMapping TypeName="TuVanLaptopModel.HeDieuHanh">
+        <MappingFragment StoreEntitySet="HeDieuHanh">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="KhachHangs">
+      <EntityTypeMapping TypeName="TuVanLaptopModel.KhachHang">
+        <MappingFragment StoreEntitySet="KhachHang">
+          <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+          <ScalarProperty Name="TaiKhoan" ColumnName="TaiKhoan" />
+          <ScalarProperty Name="DienThoai" ColumnName="DienThoai" />
+          <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+          <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+          <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Laptops">
+      <EntityTypeMapping TypeName="TuVanLaptopModel.Laptop">
+        <MappingFragment StoreEntitySet="Laptop">
+          <ScalarProperty Name="cardroi" ColumnName="cardroi" />
+          <ScalarProperty Name="pin" ColumnName="pin" />
+          <ScalarProperty Name="khoiluong" ColumnName="khoiluong" />
+          <ScalarProperty Name="ocung" ColumnName="ocung" />
+          <ScalarProperty Name="ram" ColumnName="ram" />
+          <ScalarProperty Name="cpu" ColumnName="cpu" />
+          <ScalarProperty Name="dophangiai" ColumnName="dophangiai" />
+          <ScalarProperty Name="manhinh" ColumnName="manhinh" />
+          <ScalarProperty Name="gia" ColumnName="gia" />
+          <ScalarProperty Name="mausac" ColumnName="mausac" />
+          <ScalarProperty Name="HeDieuHanhId" ColumnName="HeDieuHanhId" />
+          <ScalarProperty Name="HangLaptopId" ColumnName="HangLaptopId" />
+          <ScalarProperty Name="NgayCapNhat" ColumnName="NgayCapNhat" />
+          <ScalarProperty Name="AnhBia" ColumnName="AnhBia" />
+          <ScalarProperty Name="MoTa" ColumnName="MoTa" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Luats">
+      <EntityTypeMapping TypeName="TuVanLaptopModel.Luat">
+        <MappingFragment StoreEntitySet="Luat">
+          <ScalarProperty Name="DoTinCay" ColumnName="DoTinCay" />
+          <ScalarProperty Name="GiaiThich" ColumnName="GiaiThich" />
+          <ScalarProperty Name="SukienVP" ColumnName="SukienVP" />
+          <ScalarProperty Name="SuKienVT" ColumnName="SuKienVT" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MucDiches">
+      <EntityTypeMapping TypeName="TuVanLaptopModel.MucDich">
+        <MappingFragment StoreEntitySet="MucDich">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NgheNghieps">
+      <EntityTypeMapping TypeName="TuVanLaptopModel.NgheNghiep">
+        <MappingFragment StoreEntitySet="NgheNghiep">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SuKiens">
+      <EntityTypeMapping TypeName="TuVanLaptopModel.SuKien">
+        <MappingFragment StoreEntitySet="SuKien">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="YeuCauGiaTiens">
+      <EntityTypeMapping TypeName="TuVanLaptopModel.YeuCauGiaTien">
+        <MappingFragment StoreEntitySet="YeuCauGiaTien">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

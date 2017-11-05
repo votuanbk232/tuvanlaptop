@@ -1,0 +1,85 @@
+﻿@model TuVanLaptoop.ViewModels.ThuocTinhViewModel
+    <div style="float:left">
+        <table class="table">
+            <tr>
+                <th>Tên thuộc tính</th>
+                <th>Kiểu dữ liệu</th>
+            </tr>
+            <tr>
+                <td>HangLaptopId</td>
+                <td>int</td>
+            </tr>
+            <tr>
+                <td>HeDieuHanhId</td>
+                <td>int</td>
+            </tr>
+            <tr>
+                <td>mausac</td>
+                <td>string</td>
+            </tr>
+            <tr>
+                <td>gia</td>
+                <td>decimal</td>
+            </tr>
+            <tr>
+                <td>manhinh</td>
+                <td>float</td>
+            </tr>
+            <tr>
+                <td>dophangiai</td>
+                <td>bit</td>
+            </tr>
+            <tr>
+                <td>cpu</td>
+                <td>string</td>
+            </tr>
+            <tr>
+                <td>ram</td>
+                <td>int</td>
+            </tr>
+            <tr>
+                <td>ocung</td>
+                <td>int</td>
+            </tr>
+            <tr>
+                <td>khoiluong</td>
+                <td>float</td>
+            </tr>
+            <tr>
+                <td>pin</td>
+                <td>int</td>
+            </tr>
+            <tr>
+                <td>cardroi</td>
+                <td>bit</td>
+            </tr>
+        </table>
+    </div>
+<div style="float:right;margin-left:20px;">
+    <table class="table">
+        <tr>
+            <th>Tên hệ điều hành</th>
+            <th>ID</th>
+        </tr>
+        @foreach (var item in Model.hedh)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Id</td>
+            </tr>
+        }
+    </table>
+    <table class="table">
+        <tr>
+            <th>Tên hãng sản xuất</th>
+            <th>ID</th>
+        </tr>
+        @foreach (var item in Model.hangsx)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Id</td>
+            </tr>
+        }
+    </table>
+</div>

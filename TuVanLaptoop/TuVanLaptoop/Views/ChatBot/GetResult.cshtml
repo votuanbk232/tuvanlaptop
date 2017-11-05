@@ -1,0 +1,43 @@
+﻿@model IEnumerable<TuVanLaptoop.Models.Laptop>
+<link href="~/Content/TrangChuCss.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Layout/_LayoutNguoiDung.cshtml";
+}
+
+@*@section NoiDungBenPhai{
+    Lionel Andrés "Leo" Messi thường được gọi là Lionel Messi (sinh ngày 24 tháng 6 năm 1987) là một cầu thủ bóng đá người Argentina hiện đang chơi cho câu lạc bộ Barcelona và đội tuyển bóng đá quốc gia Argentina ở vị trí tiền đạo. Được đánh giá là một trong những cầu thủ xuất sắc nhất mọi thời đại và là cầu thủ hay nhất thế giới trong thời đại của anh, anh cũng là chủ nhân của nhiều danh hiệu cao quý như Quả bóng vàng Châu Âu 2009, Cầu thủ xuất sắc nhất năm 2009 của FIFA, Quả bóng vàng FIFA 2010, 2011 và 2012. Lối chơi của anh được so sánh với huyền thoại Diego Maradona, người tự coi Messi là "truyền nhân" của mình.
+
+}*@
+@*Phần BodyIndex*@
+<div style="text-align:center">
+    @TempData["message"]
+
+</div>
+
+@{int i = 0; }
+<div id="divBody">
+    @foreach (var item in Model)
+    {
+        i++;
+        <div id="SanPham">
+            <a href="@Url.Action("XemChiTiet","SanPham",new { @MaLaptop = item.Id })"><div id="AnhBia" title="@item.Name"><img src="@Url.Content("~/HinhAnhSanPham/"+item.AnhBia)"></div></a>
+            <div id="ThongTin">
+                <div>@item.Name</div>
+                <div id="GiaBan" style="color:orange;"><font color="green">Giá bán:</font>@string.Format("{0:0,0}", @item.gia) VNĐ</div>
+            </div>
+            <div id="GioHang">
+                @*@using (Html.BeginForm("ThemGioHang", "GioHang", new { @MaSach = item.MaSach, @strUrl = Request.Url.ToString() }))
+                {
+                    <input type="submit" style="cursor:pointer" value="Mua hàng &#xf07a" id="btnGioHang" class="btn btn-primary">
+                }*@
+            </div>
+        </div>
+        if (i % 4 == 0)
+        {
+            <div style="clear:both"></div>
+        }
+    }
+</div>
+<div style="clear:both"></div>
+

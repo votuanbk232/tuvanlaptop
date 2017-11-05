@@ -1,0 +1,103 @@
+﻿<head>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    
+</head>
+@using (Html.BeginForm())
+{
+    <table>
+        <tr>
+           
+            <td>
+                @Html.AntiForgeryToken()
+            </td>
+        </tr>
+        <tr>
+            
+            <td>
+                @Html.ValidationSummary(true)
+            </td>
+        </tr>
+        <tr>
+        
+            <td>
+                @Html.DropDownListFor(m => m.SelectedWard, Model.WardList, "-Please select-")
+            </td>
+        </tr>
+        <tr>
+           
+            <td>
+                @Html.DropDownList("YeuCauGiaTiens", null, "Giá tiền", new { htmlAttributes = new { @class = "form-control" } })
+            </td>
+        </tr>
+        <tr>
+       
+            <td>
+                @Html.DropDownList("HangLapTops", null, "Hãng sản xuất", new { htmlAttributes = new { @class = "form-control" } })
+            </td>
+        </tr>
+        <tr>
+       
+            <td>
+                @Html.DropDownList("HeDieuHanhs", null, "Hệ điều hành", new { htmlAttributes = new { @class = "form-control" } })
+            </td>
+        </tr>
+        <tr>
+           
+            <td>
+                <input type="submit" value="Submit" id="submit" onkeyup="up()"/>
+            </td>
+        </tr>
+    </table>
+@*}*@
+<script>
+    function up() {
+        if (document.getElementById("Gioitinhs").value != "") {
+            var dop = document.getElementById("Gioitinhs").value;
+        }
+        alert(dop);
+    }
+</script>
+@*<script type="text/javascript">
+    function GetSelectedTextValue() {
+        var Gioitinhs = document.getElementById("<%=Gioitinhs.ClientID %>");
+        var selectedText = Gioitinhs.options[Gioitinhs.selectedIndex].innerHTML;
+        var selectedValue = Gioitinhs.value;
+        alert("Selected Text: " + selectedText + " Value: " + selectedValue);
+        return false;
+    }
+</script>*@
+
+@*@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+    </script>
+}*@
+@*<div>
+    @Html.DropDownList("GioiTinhs")
+</div>
+<div>
+    @Html.DropDownList("MucDiches")
+</div>
+<div>
+    @Html.DropDownList("NgheNghieps")
+</div>
+<div>
+    @Html.DropDownList("YeuCauGiaTiens")
+</div>
+<div>
+    @Html.DropDownList("HangLapTops")
+</div>
+<div>
+    @Html.DropDownList("HeDieuHanhs")
+</div>*@
+
+
+
+
+
+        
+
+

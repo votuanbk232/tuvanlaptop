@@ -1,0 +1,65 @@
+﻿@using TuVanLaptoop.Models
+@using PagedList
+@using PagedList.Mvc
+@model PagedList.PagedList<Luat>
+
+@{
+    ViewBag.Title = "Quản lí luật";
+    Layout = "~/Views/Layout/_LayoutAdmin.cshtml";
+}
+
+<h2 style="text-align:center">Quản lí luật</h2>
+
+<p>
+    <i class="fa fa-plus-circle" ></i>@Html.ActionLink("Thêm luật", "ThemLuatOrSuaLuat", "Luat",null, new { id = 0 }) 
+
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().SuKienVT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().SukienVP)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().GiaiThich)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().DoTinCay)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SuKienVT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SukienVP)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GiaiThich)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DoTinCay)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "ThemLuatOrSuaLuat","Luat",null, new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
+<div id="MenuPhanTrang">
+    @Html.PagedListPager(Model, page => Url.Action("QuanLiLuat", new { page = page }))
+</div>
+<style>
+    #MenuPhanTrang li {
+        display: inline;
+        margin: 10px;
+    }
+</style>

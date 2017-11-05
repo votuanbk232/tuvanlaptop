@@ -1,0 +1,108 @@
+﻿@model TuVanLaptoop.Models.Laptop
+@{
+    ViewBag.Title = "XemChiTiet";
+    Layout = "~/Views/Layout/_LayoutNguoiDung.cshtml";
+}
+<link href="~/Content/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" />
+
+<style>
+    #NoiDung #ND_Right {
+        width: 80%;
+        /*border:1px solid  black;*/
+        float: right;
+        margin-top: -180px;
+    }
+    #ThongTin{
+                 margin-left:10px;
+             }
+}
+</style>
+<div style="clear:both"></div>
+<div id="HinhAnh">
+    <img src="@Url.Content("~/HinhAnhSanPham/"+Model.AnhBia)" />
+</div>
+<div id="ThongTin">
+    <div id="TenSanPham">Tên laptop:@Model.Name</div>
+    <i class="fa fa-check-circle-o"></i><span id="MoTa">Mô tả: @Model.MoTa</span><br/>
+    <i class="fa fa-check-circle-o"></i><span id="NgayCapNhat">Ngày cập nhật:@Model.NgayCapNhat</span><br />
+    <i class="fa fa-check-circle-o"></i><span id="HangLaptop">Hãng sản xuât:@ViewBag.TenHangSanXuat</span><br />
+    <i class="fa fa-check-circle-o"></i><span id="HeDieuHanh">Hệ điều hành:@ViewBag.TenHeDieuHanh</span><br />
+    <i class="fa fa-check-circle-o"></i><span >Màu sắc:@Model.mausac</span><br />
+    <i class="fa fa-check-circle-o"></i><span >Màn hình:@Model.manhinh inch</span><br />
+    <i class="fa fa-check-circle-o"></i>@if (Model.dophangiai==true)
+    {
+        <span>Độ phân giải HD:Có</span>
+    }
+    else
+    {
+        <span>Độ phân giải HD:Không</span>
+    }<br />
+    <i class="fa fa-check-circle-o"></i><span>CPU:@Model.cpu</span><br />
+    <i class="fa fa-check-circle-o"></i><span>RAM:@Model.ram GB</span><br />
+    <i class="fa fa-check-circle-o"></i><span >Ổ cứng:@Model.ocung GB</span><br />
+    <i class="fa fa-check-circle-o"></i><span>Khối lượng:@Model.khoiluong KG</span><br />
+    <i class="fa fa-check-circle-o"></i><span >Pin:@Model.pin h</span><br />
+    <i class="fa fa-check-circle-o"></i>@if (Model.cardroi == true)
+    {
+        <span>Card rời:Có</span>
+    }
+    else { <span>Card rời:Không</span>}
+    <br/>
+    @*Dịch dấu chấm động đơn giá sử dụng string.Format("{0:0,0}", tham số)*@
+    <i class="fa fa-check-circle-o"></i><span id="Gia"><span style="color: green; font-weight: normal;">Đơn giá:</span><br /><span id="Gia"> @string.Format("{0:0,0}", @Model.gia) VNĐ</span></span>
+    <br />
+    @using (Html.BeginForm("ThemGioHang", "GioHang", new { @MaSanPham = Model.Id, @strUrl = Request.Url.ToString() }))
+    {
+        <input type="submit" style="cursor:pointer" value="Mua hàng &#xf07a" id="btnGioHang" class="btn btn-primary">
+    }
+
+</div>
+<div style="clear:both"></div>
+<style>
+    #HinhAnh {
+        float: left;
+    }
+
+    #ThongTin {
+        float: left;
+        width: 600px;
+    }
+
+    #TenSanPham {
+        font-weight: normal;
+        font-size: 20pt;
+        height: auto;
+        word-wrap: break-word; /*Canh nội dung tự xuống dòng */
+        color: red;
+    }
+
+    #HangLaptop, #HeDieuHanh {
+        font-size: 15pt;
+        font-weight: normal;
+        color: black;
+        height: auto;
+    }
+
+    #Mota {
+        font-weight: normal;
+        color: black;
+        word-wrap: break-word;
+        height: auto;
+    }
+
+    #Gia span#Gia {
+        font-weight: normal;
+        color: orange;
+        font-size: 25pt;
+        height: auto;
+    }
+
+    #btnGioHang {
+        font-family: 'FontAwesome','Segoe UI';
+        background-color: red;
+    }
+
+        #btnGioHang:hover {
+            background-color: #a30a11;
+        }
+</style>

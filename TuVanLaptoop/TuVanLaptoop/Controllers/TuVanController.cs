@@ -131,8 +131,16 @@ namespace TuVanLaptoop.Controllers
 
                 return RedirectToAction("Index", "Home");
             }
-            ViewBag.ThongBao = "Luật tồn tại-Có "+laptops.Count()+" sản phẩm được gợi ý!"+"\nYêu cầu:"+mangYeuCau;
 
+            ViewBag.ThongBao = "Luật tồn tại-Có "+laptops.Count()+" sản phẩm được gợi ý!"+"\nYêu cầu:"+mangYeuCau;
+            TempData["CheckLuatTonTai"] = "Luật tồn tại";
+            //lấy id của luật đó:
+            int id = Convert.ToInt16(Luat.GetId(vetrai, vephai).ToString());
+            TempData["LuatId"] = id;
+            //mô tả luật
+            TempData["MoTaLuat"] =Luat.GetMoTaLuat(id) ;
+            //lấy độ tin cậy của luật đó
+            TempData["DoTinCay"] =Luat.GetDoTinCay(id);
             return View(laptops);
             }
         //lấy danh sách laptop dựa vào các sự kiện(giá tiền,hệ điều hành,hãng laptop)

@@ -55,12 +55,30 @@ namespace TuVanLaptoop.Controllers
             }
             //chuyển sự kiện vế trái về dạng string[]
             luat.SuKienVT = string.Join(",", luat.SuKienSelectedIDArray);
+
+            //lúc này đã có cả vế trái và vế phải của luật
+
             //khi chưa có Id, tức đang tạo luật mới
             if (luat.Id == 0)
             {
-                //thêm luật vào bảng luật
-                db.Luats.Add(luat);
+                //khi thêm luật, kiểm tra xem luật này đã tồn tại hay chưa
+                //nếu false: tức ko tồn tại, thêm đc luật
+                if (!Luat.CheckLuatTonTai(luat.SuKienVT, luat.SukienVP))
+                {
+                    //thêm luật vào bảng luật
+                    db.Luats.Add(luat);
+                }
+                //nếu ko , sẽ ko thêm đc luật
+                //cần truyền các giá trị bắt buộc của View
+                else
+                {
+                    luat.SuKienCollection = db.SuKiens.Take(28).ToList();
+                    ViewBag.CheckLuat = "Luật đã tồn tại";
+                    return View(luat);
+                }
             }
+
+
             //khi có Id tức sửa luật
             else
             {
@@ -69,8 +87,40 @@ namespace TuVanLaptoop.Controllers
             db.SaveChanges();
             return RedirectToAction("QuanLiLuat","Admin");
         }
-
-
         
+        //Xử lí độ tin cậy: Người dùng đánh giá
+        public ActionResult TangDoTinCay(int MaLuat, string strUrl)
+        {
+            using (TuVanLaptopEntities db=new TuVanLaptopEntities())
+            {
+                Luat luat = db.Luats.SingleOrDefault(n => n.Id == MaLuat);
+                if (luat == null)
+                {
+                    return null;
+                }
+                luat.DoTinCay++;
+                db.Entry(luat).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return Redirect(strUrl);
+        }
+        public ActionResult GiamDoTinCay(int MaLuat, string strUrl)
+        {
+            using (TuVanLaptopEntities db = new TuVanLaptopEntities())
+            {
+                Luat luat = db.Luats.SingleOrDefault(n => n.Id == MaLuat);
+                if (luat == null)
+                {
+                    return null;
+                }
+                luat.DoTinCay--;
+                db.Entry(luat).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return Redirect(strUrl);
+        }
+
+
+
     }
 }

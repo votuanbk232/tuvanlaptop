@@ -126,7 +126,8 @@
         @*Sử dụng RenderBody*@
         <div id="NoiDung">
             <div id="ND_Left">
-                @Html.Action("SuKienPartial","SuKien")
+                @Html.Action("SuKienPartial", "SuKien")
+                @RenderSection("DoTinCay", false)
             </div>
             <div id="ND_Right">
                 @RenderBody()

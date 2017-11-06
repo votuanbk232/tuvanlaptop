@@ -347,6 +347,7 @@
     <Content Include="Views\Jquery\Index.cshtml" />
     <Content Include="Views\NguoiDung\DangKy.cshtml" />
     <Content Include="Views\Speech\ShowResult.cshtml" />
+    <Content Include="Views\Home\DoTinCayPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

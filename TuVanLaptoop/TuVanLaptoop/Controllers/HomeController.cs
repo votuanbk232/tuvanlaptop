@@ -21,6 +21,21 @@ namespace TuVanLaptoop.Controllers
             //List<ChiTietLaptop> ctlt = db.ChiTietLaptops.OrderBy(n => n.GiaBan).ToList();
             return View(db.Laptops.OrderBy(n => n.NgayCapNhat).ToPagedList(pageNumber,pageSize));
         }
-        
+        public string getTuVan()
+        {
+            string tuvan = Session["TuVan"] as string;
+            if (tuvan == null)
+            {
+                
+                Session["GioHang"] = "";
+            }
+            return tuvan;
+        }
+        public ActionResult DoTinCayPartial()
+        {
+            return PartialView();
+        }
+
+
     }
 }

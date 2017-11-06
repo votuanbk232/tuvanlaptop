@@ -1,0 +1,12 @@
+﻿
+
+Độ tin cậy:<a title="Đánh giá" href="@Url.Action("DoTinCay","Home")"><i class="fa fa-thumbs-o-up"></i>@*(@ViewBag.DoTinCay)*@</a>
+@if (TempData["message"] != null)
+{
+    <p>Có thông báo</p>
+    if (TempData["message"].ToString().Contains("Luật tồn tại"))
+    {
+        <h2>Mô tả luật:</h2>
+        <h3>Độ tin cậy:<i class="fa fa-thumbs-o-up"></i></h3>
+    }
+}

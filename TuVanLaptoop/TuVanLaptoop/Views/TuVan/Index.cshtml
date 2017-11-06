@@ -2,13 +2,24 @@
 
 <link href="~/Content/TrangChuCss.css" rel="stylesheet" />
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Tư vấn";
     Layout = "~/Views/Layout/_LayoutNguoiDung.cshtml";
 }
 @*Phần BodyIndex*@
-<div style="text-align:center">@ViewBag.ThongBao
-    
-    </div>
+@if (ViewBag.ThongBao != "") { 
+<div style="text-align:center">@ViewBag.ThongBao</div>
+    if (TempData["CheckLuatTonTai"] !=null)
+    {
+  @section DoTinCay {
+    Mô tả:  @TempData["MoTaLuat"] <br/>
+    Độ tin cậy:@TempData["DoTinCay"] <a title="Like" href="@Url.Action("TangDoTinCay", "Luat", new { @MaLuat =  @TempData["LuatId"], @strUrl = Request.Url.ToString() })"><i class="fa fa-thumbs-o-up"></i></a>
+    <a title="Unlike" href="@Url.Action("GiamDoTinCay", "Luat", new { @MaLuat =  @TempData["LuatId"], @strUrl = Request.Url.ToString() })"><i class="fa fa-thumbs-o-down" ></i></a>
+    }
+    }
+}
+
+
+
 @{int i = 0; }
 <div id="divBody">
     @foreach (var item in Model)

@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TuVanLaptoop.Filter;
 using TuVanLaptoop.Models;
 using TuVanLaptoop.ViewModels;
 
 namespace TuVanLaptoop.Controllers
 {
+    [AdminFilter]
     public class SuKienController : Controller
     {
         TuVanLaptopEntities db = new TuVanLaptopEntities();
@@ -39,5 +41,40 @@ namespace TuVanLaptoop.Controllers
 
             return PartialView(model);
         }
+        //Thêm sự kiện sử dụng JSON
+        //Tạo partial view khi ấn nút button "ThemSuKien"
+        //include Jquery UI:
+        //<script src = "~/Scripts/jquery-1.8.0.js" ></ script >
+        //< script src="~/Scripts/jquery-ui-1.11.4.js"></script>
+        //<link href = "~/Content/themes/base/all.css" rel="stylesheet" />
+
+        public ActionResult ThemSuKienPartial()
+        {
+            SuKien v = new SuKien();
+            return PartialView("ThemSuKienPartial", v);
+
+        }
+        public ActionResult SaveSuKien(SuKien sk)
+        {
+            using(TuVanLaptopEntities db=new TuVanLaptopEntities())
+            {
+                //sk chưa tồn tại ta mới thêm
+                //if (SuKien.SaveSuKien(sk) != null)
+                //{
+                    SuKien.SaveSuKien(sk);
+                if (SuKien.SaveSuKien(sk) != null)
+                {
+                    return Json(sk);
+                }
+                TempData["ThongBao"] = "Đã tồn tại sự kiện";
+                return View();
+
+                //}
+                //return PartialView("ThemSuKienPartial", sk);
+
+            }
+
+        }
+
     }
 }

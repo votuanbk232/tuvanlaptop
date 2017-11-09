@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using TuVanLaptoop;
 
 namespace TuVanLaptoop
 {
@@ -12,7 +13,10 @@ namespace TuVanLaptoop
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+            //thêm thông báo lỗi
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            //BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
     }
 }

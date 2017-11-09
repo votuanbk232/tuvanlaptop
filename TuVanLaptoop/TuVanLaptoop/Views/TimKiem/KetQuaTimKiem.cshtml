@@ -1,0 +1,49 @@
+﻿
+@model IEnumerable<TuVanLaptoop.Models.Laptop>
+
+
+<link href="~/Content/TrangChuCss.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "Tìm kiếm";
+    Layout = "~/Views/Layout/_LayoutNguoiDung.cshtml";
+}
+
+<style>
+    .required {
+        font-size: 10px;
+        color: red;
+        float: right;
+        margin-right: 200px;
+    }
+</style>
+@*Phần BodyIndex*@
+@if (TempData["message"] != null)
+{
+    //thông báo yêu cầu của người dùng
+    @TempData["message"]
+}
+@{int i = 0; }
+<div id="divBody">
+    @foreach (var item in Model)
+    {
+        i++;
+        <div id="SanPham">
+            <a href="@Url.Action("XemChiTiet","SanPham",new { @MaLaptop = item.Id })"><div id="AnhBia" title="@item.Name"><img src="@Url.Content("~/HinhAnhSanPham/"+item.AnhBia)"></div></a>
+            <div id="ThongTin">
+                <div>@item.Name</div>
+                <div id="GiaBan" style="color:orange;"><font color="green">Giá bán:</font>@string.Format("{0:0,0}", @item.gia) VNĐ</div>
+            </div>
+            <div id="GioHang">
+                @*@using (Html.BeginForm("ThemGioHang", "GioHang", new { @MaSach = item.MaSach, @strUrl = Request.Url.ToString() }))
+                    {
+                        <input type="submit" style="cursor:pointer" value="Mua hàng &#xf07a" id="btnGioHang" class="btn btn-primary">
+                    }*@
+            </div>
+        </div>
+        if (i % 4 == 0)
+        {
+            <div style="clear:both"></div>
+        }
+    }
+</div>
+<div style="clear:both"></div>

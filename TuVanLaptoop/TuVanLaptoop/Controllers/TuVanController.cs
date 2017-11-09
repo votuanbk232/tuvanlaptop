@@ -18,131 +18,134 @@ namespace TuVanLaptoop.Controllers
         // GET: TuVan
         public ActionResult Index(FormCollection model,string submit)
         {
-            StringBuilder value = new StringBuilder();
-            //mảng sự kiện vế trải (int) của Luật
-            List<String> list = new List<String>();
-            //danh sách yêu cầu
-            List<String> yeucau = new List<String>();
-
-            //kiểm tra submit có đc clicked chưa
-            if (string.IsNullOrEmpty(submit))
+            using (TuVanLaptopEntities db = new TuVanLaptopEntities())
             {
-                return RedirectToAction("Index", "Home");
-            }
+                StringBuilder value = new StringBuilder();
+                //mảng sự kiện vế trải (int) của Luật
+                List<String> list = new List<String>();
+                //danh sách yêu cầu
+                List<String> yeucau = new List<String>();
+
+                //kiểm tra submit có đc clicked chưa
+                if (string.IsNullOrEmpty(submit))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
 
                 //lấy id của item selected
                 if (model["Gioitinhs"].ToString() != "")
-                    {
-                        list.Add(getSuKienId(model["Gioitinhs"].ToString()));
-                        yeucau.Add(model["Gioitinhs"].ToString());
-            }
+                {
+                    list.Add(getSuKienId(model["Gioitinhs"].ToString()));
+                    yeucau.Add(model["Gioitinhs"].ToString());
+                }
 
-                    if (model["NgheNghieps"].ToString() != "")
-                    {
-                        yeucau.Add(model["NgheNghieps"].ToString());
-                        list.Add(getSuKienId(model["NgheNghieps"].ToString()));
-            }
-                    if (model["MucDichs"].ToString() != "")
-                    {
-                        yeucau.Add(model["MucDichs"].ToString());
-                        list.Add(getSuKienId(model["MucDichs"].ToString()));
-            }
-                    if (model["YeuCauGiaTiens"].ToString() != "")
-                    {
-                        yeucau.Add(model["YeuCauGiaTiens"].ToString());
-                        list.Add(getSuKienId(model["YeuCauGiaTiens"].ToString()));
-            }
-                    if (model["HangLaptops"].ToString() != "")
-                    {
-                        yeucau.Add(model["HangLaptops"].ToString());
-                        list.Add(getSuKienId(model["HangLaptops"].ToString()));
-            }
-                
-                    if (model["HeDieuHanhs"].ToString() != "")
-                    {
-                        yeucau.Add(model["HeDieuHanhs"].ToString());
-                        list.Add(getSuKienId(model["HeDieuHanhs"].ToString()));
-            }
-                    //khi ko có yêu cầu, trả về trang chủ
-            if (list.Count == 0)
-            {
-                TempData["message"] = "Không có yêu cầu đưa ra!";
-                return RedirectToAction("Index", "Home");
-            }
-            //có yêu cầu
-            string mangYeuCau = String.Join(",", yeucau.ToArray());
+                if (model["NgheNghieps"].ToString() != "")
+                {
+                    yeucau.Add(model["NgheNghieps"].ToString());
+                    list.Add(getSuKienId(model["NgheNghieps"].ToString()));
+                }
+                if (model["MucDichs"].ToString() != "")
+                {
+                    yeucau.Add(model["MucDichs"].ToString());
+                    list.Add(getSuKienId(model["MucDichs"].ToString()));
+                }
+                if (model["YeuCauGiaTiens"].ToString() != "")
+                {
+                    yeucau.Add(model["YeuCauGiaTiens"].ToString());
+                    list.Add(getSuKienId(model["YeuCauGiaTiens"].ToString()));
+                }
+                if (model["HangLaptops"].ToString() != "")
+                {
+                    yeucau.Add(model["HangLaptops"].ToString());
+                    list.Add(getSuKienId(model["HangLaptops"].ToString()));
+                }
 
-            //khi ko có những sự kiện có thể chứa luật(giới tính, nghề nghiệp, mục đích sở dụng)
-            if (model["Gioitinhs"].ToString() == "" && model["NgheNghieps"].ToString() == "" && model["MucDichs"].ToString() == "")
-            {
-                string mingia="";
-                string maxgia="";
-                string hangsanxuat= model["HangLaptops"].ToString();
-                string hedieuhanh= model["HeDieuHanhs"].ToString();
-                if(model["YeuCauGiaTiens"].ToString()== "Trên 20 triệu")
+                if (model["HeDieuHanhs"].ToString() != "")
                 {
-                    mingia = 20000000.ToString();
+                    yeucau.Add(model["HeDieuHanhs"].ToString());
+                    list.Add(getSuKienId(model["HeDieuHanhs"].ToString()));
                 }
-                if (model["YeuCauGiaTiens"].ToString() == "Từ 15 đến 20 triệu")
+                //khi ko có yêu cầu, trả về trang chủ
+                if (list.Count == 0)
                 {
-                    mingia = 15000000.ToString();
-                    maxgia = 20000000.ToString();
-                }
-                if (model["YeuCauGiaTiens"].ToString() == "Từ 10 đến 15 triệu")
-                {
-                    mingia = 10000000.ToString();
-                    maxgia = 15000000.ToString();
-                }
-                if (model["YeuCauGiaTiens"].ToString() == "Dưới 10 triệu")
-                {
-                    maxgia = 10000000.ToString();
-                }
-                List<Laptop> laptops_child =getLaptopSimple(mingia,maxgia,hangsanxuat,hedieuhanh);
-                //khi ko có sản phẩm đc gợi ý
-                if (laptops_child.Count == 0)
-                {
-                    TempData["message"] = "Sử dụng query-Có " + laptops_child.Count() + " sản phẩm được gợi ý!" + "\nYêu cầu:" + mangYeuCau;
+                    TempData["message"] = "Không có yêu cầu đưa ra!";
                     return RedirectToAction("Index", "Home");
                 }
-                ViewBag.ThongBao = "Sử dụng query-Có " + laptops_child.Count() + " sản phẩm được gợi ý!" + "\nYêu cầu:" + mangYeuCau;
-                return View(laptops_child);
-            }
-            //Khi sự kiện có thể chứa luật(giới tính, nghề nghiệp, mục đích sở dụng)
-            string vetrai = String.Join(",", list.ToArray());
-            string vephai = getVePhaiByVeTrai(vetrai);
-            if (vephai == null)
-            {
-                TempData["message"] = "Luật không tồn tại\nYêu cầu: "+ mangYeuCau;
-                return RedirectToAction("Index", "Home");
-            }
-            string sukien = getSuKienById(Convert.ToInt16(vephai));
-            //if (sukien == null)
-            //{
-            //    ViewBag.ThongBao = "Chưa có sản phẩm được gợi ý-Yêu cầu: ";
-            //    return RedirectToAction("Index", "Home");
-            //}
-            List<Laptop> laptops = getLaptopBySuKien(sukien);
-            if (laptops.Count==0)
-            {
-               
+                //có yêu cầu
+                string mangYeuCau = String.Join(",", yeucau.ToArray());
+
+                //khi ko có những sự kiện có thể chứa luật(giới tính, nghề nghiệp, mục đích sở dụng)
+                if (model["Gioitinhs"].ToString() == "" && model["NgheNghieps"].ToString() == "" && model["MucDichs"].ToString() == "")
+                {
+                    string mingia = "";
+                    string maxgia = "";
+                    string hangsanxuat = model["HangLaptops"].ToString();
+                    string hedieuhanh = model["HeDieuHanhs"].ToString();
+                    if (model["YeuCauGiaTiens"].ToString() == "Trên 20 triệu")
+                    {
+                        mingia = 20000000.ToString();
+                    }
+                    if (model["YeuCauGiaTiens"].ToString() == "Từ 15 đến 20 triệu")
+                    {
+                        mingia = 15000000.ToString();
+                        maxgia = 20000000.ToString();
+                    }
+                    if (model["YeuCauGiaTiens"].ToString() == "Từ 10 đến 15 triệu")
+                    {
+                        mingia = 10000000.ToString();
+                        maxgia = 15000000.ToString();
+                    }
+                    if (model["YeuCauGiaTiens"].ToString() == "Dưới 10 triệu")
+                    {
+                        maxgia = 10000000.ToString();
+                    }
+                    List<Laptop> laptops_child = getLaptopSimple(mingia, maxgia, hangsanxuat, hedieuhanh);
+                    //khi ko có sản phẩm đc gợi ý
+                    if (laptops_child.Count == 0)
+                    {
+                        TempData["message"] = "Sử dụng query-Có " + laptops_child.Count() + " sản phẩm được gợi ý!" + "\nYêu cầu:" + mangYeuCau;
+                        return RedirectToAction("Index", "Home");
+                    }
+                    ViewBag.ThongBao = "Sử dụng query-Có " + laptops_child.Count() + " sản phẩm được gợi ý!" + "\nYêu cầu:" + mangYeuCau;
+                    return View(laptops_child);
+                }
+                //Khi sự kiện có thể chứa luật(giới tính, nghề nghiệp, mục đích sở dụng)
+                string vetrai = String.Join(",", list.ToArray());
+                string vephai = getVePhaiByVeTrai(vetrai);
+                if (vephai == null)
+                {
+                    TempData["message"] = "Luật không tồn tại\nYêu cầu: " + mangYeuCau;
+                    return RedirectToAction("Index", "Home");
+                }
+                string sukien = getSuKienById(Convert.ToInt16(vephai));
+                //if (sukien == null)
+                //{
+                //    ViewBag.ThongBao = "Chưa có sản phẩm được gợi ý-Yêu cầu: ";
+                //    return RedirectToAction("Index", "Home");
+                //}
+                List<Laptop> laptops = getLaptopBySuKien(sukien);
+                if (laptops.Count == 0)
+                {
+
                     TempData["message"] = "Luật tồn tại-Chưa có sản phẩm gợi ý\nYêu cầu: " + mangYeuCau
                         + "\nĐộ tin cậy:" + getDoTinCay(vetrai); ;
-                
 
-                return RedirectToAction("Index", "Home");
-            }
 
-            ViewBag.ThongBao = "Luật tồn tại-Có "+laptops.Count()+" sản phẩm được gợi ý!"+"\nYêu cầu:"+mangYeuCau;
-            TempData["CheckLuatTonTai"] = "Luật tồn tại";
-            //lấy id của luật đó:
-            int id = Convert.ToInt16(Luat.GetId(vetrai, vephai).ToString());
-            TempData["LuatId"] = id;
-            //mô tả luật
-            TempData["MoTaLuat"] =Luat.GetMoTaLuat(id) ;
-            //lấy độ tin cậy của luật đó
-            TempData["DoTinCay"] =Luat.GetDoTinCay(id);
-            return View(laptops);
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ViewBag.ThongBao = "Luật tồn tại-Có " + laptops.Count() + " sản phẩm được gợi ý!" + "\nYêu cầu:" + mangYeuCau;
+                TempData["CheckLuatTonTai"] = "Luật tồn tại";
+                //lấy id của luật đó:
+                int id = Convert.ToInt16(Luat.GetId(vetrai, vephai).ToString());
+                TempData["LuatId"] = id;
+                //mô tả luật
+                TempData["MoTaLuat"] = Luat.GetMoTaLuat(id);
+                //lấy độ tin cậy của luật đó
+                TempData["DoTinCay"] = Luat.GetDoTinCay(id);
+                return View(laptops);
             }
+        }
         //lấy danh sách laptop dựa vào các sự kiện(giá tiền,hệ điều hành,hãng laptop)
         public List<Laptop> getLaptopSimple(string mingia, string maxgia, string hangsanxuat, string hedieuhanh)
         {

@@ -1,9 +1,117 @@
-﻿@model TuVanLaptoop.Models.Laptop
+﻿@model IEnumerable<TuVanLaptoop.Models.Laptop>
 
-@{
-    ViewBag.Title = "ShowResult";
-    Layout = "~/Views/Layout/_LayoutNguoiDung.cshtml";
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MoTa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AnhBia)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NgayCapNhat)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HangLaptopId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HeDieuHanhId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.mausac)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.gia)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.manhinh)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dophangiai)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.cpu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ram)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ocung)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.khoiluong)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pin)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.cardroi)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MoTa)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AnhBia)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NgayCapNhat)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HangLaptopId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HeDieuHanhId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.mausac)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.gia)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.manhinh)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dophangiai)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.cpu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ram)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ocung)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.khoiluong)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pin)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.cardroi)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
 }
 
-<h2>ShowResult</h2>
-
+</table>

@@ -88,7 +88,7 @@ namespace TuVanLaptoop.Controllers
             return RedirectToAction("QuanLiLuat","Admin");
         }
         
-        //Xử lí độ tin cậy: Người dùng đánh giá
+        //Xử lí độ tin cậy: Người dùng đánh giá(click)-sử dụng ajax
         public ActionResult TangDoTinCay(int MaLuat, string strUrl)
         {
             using (TuVanLaptopEntities db=new TuVanLaptopEntities())

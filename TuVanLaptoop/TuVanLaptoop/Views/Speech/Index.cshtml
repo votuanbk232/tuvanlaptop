@@ -25,45 +25,50 @@
 </head>
 <div id="speech_content">
     <div style="text-align:center">Hãy nói yêu cầu của bạn bằng tiếng anh</div>
-    <form action="/Speech/Index" method="post">
-        @*text cuối cùng*@
-        <span  name="text" id="speech" style="text-align:center"></span>
-        @*text đang nói*@
-        <span id="interim" style="text-align:center"></span>
-        @*giá trị bằng text cuối cùng*@
-        <input style="margin:20px;" type="text" name="text"  id="text" />
-        @*hiện kết quả sử dụng ajax*@
-        <input style="text-align:center" type="submit" name="submit" value="Hiển thị kết quả" 
-               onclick="ShowResult(document.getElementById('text').value);" />
-    </form>
-    <div class="model fade" id="myModel">
-        <div class="model body" id="Div1">
+    @*<form action="/Speech/Index" method="post">*@
+       
+            @*text cuối cùng*@
+            <span name="text" id="speech" style="text-align:center"></span>
+            @*text đang nói*@
+            <span id="interim" style="text-align:center"></span>
+            @*giá trị bằng text cuối cùng*@
+            <input style="margin:20px;" type="text" name="text" id="text" />
+            @*hiện kết quả sử dụng ajax*@
+            <input style="text-align:center" type="submit" name="submit" id="submit" value="Hiển thị kết quả" />
+            @*@Html.Label("Kết quả",htmlAttributes: new { @class="ShowList"})*@    
+    @*</form>*@
+        <div class="model fade" id="myModel">
+            <div class="model body" id="Div1">
+
+            </div>
+        </div>
+        <div id="sanpham_result">
 
         </div>
-    </div>
 </div>
+
+@*kết quả sau khi click*@
+
 <script>
-    var ShowResult = function (text) {
-        $.ajax({
-            type: "POST",
-            url: "/Speech/ShowResult",
-            data:{ speech_required:text},
-            success: function (response) {
-                $("#Div1").html(response);
-                $("#myModel").model("show");
-            }
+    $(document).ready(function () {
+        $("#submit").click(function () {
+            var search = $("#text").val();
+            $("sanpham_result").load("/Speech/GetView", { search: search });
         });
-    }
-    //function getvalue() {
-    //    $('#speech').change(function () {
-    //        $('#text_input').val(this.value);
-    //    });
-    //}
+    })
+   
+
+   
     function upgrade() {
       alert('Please use Google Chrome for best experience');
     }
 
-    window.onload = function() {
+    window.onload = function () {
+        
+       
+       
+     
+
       if (!(window.webkitSpeechRecognition) && !(window.speechRecognition)) {
         upgrade();
       } else {
@@ -136,5 +141,4 @@
     };
 </script>
 </html>
-
 

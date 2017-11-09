@@ -5,6 +5,7 @@ using System.Speech.Recognition;
 using System.Speech.Synthesis;
 using System.Web;
 using System.Web.Mvc;
+using TuVanLaptoop.Models;
 
 namespace TuVanLaptoop.Controllers
 {
@@ -15,18 +16,32 @@ namespace TuVanLaptoop.Controllers
         {
             return View();
         }
-        [HttpPost]
-        public ActionResult Index(FormCollection model)
+        //[HttpPost]
+        //public ActionResult Index(FormCollection model)
+        //{
+        //    string speech=model["text"].ToString();
+        //    TempData["message"] = "Nội dung yêu cầu" + speech;
+        //    return RedirectToAction("Index","Home");
+        //}
+       
+        public ActionResult GetView(string search)
         {
-            string speech=model["text"].ToString();
-            TempData["message"] = "Nội dung yêu cầu" + speech;
-            return RedirectToAction("Index","Home");
-        }
 
+            return PartialView("ResultPartialView");
+        }
         //show kết quả
-        public ActionResult ShowResult(string speech_required)
+        public ActionResult ShowResult(string id)
         {
-            return PartialView("SpeechResultView");
+            using(TuVanLaptopEntities db=new TuVanLaptopEntities())
+            {
+                if (id.Contains("a")){
+                    List<Laptop> laptops = db.Laptops.Where(x => x.HeDieuHanh.Name == "Dell").ToList();
+                    return PartialView(laptops);
+
+                }
+                return null;
+
+            }
         }
         //SpeechSynthesizer ss = new SpeechSynthesizer();
         //PromptBuilder pb = new PromptBuilder();

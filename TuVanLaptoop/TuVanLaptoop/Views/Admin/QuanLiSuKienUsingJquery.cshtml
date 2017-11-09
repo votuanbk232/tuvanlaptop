@@ -1,0 +1,100 @@
+﻿@using TuVanLaptoop.Models
+@using PagedList
+@using PagedList.Mvc
+@model PagedList.PagedList<SuKien>
+
+@{
+    ViewBag.Title = "Quản lí sự kiện sử dụng Datatalbe Plugin";
+    Layout = "~/Views/Layout/_LayoutAdmin.cshtml";
+}
+<link href="~/Content/TemplateAdmin/css/bootstrap.min.css" rel="stylesheet" />
+
+
+
+<h2>Quản lí sự kiện</h2>
+<div class="col-md-9">
+    <table class="display" id="MyDataTable" >
+        <thead>
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Name
+                </th>
+            </tr>
+        </thead>
+        
+    </table>
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+@*sử dụng datatable plugin*@
+@*load database css*@
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+@*load database js*@
+<script type="text/javascript" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+<script>
+    //$(document).ready(function () {
+    //    GetSuKienRecord();
+    //})
+    //var GetSuKienRecord = function () {
+    //    $.ajax({
+    //        type: "GET",
+    //        url: "/Admin/loadDatatableSuKien",
+    //        success: function (response) {
+    //            BindDataTable();
+    //        }
+    //    })
+    //}
+
+    //var BindDataTable = function (response) {
+    //    $("#MyDataTable").DataTable({
+    //        "aaData": response,
+    //        "aoColumns": [
+    //            { "mData": Id },
+    //            { "mData": Name }
+    //        ]
+
+    //    });
+    //}
+
+    //$(document).ready(function () {
+    //    $("#MyDataTable").DataTable({
+    //        "ajax": {
+    //            "url": "/Admin/loadDatatableSuKien",
+    //            "type": "GET",
+    //            "datatype":"json"
+    //        },
+    //        "columns": [
+    //            { "data": "Id", "autoWidth": true },
+    //            { "data": "Name", "autoWidth": true }
+    //        ]
+    //    });
+    //});
+
+</script>
+
+@* Load datatable css *@
+<link href="~/Content/DataTables/css/dataTables.jqueryui.min.css" rel="stylesheet" />
+@* Load datatable js *@
+@section Scripts{
+<script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#MyDataTable').DataTable({
+                "ajax": {
+                    "url": "/Admin/loaddata",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns" : [
+                        { "data": "Id", "autoWidth": true },
+                        { "data": "Name", "autoWidth": true },
+                       
+                    ]
+            });
+        });
+    </script>
+    }
+

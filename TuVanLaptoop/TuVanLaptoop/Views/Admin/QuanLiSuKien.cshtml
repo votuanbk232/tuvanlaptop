@@ -4,47 +4,120 @@
 @model PagedList.PagedList<SuKien>
 
 @{
-    ViewBag.Title = "QuanLiSuKien";
+    ViewBag.Title = "Quản lí sự kiện";
     Layout = "~/Views/Layout/_LayoutAdmin.cshtml";
 }
+<head>
+    <script src="~/Scripts/jquery-1.12.4.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/SuKienName.js"></script>
+    @*<link href="~/Content/themes/base/all.css" rel="stylesheet" />*@
+    <script>
+        //sau khi ấn thêm sự kiện, xuất hiện dialog
+        function OpenAddNew() {
+            //console.log = "111";
 
-<h2>Quản lí sự kiện</h2>
+        $.get("/SuKien/ThemSuKienPartial").then
+            (
 
-<p>
-    <i class="fa fa-plus-circle"></i>@Html.ActionLink("Thêm sự kiện", "ThemSuKien", "Admin")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.First().Id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.First().Name)
-        </th>
-        
-        <th></th>
-    </tr>
+                function (r) {
+                    $("<div id='DivCreateSuKien'></div>").html(r).
+                        dialog({
+                            width: 'auto', height: 'auto', modal: true, title: "Thêm sự kiện",
+                            close: function () {
+                                $('#DivCreateSuKien').remove();
+                            }
+                        });
+                }
+            );
+        }
+        //reset text
+        function ResetForm() {
+            document.getElementById('TxtName').value = "";
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+        }
+        //cancel form
+        function CancelSave() {
+            $('#DivCreateSuKien').dialog('close');
+        }
+        //save sự kiện
+        function Save() {
 
-</table>
-<div id="MenuPhanTrang">
-    @Html.PagedListPager(Model, page => Url.Action("QuanLiSuKien", new { page = page }))
-</div>
+            if (IsValid()) {
+
+                var e =
+                    {
+                        Name: $('#TxtName').val()
+                       
+                    };
+
+
+                $.post("/SuKien/SaveSuKien", e).then(
+                    function (r) {
+                        var newTr = $('<tr></tr>');
+                        var nameTD = $('<td></td>');
+
+                        nameTD.text(r.Name);
+
+
+                        newTr.append(nameTD);
+
+                        $('#SuKienTable').append(newTr);
+                        $('#DivCreateSuKien').dialog('close');
+                    }
+                    );
+            }
+        }
+
+
+
+    </script>
+</head>
+
+<body>
+    <h2>Quản lí sự kiện</h2>
+
+    <p>
+        @*thêm sự kiện sử dụng JSON*@
+        @*Khi kích nút thêm sự kiện, sẽ chạy js*@
+        <i class="fa fa-plus-circle"></i><a href="#" onclick="OpenAddNew();">Add New</a>
+    </p>
+    <table class="table" id="SuKienTable">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Name)
+            </th>
+
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+
+    </table>
+    <div id="MenuPhanTrang">
+        @Html.PagedListPager(Model, page => Url.Action("QuanLiSuKien", new { page = page }))
+    </div>
+</body>
 <style>
     #MenuPhanTrang li {
         display: inline;

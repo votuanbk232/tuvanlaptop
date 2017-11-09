@@ -1,0 +1,36 @@
+﻿@using TuVanLaptoop.Models
+@model SuKien
+   @if (TempData["ThongBao"] != null)
+   {
+       <script>
+           alert("Sự kiện đã tồn tại");
+       </script>
+   }
+<div>
+    <table>
+        <tr>
+            <td>
+                Name:
+            </td>
+            <td>
+                @*name chính là tên thuộc tính*@
+                <input type="text" id="TxtName" name="Name" value="@Model.Name" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="right">
+                @Html.ValidationMessage("Name")
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="2">
+
+                <input type="submit" name="BtnSubmit" value="Save Employee"  onclick="Save();" />
+                <input type="submit" name="BtnSubmit" value="Cancel" onclick="CancelSave()" />
+                <input type="button" name="BtnReset" value="Reset" onclick="ResetForm();" />
+            </td>
+        </tr>
+    </table>
+</div>
+

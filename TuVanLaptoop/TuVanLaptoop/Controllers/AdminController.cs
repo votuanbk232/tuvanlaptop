@@ -56,6 +56,21 @@ namespace TuVanLaptoop.Controllers
             int pageSize = 8;
             return View(db.SuKiens.ToList().OrderBy(n => n.Id).ToPagedList(pageNumber, pageSize));
         }
+        //hiển thị thông tin sự kiện sử dụng jquery Datatables
+        //[AdminFilter]
+        public ActionResult QuanLiSuKienUsingJquery()
+        {
+            return View();
+        }
+        public ActionResult loaddata()
+        {
+            using (TuVanLaptopEntities dc = new TuVanLaptopEntities())
+            {
+                // dc.Configuration.LazyLoadingEnabled = false; // if your table is relational, contain foreign key
+                var data = dc.SuKiens.OrderBy(a => a.Id).ToList();
+                return Json(new { data = data }, JsonRequestBehavior.AllowGet);
+            }
+        }
         [AdminFilter]
         public ActionResult QuanLiLuat(int? page)
         {

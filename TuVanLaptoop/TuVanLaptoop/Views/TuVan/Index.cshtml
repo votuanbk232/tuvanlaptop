@@ -12,9 +12,38 @@
     {
   @section DoTinCay {
     Mô tả:  @TempData["MoTaLuat"] <br/>
-    Độ tin cậy:@TempData["DoTinCay"] <a title="Like" href="@Url.Action("TangDoTinCay", "Luat", new { @MaLuat =  @TempData["LuatId"], @strUrl = Request.Url.ToString() })"><i class="fa fa-thumbs-o-up"></i></a>
-    <a title="Unlike" href="@Url.Action("GiamDoTinCay", "Luat", new { @MaLuat =  @TempData["LuatId"], @strUrl = Request.Url.ToString() })"><i class="fa fa-thumbs-o-down" ></i></a>
-    }
+    Độ tin cậy:<div id="dotincayId">@TempData["DoTinCay"] </div>
+    @*<a title="Like" href="@Url.Action("TangDoTinCay", "Luat", new { @MaLuat =  @TempData["LuatId"], @strUrl = Request.Url.ToString() })"><i class="fa fa-thumbs-o-up"></i></a>*@
+ @*<i class="fa fa-thumbs-o-up"></i>*@
+    @Ajax.ActionLink("Like", "TangDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString() }
+ , new AjaxOptions
+ {
+     Confirm = "Bạn thực sự thích tư vấn này?",
+
+     //thay đổi số lượng độ tin cậy
+     OnSuccess = string.Format(
+                        "tangDoTinCay()"
+                    ),
+     HttpMethod = "GET"
+ }, new { id = "tangdotincay" })
+
+
+@*<a data-ajax="true" data-ajax-confirm="Bạn thực sự thích tư vấn này?" data-ajax-method="GET"
+    data-ajax-success="tangDoTinCay()" href="/Luat/TangDoTinCay?MaLuat=10&amp;
+    strUrl=http%3A%2F%2Flocalhost%3A28617%2FTuVan"><i class="fa fa-thumbs-o-up"></i>Like</a>*@
+      @*<a title="Unlike" href="@Url.Action("GiamDoTinCay", "Luat", new { @MaLuat =  @TempData["LuatId"], @strUrl = Request.Url.ToString() })"><i class="fa fa-thumbs-o-down" ></i></a>*@
+    @*<i class="fa fa-thumbs-o-down"></i>*@
+      @Ajax.ActionLink("UnLike", "GiamDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString() }, new AjaxOptions
+                                   {
+                                       Confirm = "Bạn thực sự không thích tư vấn này?",
+
+                                       //thay đổi số lượng độ tin cậy
+                                       OnSuccess = string.Format(
+                        "giamDoTinCay()"
+                    ),
+                                       HttpMethod = "GET"
+                                   },new { id = "giamdotincay" })
+      }
     }
 }
 
@@ -47,3 +76,19 @@
 </div>
 <div style="clear:both"></div>
 
+<script>
+    //xóa bản ghi sau khi chấp nhận confirm
+    var tangDoTinCay = function () {
+        $('#dotincayId').html(function (i, val) { return +val + 1 });
+        $("#tangdotincay").fadeOut(800);
+        $("#giamdotincay").fadeIn(800);
+
+    };
+    var giamDoTinCay = function () {
+        $('#dotincayId').html(function (i, val) { return +val - 1 });
+        $("#giamdotincay").fadeOut(800);
+        $("#tangdotincay").fadeIn(800);
+
+
+    };
+</script>

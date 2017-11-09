@@ -125,6 +125,6 @@ F:\knowdge based system\git\tuvanlaptop\TuVanLaptoop\TuVanLaptoop\bin\System.Web
 F:\knowdge based system\git\tuvanlaptop\TuVanLaptoop\TuVanLaptoop\bin\System.Web.Webpages.Razor.xml
 F:\knowdge based system\git\tuvanlaptop\TuVanLaptoop\TuVanLaptoop\bin\System.Web.Helpers.xml
 F:\knowdge based system\git\tuvanlaptop\TuVanLaptoop\TuVanLaptoop\bin\System.Web.Mvc.xml
-F:\knowdge based system\git\tuvanlaptop\TuVanLaptoop\TuVanLaptoop\obj\Debug\TuVanLaptoop.csprojResolveAssemblyReference.cache
 F:\knowdge based system\git\tuvanlaptop\TuVanLaptoop\TuVanLaptoop\obj\Debug\TuVanLaptoop.dll
 F:\knowdge based system\git\tuvanlaptop\TuVanLaptoop\TuVanLaptoop\obj\Debug\TuVanLaptoop.pdb
+F:\knowdge based system\git\tuvanlaptop\TuVanLaptoop\TuVanLaptoop\obj\Debug\TuVanLaptoop.csprojResolveAssemblyReference.cache

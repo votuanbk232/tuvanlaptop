@@ -40,6 +40,8 @@
             linkText: "Gửi yêu cầu tới admin!",
             actionName: "MessageSend",
             controllerName: "Sms",
+            //gửi data tới controller dùng routerValues
+            //@Html.Action("Menu", "MyController", new { data = Model.Foo.Bar})
             routeValues: new
             {
                 message = TempData["message"].ToString()

@@ -56,16 +56,22 @@
 
                 $.post("/SuKien/SaveSuKien", e).then(
                     function (r) {
+                        $('#DivCreateSuKien').dialog('close');
+
                         var newTr = $('<tr></tr>');
                         var nameTD = $('<td></td>');
+                        var idTD = $('<td></td>');
+                        var actionTD = $('<td></td>');
 
+                        idTD.text(r.Id);
                         nameTD.text(r.Name);
-
-
+                        actionTD.html('<a>Edit</a>')
+                        console.log = "111";
+                        newTr.append(idTD);
                         newTr.append(nameTD);
+                        newTr.append(actionTD);
 
                         $('#SuKienTable').append(newTr);
-                        $('#DivCreateSuKien').dialog('close');
                     }
                     );
             }
@@ -77,6 +83,10 @@
 </head>
 
 <body>
+    @if (TempData["ThongBao"] != null)
+    {
+        <div>@TempData["ThongBao"]</div>
+    }
     <h2>Quản lí sự kiện</h2>
 
     <p>

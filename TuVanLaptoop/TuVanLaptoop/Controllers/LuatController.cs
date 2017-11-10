@@ -119,6 +119,21 @@ namespace TuVanLaptoop.Controllers
             }
             return Redirect(strUrl);
         }
+        public ActionResult ResetDoTinCay(int MaLuat, string strUrl,int dotincay)
+        {
+            using (TuVanLaptopEntities db = new TuVanLaptopEntities())
+            {
+                Luat luat = db.Luats.SingleOrDefault(n => n.Id == MaLuat);
+                if (luat == null)
+                {
+                    return null;
+                }
+                luat.DoTinCay=dotincay;
+                db.Entry(luat).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return Redirect(strUrl);
+        }
 
 
 

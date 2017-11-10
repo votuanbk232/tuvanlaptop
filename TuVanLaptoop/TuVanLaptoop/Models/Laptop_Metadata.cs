@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace TuVanLaptoop.Models
 {
     [MetadataTypeAttribute(typeof(Laptop_Metadata))]
     public partial class Laptop
     {
+        //TuVanLaptopEntities db = new TuVanLaptopEntities();
+
+        //public IEnumerable<SelectListItem> AllFields { get; set; }
+
+
+
 
     }
     public class Laptop_Metadata

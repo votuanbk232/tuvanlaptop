@@ -9,7 +9,7 @@ using TuVanLaptoop.ViewModels;
 
 namespace TuVanLaptoop.Controllers
 {
-    [AdminFilter]
+    
     public class SuKienController : Controller
     {
         TuVanLaptopEntities db = new TuVanLaptopEntities();
@@ -38,6 +38,7 @@ namespace TuVanLaptoop.Controllers
             //ViewBag.YeuCauGiaTiens = new SelectList(db.YeuCauGiaTiens.ToList(), "Id", "Name");
             //ViewBag.HangLapTops = new SelectList(db.HangLapTops.ToList(), "Id", "Name");
             //ViewBag.HeDieuHanhs = new SelectList(db.HeDieuHanhs.ToList(), "Id", "Name");
+            //TempData["GioiTinhs"] = new SelectList(db.GioiTinhs.ToList(), "Name", "Name", model["Gioitinhs"].ToString());
 
             return PartialView(model);
         }
@@ -47,13 +48,14 @@ namespace TuVanLaptoop.Controllers
         //<script src = "~/Scripts/jquery-1.8.0.js" ></ script >
         //< script src="~/Scripts/jquery-ui-1.11.4.js"></script>
         //<link href = "~/Content/themes/base/all.css" rel="stylesheet" />
-
+        [AdminFilter]
         public ActionResult ThemSuKienPartial()
         {
             SuKien v = new SuKien();
             return PartialView("ThemSuKienPartial", v);
 
         }
+        [AdminFilter]
         public ActionResult SaveSuKien(SuKien sk)
         {
             using(TuVanLaptopEntities db=new TuVanLaptopEntities())
@@ -61,13 +63,15 @@ namespace TuVanLaptoop.Controllers
                 //sk chưa tồn tại ta mới thêm
                 //if (SuKien.SaveSuKien(sk) != null)
                 //{
-                    SuKien.SaveSuKien(sk);
-                if (SuKien.SaveSuKien(sk) != null)
+                    //nếu không  lưu thành công sk
+                if (!SuKien.SaveSuKien(sk))
                 {
-                    return Json(sk);
+                    TempData["ThongBao"] = "Đã tồn tại sự kiện";
+                    //return Redirect(ControllerContext.HttpContext.Request.UrlReferrer.ToString());
+                    return View();
                 }
-                TempData["ThongBao"] = "Đã tồn tại sự kiện";
-                return View();
+                //nếu lưu thành công
+                return Json(sk);
 
                 //}
                 //return PartialView("ThemSuKienPartial", sk);

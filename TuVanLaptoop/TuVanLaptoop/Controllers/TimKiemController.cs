@@ -21,7 +21,7 @@ namespace TuVanLaptoop.Controllers
                         TempData["message"] = "Không có sản phẩm thỏa mãn";
 
                     }
-                    TempData["message"] = "Có " + sanphams + " sản phẩm thỏa mãn";
+                    TempData["message"] = "Có " + sanphams.Count() + " sản phẩm thỏa mãn";
                     return View(sanphams);
 
                 }

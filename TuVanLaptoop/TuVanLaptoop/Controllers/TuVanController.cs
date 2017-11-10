@@ -37,6 +37,10 @@ namespace TuVanLaptoop.Controllers
                 {
                     list.Add(getSuKienId(model["Gioitinhs"].ToString()));
                     yeucau.Add(model["Gioitinhs"].ToString());
+
+                    //lưu trạng thái tư vấn của combobox
+                    //TempData["GioiTinhs"] = new SelectList(db.GioiTinhs.ToList(), "Name", "Name", model["Gioitinhs"].ToString());
+                    
                 }
 
                 if (model["NgheNghieps"].ToString() != "")

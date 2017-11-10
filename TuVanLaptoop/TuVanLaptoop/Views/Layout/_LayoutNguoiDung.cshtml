@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     @*Css Download GiaoDienUI*@
+    @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
     <link href="~/Content/NguoiDungCssLayout/fonts.css" rel="stylesheet" />
     <link href="~/Content/NguoiDungCssLayout/screen.css" rel="stylesheet" />
     @*Chèn css Giao Dien NguoiDung*@
@@ -12,7 +13,7 @@
     @*Css Icon*@
     <link href="~/Content/Fontaesome/css/font-awesome.min.css" rel="stylesheet" />
     @*js*@
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
 
 
     @*Nivo link, phải để sau file min.js*@
@@ -126,8 +127,9 @@
         </section>
         @*Sử dụng RenderBody*@
         <div id="NoiDung">
-            <div id="ND_Left">
+            <div id="ND_Left" class="">
                 @Html.Action("SuKienPartial", "SuKien")
+                @*hiển thị đánh giá của người dùng về luật*@
                 @RenderSection("DoTinCay", false)
             </div>
             <div id="ND_Right">

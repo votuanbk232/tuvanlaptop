@@ -9,7 +9,7 @@ namespace TuVanLaptoop.Models
     [MetadataTypeAttribute(typeof(SuKien_Metadata))]
     public partial class SuKien
     {
-        public static SuKien SaveSuKien(SuKien sukien)
+        public static bool SaveSuKien(SuKien sukien)
         {
             using (TuVanLaptopEntities db=new TuVanLaptopEntities())
             {
@@ -18,11 +18,11 @@ namespace TuVanLaptoop.Models
                 //nếu tồn tại trả về null
                 if (sk != null)
                     {
-                        return null;
+                        return false;
                     }
                 db.SuKiens.Add(sukien);
                 db.SaveChanges();
-                return sk;
+                return true;
             }
           
         }

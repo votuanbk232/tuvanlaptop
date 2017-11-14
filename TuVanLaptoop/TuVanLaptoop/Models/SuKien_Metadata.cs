@@ -9,6 +9,7 @@ namespace TuVanLaptoop.Models
     [MetadataTypeAttribute(typeof(SuKien_Metadata))]
     public partial class SuKien
     {
+        //lưu sự kiện vào database
         public static bool SaveSuKien(SuKien sukien)
         {
             using (TuVanLaptopEntities db=new TuVanLaptopEntities())
@@ -26,6 +27,26 @@ namespace TuVanLaptoop.Models
             }
           
         }
+        //Lấy giá trị sự kiện(string) dựa vào ID(int,bảng sự kiện)
+        public static String getSuKienById(int id)
+        {
+            using (TuVanLaptopEntities db = new TuVanLaptopEntities())
+            {
+                SuKien sk = db.SuKiens.Single(n => n.Id == id);
+                return (sk.Name).ToString();
+            }
+        }
+        //lấy Id của sự kiện dựa vào Name(string)(Bảng sự kiện)
+        //tên sự kiện ko đc trùng nhau và là duy nhất
+        public static String getSuKienId(string name)
+        {
+            using (TuVanLaptopEntities db = new TuVanLaptopEntities())
+            {
+                SuKien sk = db.SuKiens.SingleOrDefault(n => n.Name == name);
+                if (sk == null) { return null; }
+                return (sk.Id).ToString();
+            }
+        }
     }
     public class SuKien_Metadata
     {
@@ -35,5 +56,7 @@ namespace TuVanLaptoop.Models
         [Display(Name="Tên sự kiện")]
         [SuKienNameValidation]
         public string Name { get; set; }
+
+        
     }
 }

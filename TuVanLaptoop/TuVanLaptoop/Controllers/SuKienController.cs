@@ -48,14 +48,14 @@ namespace TuVanLaptoop.Controllers
         //<script src = "~/Scripts/jquery-1.8.0.js" ></ script >
         //< script src="~/Scripts/jquery-ui-1.11.4.js"></script>
         //<link href = "~/Content/themes/base/all.css" rel="stylesheet" />
-        [AdminFilter]
+        //[AdminFilter]
         public ActionResult ThemSuKienPartial()
         {
             SuKien v = new SuKien();
             return PartialView("ThemSuKienPartial", v);
 
         }
-        [AdminFilter]
+        //[AdminFilter]
         public ActionResult SaveSuKien(SuKien sk)
         {
             using(TuVanLaptopEntities db=new TuVanLaptopEntities())

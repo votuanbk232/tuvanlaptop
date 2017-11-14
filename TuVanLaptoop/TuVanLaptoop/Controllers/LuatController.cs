@@ -32,13 +32,34 @@ namespace TuVanLaptoop.Controllers
             luat.SuKienCollection = db.SuKiens.Take(28).ToList();
             return View(luat);
         }
-        [AdminFilter]
+        //[AdminFilter]
         [HttpPost]
-        public ActionResult ThemLuatOrSuaLuat(Luat luat)
+        public ActionResult ThemLuatOrSuaLuat(Luat luat,string[] thuoctinh,string[] toantu,string[] giatri)
         {
+            //lấy sự kiện vế phải từ thuộc tính, toán tử và giá trị
+            string vephai="";
+            for (int i = 0; i < toantu.Length; i++)
+            {
+                if (i != 0)
+                {
+                    vephai += " AND ";
+                }
+                if(thuoctinh[i]== "mausac")
+                {
+                    string giatrisau = "N"+"'%"+giatri[i]+"%'";
+                    vephai += thuoctinh[i] + " " + toantu[i] + " " + giatrisau;
+
+                }
+                else
+                {
+                    vephai += thuoctinh[i] + " " + toantu[i] + " " + giatri[i];
+                }
+
+            }
             //thêm sự kiện vế phải vào bảng sự kiện
             SuKien sk = new SuKien();
-            sk.Name = luat.SukienVP;
+            //sk.Name = luat.SukienVP; // trước
+            sk.Name = vephai; // sau 14/11
             //kiểm tra sự kiện vế phải  đã tồn tại hay chưa
             SuKien skCheck = db.SuKiens.SingleOrDefault(n => n.Name == luat.SukienVP);
             //chưa tồn tại, thêm mới sự kiện
@@ -46,7 +67,8 @@ namespace TuVanLaptoop.Controllers
             {
                 db.SuKiens.Add(sk);
                 db.SaveChanges();
-                luat.SukienVP = sk.Id.ToString();
+                //gán Id của sự kiện vế phải vừa thêm vào csdl bằng với SukienVP của luật
+                luat.SukienVP = sk.Id.ToString(); 
             }
             else
             {

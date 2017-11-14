@@ -4,6 +4,66 @@
     ViewBag.Title = "Thêm Luât";
     Layout = "~/Views/Layout/_LayoutAdmin.cshtml";
 }
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var i= 1;
+        $(".btnThem").click(function () {
+            var block1 = "<div class='task' style='display:block;'>";
+            // combobox thuộc tính
+            block1 += "<span style='float:left;width:200px;'>";
+            block1 += "<label>Thuộc tính</label>";
+            block1 += "<select name='thuoctinh' style='width:200px;'>";
+            block1 += "<option value='HangLaptopId'>Hãng laptop</option>";
+            block1 += "<option value='HeDieuHanhId'>Hệ điều hành</option>";
+            block1 += "<option value='mausac'>Màu sắc</option>";
+            block1 += "<option value='gia'>Giá</option>";
+            block1 += "<option value='manhinh'>Màn hình</option>";
+            block1 += "<option value='dophangiai'>Độ phân giải</option>";
+            block1 += "<option value='cpu'>Cpu</option>";
+            block1 += "<option value='ram'>Ram</option>";
+            block1 += "<option value='ocung'>Ổ cúng</option>";
+            block1 += "<option value='khoiluong'>Khối lượng</option>";
+            block1 += "<option value='pin'>Pin</option>";
+            block1 += "<option value='cardroi'>Card rời</option>";
+            block1 += "</select>";
+            block1 += "</span>";
+            //combobox toán tử
+            block1 += "<span style='float:left;width:100px;margin-left:20px;'>";
+            block1 += "<label>Toán tử</label>";
+            block1 += "<select name='toantu' style='width:100px;'>";
+            block1 += "<option value='Like'>like</option>";
+            block1 += "<option value='='>=</option>";
+            block1 += "<option value='>'>></option>";
+            block1 += "<option value='<'><</option>";
+            block1 += "</select>";
+            block1 += "</span>";
+            //text box
+            block1 += "<span style='margin-left:20px;float:left;width:180px;'>";
+            block1 += "<label>Giá trị</label>";
+            block1 += "<input type='text' name='giatri' style='width:180px;'>";
+            block1 += "</span>";
+            //delete block1
+            block1 += "<input style='margin-left:30px;float:left;margin-top:33px;' type='checkbox'></input>";
+            block1 += "</div></br>";
+            $("#sukien").append(block1);
+        });
+        $(".xoa").on("click", function () {
+            $("input:checkbox").each(function () {
+                if ($(this).is(":checked")) {
+                    $(this).parent().remove();
+                }
+            });
+
+        });
+
+    });
+</script>
+<style>
+    .sukienVp{
+        width:564px;
+    }
+</style>
 @if (ViewBag.ThongBao != null)
 {
 <div style="text-align:center">@ViewBag.ThongBao</div>
@@ -14,56 +74,74 @@
     {
         <div style="text-align:center">@ViewBag.CheckLuat</div>
     }
-    <div class="form-horizontal">
-        @Html.HiddenFor(model=>model.Id)
+            @Html.HiddenFor(model => model.Id)
         <div class="form-group">
-            
-                <label>Chọn sự kiện vế trái</label>
-                @*name là SuKienVT, id là normalDropdown, option là các giá trị của bảng SuKien*@
-                @*@Html.DropDownListFor(model=>model.SuKienVT,new SelectList (Model.SuKienCollection,"Id","Name"),new { id="normalDropdown"})*@
-                @*MultiSelect Dropdown*@
-                @Html.ListBoxFor(model => model.SuKienSelectedIDArray, new MultiSelectList(Model.SuKienCollection, "Id", "Name"), new { id = "multiSelectDropdown", multiple = "multiple" })
 
-</div>
-        <div class="form-horizontal">
-            <i class="fa fa-hand-pointer-o"> </i><label>Thêm sự kiện vế phải</label>
-                @Html.TextBoxFor(model => model.SukienVP)
-</div>
-        <div class="form-horizontal">
+            <i class="fa fa-plus-circle"></i><span>Chọn sự kiện vế trái</span><br/>
+            @*name là SuKienVT, id là normalDropdown, option là các giá trị của bảng SuKien*@
+            @*@Html.DropDownListFor(model=>model.SuKienVT,new SelectList (Model.SuKienCollection,"Id","Name"),new { id="normalDropdown"})*@
+            @*MultiSelect Dropdown*@
+            @Html.ListBoxFor(model => model.SuKienSelectedIDArray, new MultiSelectList(Model.SuKienCollection, "Id", "Name"), new { id = "multiSelectDropdown", multiple = "multiple" })
 
-            <label>Mô tả</label>
-            @Html.TextBoxFor(model => model.GiaiThich)
-        </div>
-        <div class="form-horizontal">
-
-            <label>Độ tin cậy</label>
-            @Html.EditorFor(model => model.DoTinCay)
-        </div>
-        <div class="form-horizontal">
-            <input type="submit" name="name" value="Submit" />
          </div>
+        <div style="width:60%;float:left;">
+            <div class="form-horizontal">
+                <br /><i class="fa fa-plus-circle"></i><span>Thêm sự kiện vế phải</span><br />
+            @if (Model.SukienVP != null)
+            {
+                @Html.TextBoxFor(model => model.SukienVP,new  { @class="sukienVp"})
+            }
+                <br /><br/>
+                <div id="sukien">
+                    <span>
+                        <button type="button" class="btnThem">+Thêm</button>
+                        <button type="button" style='margin-left:470px;' class="xoa">Xóa</button>
+                    </span>
+                    <br /><br />
+                </div>
+
+            </div>
+            <div style="clear:both;"></div>
+            <div class="form-horizontal">
+
+                <br /><i class="fa fa-plus-circle"></i><span>Mô tả</span><br />
+               
+                    @Html.TextBoxFor(model => model.GiaiThich)
+
+                
+            </div>
+            <div class="form-horizontal">
+
+                <br /><i class="fa fa-plus-circle"></i><span>Độ tin cậy</span><br/>
+                @Html.EditorFor(model => model.DoTinCay)
+            </div>
+            <div class="form-horizontal">
+                <br /><input type="submit" name="name" value="Submit" /><br />
+            </div>
+            <i class="fa fa-backward"></i>  @Html.ActionLink("Trở về", "QuanLiLuat", "Admin")
+
+
         </div>
 }
-@*Phần thuộc tính và Id của thuộc tính nếu có*@
-@*Do dùng model khác với luật nên sử dụng partial*@
-<div id="table-right" style="float:right;margin-top:-200px;">
-    @Html.Action("ThuoctinhPartial", "Thuoctinh")
-   
-</div>
-<i class="fa fa-backward" ></i>  @Html.ActionLink("Trở về", "QuanLiLuat", "Admin") 
+        @*Phần thuộc tính và Id của thuộc tính nếu có*@
+        @*Do dùng model khác với luật nên sử dụng partial*@
+        <div  id="table-right" style="float:right;margin-top:0;">
+            @Html.Action("ThuoctinhPartial", "Thuoctinh")
 
-@*@section scripts{
-    <script>
-        $(function () {
-            $("#normalDropdown").chosen();
-        });
-    </script>
-    }*@
-@section scripts{
-    <script>
-        $(function () {
-            $("#multiSelectDropdown").chosen({ width: "70%" });
-        });
-    </script>
-    }
+        </div>
+
+        @*@section scripts{
+            <script>
+                $(function () {
+                    $("#normalDropdown").chosen();
+                });
+            </script>
+            }*@
+        @section scripts{
+            <script>
+                $(function () {
+                    $("#multiSelectDropdown").chosen({ width: "70%" });
+                });
+            </script>
+        }
 

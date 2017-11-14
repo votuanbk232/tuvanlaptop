@@ -74,7 +74,7 @@
             <a href="@Url.Action("XemChiTiet","SanPham",new { @MaLaptop = item.Id })"><div id="AnhBia" title="@item.Name"><img src="@Url.Content("~/HinhAnhSanPham/"+item.AnhBia)"></div></a>
             @*<a href="@Url.Action("XemChiTiet","ChiTietLaptop",new { @MaSach = item.MaSach })"><div id="AnhBia" title="@item.TenSach"><img src="@Url.Content("~/HinhAnhSach/"+item.AnhBia)"></div></a>*@
             <div id="ThongTin">
-                <div>@item.Name</div>
+                <div style="height:56px;">@item.Name</div>
                 <div id="GiaBan" style="color:orange;"><font color="green">Giá bán:</font>@string.Format("{0:0,0}", @item.gia) VNĐ</div>
             </div>
             <div id="GioHang">

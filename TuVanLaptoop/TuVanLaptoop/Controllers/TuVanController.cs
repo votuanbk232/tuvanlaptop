@@ -18,12 +18,17 @@ namespace TuVanLaptoop.Controllers
         // GET: TuVan
         public ActionResult Index(FormCollection model,string submit)
         {
+            //lấy yêu cầu từ người dùng string[string]
+            //chuyển yêu cầu đó sang string[int]
+            //Từ string[int] của sự kiện vế trái, ta lấy đc id của sự kiện vế phải
+            //chuyển id của sự kiện vế phải sang string(sql)
+            //từ sql ta truy vấn đc sản phẩm
             using (TuVanLaptopEntities db = new TuVanLaptopEntities())
             {
                 StringBuilder value = new StringBuilder();
                 //mảng sự kiện vế trải (int) của Luật
                 List<String> list = new List<String>();
-                //danh sách yêu cầu
+                //danh sách yêu cầu(string)
                 List<String> yeucau = new List<String>();
 
                 //kiểm tra submit có đc clicked chưa
@@ -35,7 +40,7 @@ namespace TuVanLaptoop.Controllers
                 //lấy id của item selected
                 if (model["Gioitinhs"].ToString() != "")
                 {
-                    list.Add(getSuKienId(model["Gioitinhs"].ToString()));
+                    list.Add(SuKien.getSuKienId(model["Gioitinhs"].ToString()));
                     yeucau.Add(model["Gioitinhs"].ToString());
 
                     //lưu trạng thái tư vấn của combobox
@@ -46,28 +51,28 @@ namespace TuVanLaptoop.Controllers
                 if (model["NgheNghieps"].ToString() != "")
                 {
                     yeucau.Add(model["NgheNghieps"].ToString());
-                    list.Add(getSuKienId(model["NgheNghieps"].ToString()));
+                    list.Add(SuKien.getSuKienId(model["NgheNghieps"].ToString()));
                 }
                 if (model["MucDichs"].ToString() != "")
                 {
                     yeucau.Add(model["MucDichs"].ToString());
-                    list.Add(getSuKienId(model["MucDichs"].ToString()));
+                    list.Add(SuKien.getSuKienId(model["MucDichs"].ToString()));
                 }
                 if (model["YeuCauGiaTiens"].ToString() != "")
                 {
                     yeucau.Add(model["YeuCauGiaTiens"].ToString());
-                    list.Add(getSuKienId(model["YeuCauGiaTiens"].ToString()));
+                    list.Add(SuKien.getSuKienId(model["YeuCauGiaTiens"].ToString()));
                 }
                 if (model["HangLaptops"].ToString() != "")
                 {
                     yeucau.Add(model["HangLaptops"].ToString());
-                    list.Add(getSuKienId(model["HangLaptops"].ToString()));
+                    list.Add(SuKien.getSuKienId(model["HangLaptops"].ToString()));
                 }
 
                 if (model["HeDieuHanhs"].ToString() != "")
                 {
                     yeucau.Add(model["HeDieuHanhs"].ToString());
-                    list.Add(getSuKienId(model["HeDieuHanhs"].ToString()));
+                    list.Add(SuKien.getSuKienId(model["HeDieuHanhs"].ToString()));
                 }
                 //khi ko có yêu cầu, trả về trang chủ
                 if (list.Count == 0)
@@ -103,7 +108,7 @@ namespace TuVanLaptoop.Controllers
                     {
                         maxgia = 10000000.ToString();
                     }
-                    List<Laptop> laptops_child = getLaptopSimple(mingia, maxgia, hangsanxuat, hedieuhanh);
+                    List<Laptop> laptops_child = Laptop.getLaptopSimple(mingia, maxgia, hangsanxuat, hedieuhanh);
                     //khi ko có sản phẩm đc gợi ý
                     if (laptops_child.Count == 0)
                     {
@@ -115,24 +120,24 @@ namespace TuVanLaptoop.Controllers
                 }
                 //Khi sự kiện có thể chứa luật(giới tính, nghề nghiệp, mục đích sở dụng)
                 string vetrai = String.Join(",", list.ToArray());
-                string vephai = getVePhaiByVeTrai(vetrai);
+                string vephai = Luat.getVePhaiByVeTrai(vetrai);
                 if (vephai == null)
                 {
                     TempData["message"] = "Luật không tồn tại\nYêu cầu: " + mangYeuCau;
                     return RedirectToAction("Index", "Home");
                 }
-                string sukien = getSuKienById(Convert.ToInt16(vephai));
+                string sukien = SuKien.getSuKienById(Convert.ToInt16(vephai));
                 //if (sukien == null)
                 //{
                 //    ViewBag.ThongBao = "Chưa có sản phẩm được gợi ý-Yêu cầu: ";
                 //    return RedirectToAction("Index", "Home");
                 //}
-                List<Laptop> laptops = getLaptopBySuKien(sukien);
+                List<Laptop> laptops = Laptop.getLaptopBySuKien(sukien);
                 if (laptops.Count == 0)
                 {
 
                     TempData["message"] = "Luật tồn tại-Chưa có sản phẩm gợi ý\nYêu cầu: " + mangYeuCau
-                        + "\nĐộ tin cậy:" + getDoTinCay(vetrai); ;
+                        + "\nĐộ tin cậy:" + Luat.getDoTinCay(vetrai); ;
 
 
                     return RedirectToAction("Index", "Home");
@@ -151,87 +156,90 @@ namespace TuVanLaptoop.Controllers
             }
         }
         //lấy danh sách laptop dựa vào các sự kiện(giá tiền,hệ điều hành,hãng laptop)
-        public List<Laptop> getLaptopSimple(string mingia, string maxgia, string hangsanxuat, string hedieuhanh)
-        {
-            string mingiaString = (mingia != "") ? "gia>=" + mingia : "";
-            string maxgiaString = (maxgia != "") ? "gia<" + maxgia : "";
-            string hanglaptopIdString = (hangsanxuat != "") ? " HangLaptopId=" + getHangSanXuatId(hangsanxuat) : "";
-            string hedieuhanhIdString = (hedieuhanh != "") ? " HeDieuHanhId=" + getHeDieuHanhId(hedieuhanh) : "";
-            //tạo query dùng list:(kết hợp và tạo thêm ' and ' cho query)
-            List<String> list = new List<string>();
-            if (mingiaString != "")
-            {
-                list.Add(mingiaString);
-            }
-            if (maxgiaString != "")
-            {
-                list.Add(maxgiaString);
-            }
-            if (hanglaptopIdString != "")
-            {
-                list.Add(hanglaptopIdString);
-            }
-            if (hedieuhanhIdString != "")
-            {
-                list.Add(hedieuhanhIdString);
-            }
-            String query = String.Join(" and ",list.ToArray());
-            var laptops = db.Laptops.SqlQuery("SELECT * FROM dbo.Laptop where " + query) ;
-            return laptops.ToList();
-        }
+        //public List<Laptop> getLaptopSimple(string mingia, string maxgia, string hangsanxuat, string hedieuhanh)
+        //{
+        //    string mingiaString = (mingia != "") ? "gia>=" + mingia : "";
+        //    string maxgiaString = (maxgia != "") ? "gia<" + maxgia : "";
+        //    string hanglaptopIdString = (hangsanxuat != "") ? " HangLaptopId=" + getHangSanXuatId(hangsanxuat) : "";
+        //    string hedieuhanhIdString = (hedieuhanh != "") ? " HeDieuHanhId=" + getHeDieuHanhId(hedieuhanh) : "";
+        //    //tạo query dùng list:(kết hợp và tạo thêm ' and ' cho query)
+        //    List<String> list = new List<string>();
+        //    if (mingiaString != "")
+        //    {
+        //        list.Add(mingiaString);
+        //    }
+        //    if (maxgiaString != "")
+        //    {
+        //        list.Add(maxgiaString);
+        //    }
+        //    if (hanglaptopIdString != "")
+        //    {
+        //        list.Add(hanglaptopIdString);
+        //    }
+        //    if (hedieuhanhIdString != "")
+        //    {
+        //        list.Add(hedieuhanhIdString);
+        //    }
+        //    String query = String.Join(" and ", list.ToArray());
+        //    var laptops = db.Laptops.SqlQuery("SELECT * FROM dbo.Laptop where " + query);
+        //    return laptops.ToList();
+        //}
         //lấy hãng sản xuất id dựa vào name
-        public String getHangSanXuatId(string name)
-        {
-            HangLapTop rs = db.HangLapTops.SingleOrDefault(n => n.Name == name);
-            if (rs == null) { return null; }
-            return (rs.Id).ToString();
-        }
+        //public String getHangSanXuatId(string name)
+        //{
+        //    HangLapTop rs = db.HangLapTops.SingleOrDefault(n => n.Name == name);
+        //    if (rs == null) { return null; }
+        //    return (rs.Id).ToString();
+        //}
         //lấy hệ điều hành id dựa vào name
-        public String getHeDieuHanhId(string name)
-        {
-            HeDieuHanh rs = db.HeDieuHanhs.SingleOrDefault(n => n.Name == name);
-            if (rs == null) { return null; }
-            return (rs.Id).ToString();
-        }
+        //public String getHeDieuHanhId(string name)
+        //{
+        //    HeDieuHanh rs = db.HeDieuHanhs.SingleOrDefault(n => n.Name == name);
+        //    if (rs == null) { return null; }
+        //    return (rs.Id).ToString();
+        //}
         //lấy danh sách laptop dựa vào tên sự kiện từ vế phải Id
-        public List<Laptop> getLaptopBySuKien(string sukien)
-        {
-            var laptops = db.Laptops.SqlQuery("SELECT * FROM dbo.Laptop where " + sukien);
-            return laptops.ToList();
-        }
+        //public List<Laptop> getLaptopBySuKien(string sukien)
+        //{
+
+        //        var laptops = db.Laptops.SqlQuery("SELECT * FROM dbo.Laptop where " + sukien);
+
+        //        return laptops.ToList();
+
+        //}
         //lấy Id của sự kiện dựa vào Name(Bảng sự kiện)
-        public String getSuKienId(string name)
-        {
-            SuKien sk= db.SuKiens.SingleOrDefault(n => n.Name == name);
-            if (sk == null) { return null; }
-            return (sk.Id).ToString();
-        }
+        //public String getSuKienId(string name)
+        //{
+        //    SuKien sk= db.SuKiens.SingleOrDefault(n => n.Name == name);
+        //    if (sk == null) { return null; }
+        //    return (sk.Id).ToString();
+        //}
         //Lấy Id của sự kiện vế phải dựa vào dãy sự kiện vế trái
         // cần xét thêm độ tin cậy( lấy luật có độ tin cậy cao nhất)
-        public String getVePhaiByVeTrai(string vetrai)
-        {
-            //Luat sk = db.Luats.SingleOrDefault(n => n.SuKienVT == vetrai);
-            var query= "SELECT TOP 1 * FROM dbo.Luat WHERE SuKienVT = '"+vetrai+"'" + " ORDER BY  DoTinCay DESC ";
-            Luat sk = db.Luats.SqlQuery(query).FirstOrDefault();
-            if (sk == null) { return null; }
-            return sk.SukienVP;
-        }
+        //public String getVePhaiByVeTrai(string vetrai)
+        //{
+        //    //Luat sk = db.Luats.SingleOrDefault(n => n.SuKienVT == vetrai);
+        //    var query= "SELECT TOP 1 * FROM dbo.Luat WHERE SuKienVT = '"+vetrai+"'" + " ORDER BY  DoTinCay DESC ";
+        //    Luat sk = db.Luats.SqlQuery(query).FirstOrDefault();
+        //    if (sk == null) { return null; }
+        //    return sk.SukienVP;
+        //}
         //lấy độ tin cậy(max trong các bản ghi) dựa vào vế trái của luật(tương tự lấy sự kiện vế phải)
-        public int getDoTinCay(string vetrai)
-        {
-            //Luat sk = db.Luats.SingleOrDefault(n => n.SuKienVT == vetrai);
-            var query = "SELECT TOP 1 * FROM dbo.Luat WHERE SuKienVT = '" + vetrai + "'" + " ORDER BY  DoTinCay DESC ";
-            Luat sk = db.Luats.SqlQuery(query).FirstOrDefault();
+        //public int getDoTinCay(string vetrai)
+        //{
+        //    //Luat sk = db.Luats.SingleOrDefault(n => n.SuKienVT == vetrai);
+        //    var query = "SELECT TOP 1 * FROM dbo.Luat WHERE SuKienVT = '" + vetrai + "'" + " ORDER BY  DoTinCay DESC ";
+        //    Luat sk = db.Luats.SqlQuery(query).FirstOrDefault();
 
-            if (sk == null) { return 0; }
-            return (int)sk.DoTinCay;
-        }
+        //    if (sk == null) { return 0; }
+        //    return (int)sk.DoTinCay;
+        //}
         //Lấy giá trị sự kiện dựa vào ID(bảng sự kiện)
-        public String getSuKienById(int id)
-        {
-            SuKien sk = db.SuKiens.Single(n => n.Id == id);
-            return (sk.Name).ToString();
-        }
+        //public String getSuKienById(int id)
+        //{
+        //    SuKien sk = db.SuKiens.Single(n => n.Id == id);
+        //    return (sk.Name).ToString();
+        //}
         //public ActionResult Index()
         //{
 

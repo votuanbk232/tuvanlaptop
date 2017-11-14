@@ -569,9 +569,11 @@
     <Compile Include="Models\HangLapTop.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Hangsanxuat_metatdata.cs" />
     <Compile Include="Models\HeDieuHanh.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Hedieuhanh_metadata.cs" />
     <Compile Include="Models\KhachHang.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>

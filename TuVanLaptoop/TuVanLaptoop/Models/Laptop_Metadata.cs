@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TuVanLaptoop.Models;
 
 namespace TuVanLaptoop.Models
 {
@@ -14,6 +15,50 @@ namespace TuVanLaptoop.Models
 
         //public IEnumerable<SelectListItem> AllFields { get; set; }
 
+        //lấy danh sách laptop dựa vào tên sự kiện từ vế phải Id(string)
+        public static List<Laptop> getLaptopBySuKien(string sukien)
+        {
+            using (TuVanLaptopEntities db = new TuVanLaptopEntities())
+            {
+                var laptops = db.Laptops.SqlQuery("SELECT * FROM dbo.Laptop where " + sukien);
+
+                return laptops.ToList();
+            }
+
+        }
+        //lấy danh sách laptop dựa vào các sự kiện(giá tiền,hệ điều hành,hãng laptop)
+        public static List<Laptop> getLaptopSimple(string mingia, string maxgia, string hangsanxuat, string hedieuhanh)
+        {
+            string mingiaString = (mingia != "") ? "gia>=" + mingia : "";
+            string maxgiaString = (maxgia != "") ? "gia<" + maxgia : "";
+            string hanglaptopIdString = (hangsanxuat != "") ? " HangLaptopId=" + HangLapTop.getHangSanXuatId(hangsanxuat) : "";
+            string hedieuhanhIdString = (hedieuhanh != "") ? " HeDieuHanhId=" + HeDieuHanh.getHeDieuHanhId(hedieuhanh) : "";
+            //tạo query dùng list:(kết hợp và tạo thêm ' and ' cho query)
+            List<String> list = new List<string>();
+            if (mingiaString != "")
+            {
+                list.Add(mingiaString);
+            }
+            if (maxgiaString != "")
+            {
+                list.Add(maxgiaString);
+            }
+            if (hanglaptopIdString != "")
+            {
+                list.Add(hanglaptopIdString);
+            }
+            if (hedieuhanhIdString != "")
+            {
+                list.Add(hedieuhanhIdString);
+            }
+            String query = String.Join(" and ", list.ToArray());
+            using(TuVanLaptopEntities db=new TuVanLaptopEntities())
+            {
+                var laptops = db.Laptops.SqlQuery("SELECT * FROM dbo.Laptop where " + query);
+                return laptops.ToList();
+            }
+         
+        }
 
 
 

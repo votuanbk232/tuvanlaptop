@@ -41,7 +41,7 @@ namespace TuVanLaptoop.Controllers
 
             return RedirectToAction("Login","Admin");
         }
-        [AdminFilter]
+        //[AdminFilter]
         public ActionResult QuanLiSanPham(int? page)
         {
 
@@ -49,7 +49,7 @@ namespace TuVanLaptoop.Controllers
             int pageSize = 8;
             return View(db.Laptops.ToList().OrderBy(n => n.Id).ToPagedList(pageNumber, pageSize));
         }
-        [AdminFilter]
+        //[AdminFilter]
         public ActionResult QuanLiSuKien(int? page)
         {
             int pageNumber = (page ?? 1);
@@ -64,19 +64,29 @@ namespace TuVanLaptoop.Controllers
         }
         public ActionResult loaddata()
         {
-            using (TuVanLaptopEntities dc = new TuVanLaptopEntities())
+            using (TuVanLaptopEntities db = new TuVanLaptopEntities())
             {
                 // dc.Configuration.LazyLoadingEnabled = false; // if your table is relational, contain foreign key
-                var data = dc.SuKiens.OrderBy(a => a.Id).ToList();
+                var data = db.SuKiens.OrderBy(a => a.Id).ToList();
                 return Json(new { data = data }, JsonRequestBehavior.AllowGet);
             }
         }
-        [AdminFilter]
+        //[AdminFilter]
         public ActionResult QuanLiLuat(int? page)
         {
             int pageNumber = (page ?? 1);
             int pageSize = 8;
-            return View(db.Luats.ToList().OrderBy(n => n.Id).ToPagedList(pageNumber, pageSize));
+            using (TuVanLaptopEntities db = new TuVanLaptopEntities())
+            {
+                List<Luat> luats = db.Luats.ToList();
+               foreach(var item in luats)
+                {
+                    item.sukienvetrais = Luat.ConvertIntArrayToStringArray(item.SuKienVT);
+                    item.sukienvephai = SuKien.getSuKienById(Convert.ToInt16(item.SukienVP));
+                }
+                //db.Luats.ToList().OrderBy(n => n.Id).ToPagedList(pageNumber, pageSize)
+                return View(luats.OrderBy(n => n.Id).ToPagedList(pageNumber, pageSize));
+            }
         }
         
        

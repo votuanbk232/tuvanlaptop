@@ -34,10 +34,11 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.SuKienVT)
+            @*@Html.DisplayFor(modelItem => item.SuKienVT)*@
+            @Html.DisplayFor(modelItem => item.sukienvetrais)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.SukienVP)
+            @Html.DisplayFor(modelItem => item.sukienvephai)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.GiaiThich)

@@ -1,2 +1,1 @@
-1.Xử lí text
-2.Xử lí độ tin cậy
+﻿Xử lí text

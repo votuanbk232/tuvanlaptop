@@ -65,8 +65,9 @@
 
                         idTD.text(r.Id);
                         nameTD.text(r.Name);
-                        actionTD.html('<a>Edit</a>')
-                        console.log = "111";
+                        actionTD.html('<a>Edit</a>' + ' | ' + '<a>Details</a>'+' | '+'<a>Delete</a>')
+                        
+                        //console.log = "111";
                         newTr.append(idTD);
                         newTr.append(nameTD);
                         newTr.append(actionTD);

@@ -56,6 +56,12 @@ DoTinCay int DEFAULT 0
 )
 GO 
 
+--default cho luật
+ALTER TABLE dbo.Luat
+ADD CONSTRAINT LuatConstraint
+DEFAULT 0 FOR DoTinCay
+GO 
+
 --Tạo bảng laptop
 CREATE TABLE Laptop(
 Id INT PRIMARY KEY IDENTITY NOT NULL,
@@ -94,6 +100,55 @@ ALTER TABLE dbo.Laptop
 ADD CONSTRAINT LaptopConstraint
 DEFAULT 'Chưa có mô tả' FOR MoTa
 GO 
+
+
+--thêm bảng khách hàng
+CREATE TABLE KhachHang(
+MaKH INT PRIMARY KEY IDENTITY NOT NULL,
+HoTen NVARCHAR(50),
+NgaySinh DATETIME,
+DienThoai NVARCHAR(50),
+TaiKhoan NVARCHAR(50),
+MatKhau NVARCHAR(50),
+Email NVARCHAR(50),
+DiaChi NVARCHAR(50)
+
+)
+GO 
+
+--Thêm bảng đơn hàng
+CREATE TABLE DonHang( 
+MaDonHang INT PRIMARY KEY IDENTITY NOT NULL,
+NgayGiao DATETIME,
+NgayDat DATETIME,
+TinhTrangGiaoHang BIT,
+MaKH INT
+)
+GO 
+
+
+--thêm bảng chi tiết đơn hàng
+CREATE TABLE ChiTietDonHang(
+MaDonHang INT NOT NULL,
+MaSanPham INT,
+SoLuong INT,
+DonGia DECIMAL(18,0),
+CONSTRAINT [PK_ChiTietDonHang] PRIMARY KEY CLUSTERED 
+(
+[MaDonHang] ASC,
+[MaSanPham] ASC
+)
+)
+GO 
+
+--Thêm
+--bảng login
+CREATE TABLE Admin(
+ Id INT PRIMARY KEY IDENTITY NOT NULL,
+ Username NVARCHAR(50),
+ Password BINARY(20)
+)
+GO
 
 --thêm dữ liệu bảng hệ điều hành
 INSERT INTO dbo.HeDieuHanh
@@ -627,14 +682,7 @@ VALUES  ( N'Laptop Dell Vostro 3568 i3 7100U' , -- Name - nvarchar(50)
 GO 
 
 
---Thêm
---bảng login
-CREATE TABLE Admin(
- Id INT PRIMARY KEY IDENTITY NOT NULL,
- Username NVARCHAR(50),
- Password BINARY(20)
-)
-GO
+
 
 --thêm dữ liệu bảng admin
 INSERT INTO dbo.Admin
@@ -646,43 +694,7 @@ VALUES  (
           )
 GO
 
---thêm bảng khác hàng
-CREATE TABLE KhachHang(
-MaKH INT PRIMARY KEY IDENTITY NOT NULL,
-HoTen NVARCHAR(50),
-NgaySinh DATETIME,
-DienThoai NVARCHAR(50),
-TaiKhoan NVARCHAR(50),
-MatKhau NVARCHAR(50),
-Email NVARCHAR(50),
-DiaChi NVARCHAR(50)
 
-)
-GO 
---Thêm bảng đơn hàng
-CREATE TABLE DonHang( 
-MaDonHang INT PRIMARY KEY IDENTITY NOT NULL,
-NgayGiao DATETIME,
-NgayDat DATETIME,
-TinhTrangGiaoHang BIT,
-MaKH INT
-)
-GO 
-
-
---thêm bảng chi tiết đơn hàng
-CREATE TABLE ChiTietDonHang(
-MaDonHang INT NOT NULL,
-MaSanPham INT,
-SoLuong INT,
-DonGia DECIMAL(18,0),
-CONSTRAINT [PK_ChiTietDonHang] PRIMARY KEY CLUSTERED 
-(
-[MaDonHang] ASC,
-[MaSanPham] ASC
-)
-)
-GO 
 
 
 
@@ -704,3 +716,6 @@ VALUES  ( N'Võ Anh Tuấn' , -- HoTen - nvarchar(50)
 --SELECT TOP 1 * FROM dbo.Luat
 --WHERE SuKienVT='1'
 --ORDER BY  DoTinCay DESC
+
+
+

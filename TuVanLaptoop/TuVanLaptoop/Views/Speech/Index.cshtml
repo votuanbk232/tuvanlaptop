@@ -25,7 +25,7 @@
 </head>
 <div id="speech_content">
     <div style="text-align:center">Hãy nói yêu cầu của bạn bằng tiếng anh</div>
-    @*<form action="/Speech/Index" method="post">*@
+    <form action="/Speech/Index" method="post">
        
             @*text cuối cùng*@
             <span name="text" id="speech" style="text-align:center"></span>
@@ -36,26 +36,26 @@
             @*hiện kết quả sử dụng ajax*@
             <input style="text-align:center" type="submit" name="submit" id="submit" value="Hiển thị kết quả" />
             @*@Html.Label("Kết quả",htmlAttributes: new { @class="ShowList"})*@    
-    @*</form>*@
-        <div class="model fade" id="myModel">
+    </form>
+        @*<div class="model fade" id="myModel">
             <div class="model body" id="Div1">
 
             </div>
         </div>
         <div id="sanpham_result">
 
-        </div>
+        </div>*@
 </div>
 
 @*kết quả sau khi click*@
 
 <script>
-    $(document).ready(function () {
-        $("#submit").click(function () {
-            var search = $("#text").val();
-            $("sanpham_result").load("/Speech/GetView", { search: search });
-        });
-    })
+    //$(document).ready(function () {
+    //    $("#submit").click(function () {
+    //        var search = $("#text").val();
+    //        $("sanpham_result").load("/Speech/GetView", { search: search });
+    //    });
+    //})
    
 
    

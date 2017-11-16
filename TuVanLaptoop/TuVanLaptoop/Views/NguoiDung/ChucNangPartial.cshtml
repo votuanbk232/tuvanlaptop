@@ -47,9 +47,16 @@
 
 else
 {
-    if (@TempData["user"].ToString()!="") {
-    <span title="người dùng" class="blink">@TempData["user"].ToString()</span>
-    }
+
+    @*<span title="người dùng" class="blink">Xin chào</span>*@
+
+            <span title="người dùng" class="blink">@if (ViewBag.UserName!="") {
+
+                @ViewBag.UserName
+            }</span>
+
+      
+ 
     <i class="fa fa-sign-out"></i>
                     @Html.ActionLink("Logout", "DangXuat", "NguoiDung", null, htmlAttributes: new { @class = "DangKy" })
 }

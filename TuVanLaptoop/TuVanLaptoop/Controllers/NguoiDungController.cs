@@ -13,6 +13,17 @@ namespace TuVanLaptoop.Controllers
         TuVanLaptopEntities db = new TuVanLaptopEntities();
         public ActionResult ChucNangPartial()
         {
+            //người dùng đã đăng nhập, gửi tên user tới chức năng partial
+            if (Session["TaiKhoan"] != null)
+            {
+                ViewBag.UserName = (Session["TaiKhoan"] as KhachHang).TaiKhoan.ToString();
+                return PartialView();
+
+            }
+            else
+            {
+                ViewBag.UserName = "";
+            }
             return PartialView();
         }
         [HttpGet]
@@ -26,8 +37,17 @@ namespace TuVanLaptoop.Controllers
             
             if (ModelState.IsValid)
             {
-                db.KhachHangs.Add(kh);
-                db.SaveChanges();
+                //kiểm tra email đã tồn tại hay chưa(chưa làm)
+                //password hasing
+                kh.MatKhau = Crypto.Hash(kh.MatKhau);
+                kh.XacNhanMatKhau = Crypto.Hash(kh.XacNhanMatKhau);
+                //lưu vào database
+                using(TuVanLaptopEntities db=new TuVanLaptopEntities())
+                {
+                    db.KhachHangs.Add(kh);
+                    db.SaveChanges();
+                }
+               
                 ViewBag.ThongBao = "Chúc mừng bạn đăng ký thành công !";
                 return RedirectToAction("DangNhap", "NguoiDung");
             }
@@ -45,18 +65,33 @@ namespace TuVanLaptoop.Controllers
         {
             string sTaiKhoan = f["txtTaiKhoan"].ToString();
             string sMatKhau = f.Get("txtMatKhau").ToString();
-            KhachHang kh = db.KhachHangs.SingleOrDefault(n => n.TaiKhoan == sTaiKhoan && n.MatKhau == sMatKhau);
-            if (kh != null)
+            using (TuVanLaptopEntities db=new TuVanLaptopEntities())
             {
-                ViewBag.ThongBao = "Chúc mừng bạn đăng nhập thành công !";
-                FormsAuthentication.SetAuthCookie(sTaiKhoan, false);
-                Session["TaiKhoan"] = kh;
-                //Session["UserName"] = kh.TaiKhoan.ToString();
-                
-                    TempData["message"] = "Bạn đã đăng nhập thành công";
-                    return RedirectToAction("Index", "Home",new {username= kh.TaiKhoan.ToString() });
-               
+                var v = db.KhachHangs.SingleOrDefault(n => n.TaiKhoan == sTaiKhoan);
+                if (v != null)
+                {
+                    if (string.Compare(Crypto.Hash(sMatKhau), v.MatKhau)==0)
+                    {
+                        ViewBag.ThongBao = "Chúc mừng bạn đăng nhập thành công !";
+                        FormsAuthentication.SetAuthCookie(sTaiKhoan, false);
+                        //KhachHang kh = db.KhachHangs.SingleOrDefault(n => n.TaiKhoan == sTaiKhoan && n.MatKhau == Crypto.Hash(sMatKhau));
+
+                        Session["TaiKhoan"] = v;
+                        //Session["UserName"] = kh.TaiKhoan.ToString();
+
+                        TempData["message"] = "Bạn đã đăng nhập thành công";
+                        //truyền usernam tới Index/Home
+                        return RedirectToAction("Index", "Home", new { username = v.TaiKhoan.ToString() });
+                    }
+                    else
+                    {
+
+                    }
+                }
+
             }
+            //KhachHang kh = db.KhachHangs.SingleOrDefault(n => n.TaiKhoan == sTaiKhoan && n.MatKhau == sMatKhau);
+           
             ViewBag.ThongBao = "Tên tài khoản hoặc mật khẩu không đúng!";
             return View();
 

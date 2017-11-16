@@ -17,13 +17,13 @@ namespace TuVanLaptoop.Controllers
             return View();
         }
         //[HttpPost]
-        //public ActionResult Index(FormCollection model)
-        //{
-        //    string speech=model["text"].ToString();
-        //    TempData["message"] = "Nội dung yêu cầu" + speech;
-        //    return RedirectToAction("Index","Home");
-        //}
-       
+        public ActionResult Index(FormCollection model)
+        {
+            string speech = model["text"].ToString();
+            TempData["message"] = "Nội dung yêu cầu" + speech;
+            return RedirectToAction("Index", "Home");
+        }
+
         public ActionResult GetView(string search)
         {
 

@@ -19,9 +19,22 @@ namespace TuVanLaptoop.Controllers
         //[HttpPost]
         public ActionResult Index(FormCollection model)
         {
-            string speech = model["text"].ToString();
-            TempData["message"] = "Nội dung yêu cầu" + speech;
-            return RedirectToAction("Index", "Home");
+           
+                string speech = model["text"].ToString();
+                TempData["message"] = "Nội dung yêu cầu" + speech;
+                if (speech.Contains("hello"))
+                {
+                    using (TuVanLaptopEntities db = new TuVanLaptopEntities())
+                    {
+                        List<Laptop> laptops = db.Laptops.ToList();
+                        return PartialView("SpeechResult", laptops);
+
+                    }
+                }
+                return View();
+
+
+            
         }
 
         public ActionResult GetView(string search)

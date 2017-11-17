@@ -13,9 +13,11 @@ namespace TuVanLaptoop.Controllers
         // GET: Home
         public ActionResult GetResult()
         {
-            
-            //List<ChiTietLaptop> ctlt = db.ChiTietLaptops.OrderBy(n => n.GiaBan).ToList();
-            return View(db.Laptops.OrderBy(n => n.NgayCapNhat).Where(n=>n.HeDieuHanh.Name=="Dell").ToList());
+            using (TuVanLaptopEntities db = new TuVanLaptopEntities())
+            {
+                //List<ChiTietLaptop> ctlt = db.ChiTietLaptops.OrderBy(n => n.GiaBan).ToList();
+                return View(db.Laptops.OrderBy(n => n.NgayCapNhat).Where(n => n.HeDieuHanh.Name == "Dell").ToList());
+            }
         }
     }
 }

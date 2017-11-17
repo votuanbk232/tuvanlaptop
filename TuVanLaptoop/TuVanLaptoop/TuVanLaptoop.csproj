@@ -654,6 +654,8 @@
     <Content Include="Views\Speech\GetView.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\SuKien\ThemSuKienPartial.cshtml" />
+    <Content Include="Views\SuKien\Edit.cshtml" />
+    <Content Include="Views\Speech\SpeechResult.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

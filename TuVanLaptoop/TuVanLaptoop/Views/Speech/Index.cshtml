@@ -7,7 +7,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Web Speech API Tutorial</title>
+    <title>Speech API</title>
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <style>
         /*body {
             font-family: monospace;
@@ -25,8 +29,20 @@
 </head>
 <div id="speech_content">
     <div style="text-align:center">Hãy nói yêu cầu của bạn bằng tiếng anh</div>
-    <form action="/Speech/Index" method="post">
-       
+    @*<form action="/Speech/Index" method="post">*@
+       @using (Ajax.BeginForm(
+                     "Index",
+                     "Speech",
+                     null,
+                     new AjaxOptions
+                     {
+                         UpdateTargetId = "speed_result",
+                         InsertionMode = InsertionMode.Replace,
+                         HttpMethod = "POST"
+                     },
+                     new { id = "SampleForm" }
+                     ))
+       {
             @*text cuối cùng*@
             <span name="text" id="speech" style="text-align:center"></span>
             @*text đang nói*@
@@ -36,7 +52,11 @@
             @*hiện kết quả sử dụng ajax*@
             <input style="text-align:center" type="submit" name="submit" id="submit" value="Hiển thị kết quả" />
             @*@Html.Label("Kết quả",htmlAttributes: new { @class="ShowList"})*@    
-    </form>
+       }
+    @*</form>*@
+    <div id="speed_result">
+
+    </div>
         @*<div class="model fade" id="myModel">
             <div class="model body" id="Div1">
 

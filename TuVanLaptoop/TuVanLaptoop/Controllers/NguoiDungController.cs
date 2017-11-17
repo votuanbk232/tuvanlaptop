@@ -17,6 +17,13 @@ namespace TuVanLaptoop.Controllers
             if (Session["TaiKhoan"] != null)
             {
                 ViewBag.UserName = (Session["TaiKhoan"] as KhachHang).TaiKhoan.ToString();
+                
+                return PartialView();
+
+            }
+            if (Session["IsAdmin"] != null)
+            {
+                ViewBag.UserName = (Session["IsAdmin"] as Admin).Username.ToString();
                 return PartialView();
 
             }

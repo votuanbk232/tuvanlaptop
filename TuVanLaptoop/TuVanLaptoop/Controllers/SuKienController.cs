@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -48,14 +49,14 @@ namespace TuVanLaptoop.Controllers
         //<script src = "~/Scripts/jquery-1.8.0.js" ></ script >
         //< script src="~/Scripts/jquery-ui-1.11.4.js"></script>
         //<link href = "~/Content/themes/base/all.css" rel="stylesheet" />
-        //[AdminFilter]
+        [AdminFilter]
         public ActionResult ThemSuKienPartial()
         {
             SuKien v = new SuKien();
             return PartialView("ThemSuKienPartial", v);
 
         }
-        //[AdminFilter]
+        [AdminFilter]
         public ActionResult SaveSuKien(SuKien sk)
         {
             using(TuVanLaptopEntities db=new TuVanLaptopEntities())
@@ -78,6 +79,34 @@ namespace TuVanLaptoop.Controllers
 
             }
 
+        }
+        [HttpGet]
+        [AdminFilter]
+
+        public ActionResult Edit(int id,string stringUrl)
+        {
+            using (TuVanLaptopEntities db = new TuVanLaptopEntities())
+            {
+                SuKien sk = db.SuKiens.SingleOrDefault(x => x.Id == id);
+                if (sk == null)
+                {
+                    return null;
+                }
+                ViewBag.Url = stringUrl;
+                return View(sk);
+            }
+        }
+        [HttpPost]
+        [AdminFilter]
+
+        public ActionResult Edit(SuKien sk,string stringurl)
+        {
+            using (TuVanLaptopEntities db = new TuVanLaptopEntities())
+            {
+                db.Entry(sk).State = EntityState.Modified;
+                db.SaveChanges();
+                return Redirect(stringurl);
+            }
         }
 
     }

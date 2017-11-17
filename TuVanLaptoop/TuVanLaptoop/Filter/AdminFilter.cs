@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TuVanLaptoop.Models;
 
 namespace TuVanLaptoop.Filter
 {
@@ -10,7 +11,8 @@ namespace TuVanLaptoop.Filter
     {
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
-            if (!Convert.ToBoolean(filterContext.HttpContext.Session["IsAdmin"]))
+            if (filterContext.HttpContext.Session["IsAdmin"] ==null)
+            //if (!Convert.ToBoolean(filterContext.HttpContext.Session["IsAdmin"] as Admin))
             {
                 filterContext.Result = new ContentResult()
                 {

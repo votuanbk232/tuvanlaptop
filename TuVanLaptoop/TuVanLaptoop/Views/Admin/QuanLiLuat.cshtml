@@ -32,7 +32,7 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
+    <tr id="row_@item.Id">
         <td>
             @*@Html.DisplayFor(modelItem => item.SuKienVT)*@
             @Html.DisplayFor(modelItem => item.sukienvetrais)
@@ -47,9 +47,24 @@
             @Html.DisplayFor(modelItem => item.DoTinCay)
         </td>
         <td>
-            @Html.ActionLink("Edit", "ThemLuatOrSuaLuat","Luat", new { @id = item.Id },null) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Sửa", "ThemLuatOrSuaLuat","Luat", new { @id = item.Id,@stringUrl=Request.Url.ToString() },null) |
+            @Html.ActionLink("Chi Tiết", "Details", new { id=item.Id }) |
+            @*@Html.ActionLink("Xóa", "Delete", new { id=item.Id })*@
+            @*AjaxOption để post request*@
+
+            @*thu viện unobtrusive.ajax(chú ý phiêm bản)*@
+
+            @Ajax.ActionLink("Xóa", "Delete", "Luat", new { @id = item.Id }, new AjaxOptions
+       {
+           Confirm = "Bạn có muốn xóa luật này?",
+           //xóa bản ghi sử dụng Id, ứng với mỗi tr(hàng)
+           //OnComplete = $('#row' + rowid).remove(),
+           OnSuccess = string.Format(
+                        "deleteSuccess({0})",
+                        Json.Encode(item.Id)
+                    ),
+           HttpMethod = "Delete"
+       })
         </td>
     </tr>
 }
@@ -64,3 +79,10 @@
         margin: 10px;
     }
 </style>
+
+<script>
+    //xóa bản ghi sau khi chấp nhận confirm
+    var deleteSuccess = function (rowid) {
+        $('#row_' + rowid).remove();
+    };
+</script>

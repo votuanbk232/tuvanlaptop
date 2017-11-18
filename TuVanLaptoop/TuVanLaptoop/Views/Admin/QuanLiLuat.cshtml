@@ -11,7 +11,7 @@
 <h2 style="text-align:center">Quản lí luật</h2>
 
 <p>
-    <i class="fa fa-plus-circle" ></i>@Html.ActionLink("Thêm luật", "ThemLuatOrSuaLuat", "Luat",null, new { id = 0 }) 
+    <i class="fa fa-plus-circle" ></i>@Html.ActionLink("Thêm luật", "ThemLuatOrSuaLuat", "Luat", new { id = 0 },null) 
 
 </p>
 <table class="table">
@@ -38,7 +38,7 @@
             @Html.DisplayFor(modelItem => item.sukienvetrais)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.sukienvephai)
+            @Html.DisplayFor(modelItem => item.SukienVP)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.GiaiThich)

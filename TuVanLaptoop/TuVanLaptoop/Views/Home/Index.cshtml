@@ -54,6 +54,60 @@
     }
 </div>
 
+ @if (TempData["CheckLuatTonTai"] !=null)
+    {
+@section DoTinCay {
+    <div style="margin-left: 31px;
+    width: 200px;
+    margin-top: 20px;">
+        <span style="color:red;">Mô tả: </span> <span style="font-family:Arial, Helvetica, sans-serif; color:blue;">@TempData["MoTaLuat"]</span> <br />
+        <span style="color:red;">Độ tin cậy:</span><span id="dotincayId">@TempData["DoTinCay"] </span> <br />
+        @*<a title="Like" href="@Url.Action("TangDoTinCay", "Luat", new { @MaLuat =  @TempData["LuatId"], @strUrl = Request.Url.ToString() })"><i class="fa fa-thumbs-o-up"></i></a>*@
+        @*<i id="like" class="fa fa-thumbs-o-up"></i>*@
+        <i id="like" class="fa fa-thumbs-o-up"></i>@Ajax.ActionLink("Like", "TangDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString() }
+ , new AjaxOptions
+ {
+     Confirm = "Bạn thực sự thích tư vấn này?",
+
+     //thay đổi số lượng độ tin cậy
+     OnSuccess = string.Format(
+                        "tangDoTinCay()"
+                    ),
+     HttpMethod = "GET"
+ }, new { id = "tangdotincay" })
+
+
+        @*<a data-ajax="true" data-ajax-confirm="Bạn thực sự thích tư vấn này?" data-ajax-method="GET"
+            data-ajax-success="tangDoTinCay()" href="/Luat/TangDoTinCay?MaLuat=10&amp;
+            strUrl=http%3A%2F%2Flocalhost%3A28617%2FTuVan"><i class="fa fa-thumbs-o-up"></i>Like</a>*@
+        @*<a title="Unlike" href="@Url.Action("GiamDoTinCay", "Luat", new { @MaLuat =  @TempData["LuatId"], @strUrl = Request.Url.ToString() })"><i class="fa fa-thumbs-o-down" ></i></a>*@
+        @*<i class="fa fa-thumbs-o-down"></i>*@
+        <i id="unlike" class="fa fa-thumbs-o-down"></i>@Ajax.ActionLink("UnLike", "GiamDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString() }, new AjaxOptions
+                                              {
+                                                  Confirm = "Bạn thực sự không thích tư vấn này?",
+
+                                                  //thay đổi số lượng độ tin cậy
+                                                  OnSuccess = string.Format(
+                        "giamDoTinCay()"
+                    ),
+                                                  HttpMethod = "GET"
+                                              }, new { id = "giamdotincay" })
+
+        <i class="fa fa-undo"></i>@Ajax.ActionLink("Reset", "ResetDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString(), @dotincay = TempData["DoTinCay"] }, new AjaxOptions
+                         {
+                             Confirm = "Bạn thực sự không muốn nhận xét độ tin cậy này?",
+
+                             //thay đổi số lượng độ tin cậy
+                             OnSuccess = string.Format(
+                        "resetDoTinCay()"
+                    ),
+                             HttpMethod = "GET"
+                         }, new { id = "resetDoTinCay" })
+    </div>
+
+}
+    }
+
 @{int i = 0; }
 <div id="divBody">
     @foreach (var item in Model)
@@ -91,3 +145,19 @@ Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCo
         display: inline;
     }
 </style>
+
+<script>
+    var tangDoTinCay = function () {
+        $('#dotincayId').html(function () { return +@TempData["DoTinCay"]+ 1 });
+
+
+    };
+
+    var giamDoTinCay = function () {
+        $('#dotincayId').html(function () { return +@TempData["DoTinCay"]- 1 });
+    };
+
+    var resetDoTinCay = function () {
+        $('#dotincayId').html(function () { return +@TempData["DoTinCay"] });
+    }
+</script>

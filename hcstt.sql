@@ -2,11 +2,7 @@
 GO
 USE TuVanLaptop
 GO 
---Tạo bảng hãng laptop
-CREATE TABLE HangLapTop(
- Id INT PRIMARY KEY IDENTITY NOT NULL,
- Name NVARCHAR(50)
-)
+--SELECT * FROM dbo.Luat WHERE SuKienVT='1' AND GiaiThich='test' AND SukienVP = 'mausac Like N'%Đen%'''
 GO
 --Tạo bảng nghề nghiệp
 CREATE TABLE NgheNghiep(

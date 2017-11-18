@@ -11,13 +11,19 @@ using TuVanLaptoop.ViewModels;
 
 namespace TuVanLaptoop.Controllers
 {
-    
+
     public class TuVanController : Controller
     {
         TuVanLaptopEntities db = new TuVanLaptopEntities();
         // GET: TuVan
-        public ActionResult Index(FormCollection model,string submit)
+        public ActionResult Index(FormCollection model, string submit)
         {
+            //độ tin cậy của luật tạo mới
+            int dotincay = 0;
+            //phụ thuộc vào các yếu tố của người dùng(nghề nghiệp,....)
+            bool luattontai = true;
+            //danh sách câu query thu đc từ các sự kiện
+            List<String> queryvephai = new List<String>();
             //lấy yêu cầu từ người dùng string[string]
             //chuyển yêu cầu đó sang string[int]
             //Từ string[int] của sự kiện vế trái, ta lấy đc id của sự kiện vế phải
@@ -40,23 +46,62 @@ namespace TuVanLaptoop.Controllers
                 //lấy id của item selected
                 if (model["Gioitinhs"].ToString() != "")
                 {
-                    list.Add(SuKien.getSuKienId(model["Gioitinhs"].ToString()));
+                    list.Add(SuKien.getSuKienId(model["Gioitinhs"].ToString())); //lấy đc id sk
                     yeucau.Add(model["Gioitinhs"].ToString());
-
+                    //kiểm tra luật với sự kiện này có tồn tại hay không
+                    //nếu không tồn tại=> trả về false
+                    if (!Luat.CheckLuatTonTaiWithVeTrai(SuKien.getSuKienId(model["Gioitinhs"].ToString())))
+                    {
+                        luattontai = false;
+                    }
+                    //nếu luật có tồn tại, lấy query vế phải của luật theo sự kiện vế trái
+                    else
+                    {
+                        //từ sự kiện ID lấy đc câu query của luật
+                        string vp = Luat.getVePhaiByVeTrai(SuKien.getSuKienId(model["Gioitinhs"].ToString()));
+                        dotincay += Luat.GetDoTinCayByVetrai(SuKien.getSuKienId(model["Gioitinhs"].ToString()));
+                        queryvephai.Add(vp);
+                    }
                     //lưu trạng thái tư vấn của combobox
                     //TempData["GioiTinhs"] = new SelectList(db.GioiTinhs.ToList(), "Name", "Name", model["Gioitinhs"].ToString());
-                    
+
                 }
 
                 if (model["NgheNghieps"].ToString() != "")
                 {
                     yeucau.Add(model["NgheNghieps"].ToString());
                     list.Add(SuKien.getSuKienId(model["NgheNghieps"].ToString()));
+
+                    if (!Luat.CheckLuatTonTaiWithVeTrai(SuKien.getSuKienId(model["NgheNghieps"].ToString())))
+                    {
+                        luattontai = false;
+                    }
+                    else
+                    {
+                        //từ sự kiện ID lấy đc câu query của luật
+                        string vp = Luat.getVePhaiByVeTrai(SuKien.getSuKienId(model["NgheNghieps"].ToString()));
+                        dotincay += Luat.GetDoTinCayByVetrai(SuKien.getSuKienId(model["NgheNghieps"].ToString()));
+
+                        queryvephai.Add(vp);
+                    }
                 }
                 if (model["MucDichs"].ToString() != "")
                 {
                     yeucau.Add(model["MucDichs"].ToString());
                     list.Add(SuKien.getSuKienId(model["MucDichs"].ToString()));
+
+                    if (!Luat.CheckLuatTonTaiWithVeTrai(SuKien.getSuKienId(model["MucDichs"].ToString())))
+                    {
+                        luattontai = false;
+                    }
+                    else
+                    {
+                        //từ sự kiện ID lấy đc câu query của luật
+                        string vp = Luat.getVePhaiByVeTrai(SuKien.getSuKienId(model["MucDichs"].ToString()));
+                        dotincay += Luat.GetDoTinCayByVetrai(SuKien.getSuKienId(model["MucDichs"].ToString()));
+
+                        queryvephai.Add(vp);
+                    }
                 }
                 if (model["YeuCauGiaTiens"].ToString() != "")
                 {
@@ -74,243 +119,170 @@ namespace TuVanLaptoop.Controllers
                     yeucau.Add(model["HeDieuHanhs"].ToString());
                     list.Add(SuKien.getSuKienId(model["HeDieuHanhs"].ToString()));
                 }
-                //khi ko có yêu cầu, trả về trang chủ
+
+
+                //lấy chuỗi query từ các các sự kiện 100%( giá tiền, hệ điều hành, hãng laptop)
+                string mingia = "";
+                string maxgia = "";
+                string hangsanxuat = model["HangLaptops"].ToString();
+                string hedieuhanh = model["HeDieuHanhs"].ToString();
+                if (model["YeuCauGiaTiens"].ToString() == "Trên 20 triệu")
+                {
+                    mingia = 20000000.ToString();
+                }
+                if (model["YeuCauGiaTiens"].ToString() == "Từ 15 đến 20 triệu")
+                {
+                    mingia = 15000000.ToString();
+                    maxgia = 20000000.ToString();
+                }
+                if (model["YeuCauGiaTiens"].ToString() == "Từ 10 đến 15 triệu")
+                {
+                    mingia = 10000000.ToString();
+                    maxgia = 15000000.ToString();
+                }
+                if (model["YeuCauGiaTiens"].ToString() == "Dưới 10 triệu")
+                {
+                    maxgia = 10000000.ToString();
+                }
+                //chuỗi thu đc từ các sự kiện 100%
+                string simple = Laptop.getLaptopSimple(mingia, maxgia, hangsanxuat, hedieuhanh);
+                if (simple != "")
+                {
+                    queryvephai.Add(simple);
+
+                }
+                #region ko có yêu cầu
+
+                //đầu tiền kiểm tra xem có yêu cầu ko ( count của list)
                 if (list.Count == 0)
                 {
-                    TempData["message"] = "Không có yêu cầu đưa ra!";
+                    TempData["message"] = "Không có yêu cầu được đưa ra.Vui lòng chọn các mục để được tư vấn!";
                     return RedirectToAction("Index", "Home");
                 }
-                //có yêu cầu
+                #endregion
+                //Nếu có yêu cầu ( list count!=0)
+                //khi ấn tư vấn sẽ lấy đc mảng yêu cầu của khách hàng và điều kiện where
                 string mangYeuCau = String.Join(",", yeucau.ToArray());
+                string query = String.Join(" AND ", queryvephai.ToArray());
 
-                //khi ko có những sự kiện có thể chứa luật(giới tính, nghề nghiệp, mục đích sở dụng)
-                if (model["Gioitinhs"].ToString() == "" && model["NgheNghieps"].ToString() == "" && model["MucDichs"].ToString() == "")
-                {
-                    string mingia = "";
-                    string maxgia = "";
-                    string hangsanxuat = model["HangLaptops"].ToString();
-                    string hedieuhanh = model["HeDieuHanhs"].ToString();
-                    if (model["YeuCauGiaTiens"].ToString() == "Trên 20 triệu")
-                    {
-                        mingia = 20000000.ToString();
-                    }
-                    if (model["YeuCauGiaTiens"].ToString() == "Từ 15 đến 20 triệu")
-                    {
-                        mingia = 15000000.ToString();
-                        maxgia = 20000000.ToString();
-                    }
-                    if (model["YeuCauGiaTiens"].ToString() == "Từ 10 đến 15 triệu")
-                    {
-                        mingia = 10000000.ToString();
-                        maxgia = 15000000.ToString();
-                    }
-                    if (model["YeuCauGiaTiens"].ToString() == "Dưới 10 triệu")
-                    {
-                        maxgia = 10000000.ToString();
-                    }
-                    List<Laptop> laptops_child = Laptop.getLaptopSimple(mingia, maxgia, hangsanxuat, hedieuhanh);
-                    //khi ko có sản phẩm đc gợi ý
-                    if (laptops_child.Count == 0)
-                    {
-                        TempData["message"] = "Sử dụng query-Có " + laptops_child.Count() + " sản phẩm được gợi ý!" + "\nYêu cầu:" + mangYeuCau;
-                        return RedirectToAction("Index", "Home");
-                    }
-                    ViewBag.ThongBao = "Sử dụng query-Có " + laptops_child.Count() + " sản phẩm được gợi ý!" + "\nYêu cầu:" + mangYeuCau;
-                    return View(laptops_child);
-                }
-                //Khi sự kiện có thể chứa luật(giới tính, nghề nghiệp, mục đích sở dụng)
-                string vetrai = String.Join(",", list.ToArray());
-                string vephai = Luat.getVePhaiByVeTrai(vetrai);
-                if (vephai == null)
-                {
-                    TempData["message"] = "Luật không tồn tại\nYêu cầu: " + mangYeuCau;
-                    return RedirectToAction("Index", "Home");
-                }
-                string sukien = SuKien.getSuKienById(Convert.ToInt16(vephai));
-                //if (sukien == null)
+                #region luật cũ
+                //Xét luật đã tồn tại hay chưa dựa vào vế trái ArrayInt
+                string vetraiArrayInt = String.Join(",", list.ToArray());
+
+                //vế trái của luật có thể trùng nhau, vế phải khác nhau.
+                //lấy luật có độ tin cậy cao nhất trong số các luật có vế trái==vetraiArrayInt
+                string vephaiByvetraiArrayInt = Luat.getVePhaiByVeTrai(vetraiArrayInt);
+                //nếu vế phải tồn tại, tức luật tồn tại
+                //if (vephaiByvetraiArrayInt != null)
                 //{
-                //    ViewBag.ThongBao = "Chưa có sản phẩm được gợi ý-Yêu cầu: ";
-                //    return RedirectToAction("Index", "Home");
-                //}
-                List<Laptop> laptops = Laptop.getLaptopBySuKien(sukien);
-                if (laptops.Count == 0)
-                {
+                //    //lấy luật có độ tin cậy cao nhất dựa vào vế trái([int]) đã xác định
+                //    Luat luat = Luat.getLuatByVeTrai(vetraiArrayInt); 
 
-                    TempData["message"] = "Luật tồn tại-Chưa có sản phẩm gợi ý\nYêu cầu: " + mangYeuCau
-                        + "\nĐộ tin cậy:" + Luat.getDoTinCay(vetrai); ;
+                //    var laptops = Laptop.getLaptopByVePhai(vephaiByvetraiArrayInt);
+                //    if (laptops == null)
+                //    {
+                //        TempData["message"] = "Luật tồn tại-Chưa có sản phẩm gợi ý---\nYêu cầu: " + mangYeuCau;
+                //        return RedirectToAction("Index", "Home");
+                //    }
+                //    //khi có sản phẩm, hiện section đánh giá độ tin cậy
+                //    TempData["CheckLuatTonTai"] = "Luật tồn tại";
+                //    //lấy id của luật đó:
+                //    int id = luat.Id;
+                //    TempData["LuatId"] = id;
+                //    //mô tả luật
+                //    TempData["MoTaLuat"] = Luat.GetMoTaLuat(id);
+                //    //lấy độ tin cậy của luật đó
+                //    TempData["DoTinCay"] = Luat.GetDoTinCay(id);
+
+                //    ViewBag.ThongBao = "Luật tồn tại-Có: " + laptops.Count() + " sản phẩm được gợi ý!---" + "\nYêu cầu:" + mangYeuCau;
+                //    return View(laptops);
+
+                //}
+                #endregion
+                #region ko đủ sự kiện để tạo luật
+                //Nếu luật chưa tồn tại, mới cần xét tự sinh luật
+                //nếu luattontai là false tức ko lấy đủ số lượng slq query tự sinh
+                //lúc này sẽ ko tự tạo ra đc câu lệnh sqlquery(cần Admin), thông báo người dùng
+                if (luattontai == false)
+                {
+                    TempData["message"] = "Luật không tồn tại---\nYêu cầu: " + mangYeuCau;
 
 
                     return RedirectToAction("Index", "Home");
                 }
+                #endregion
+                #region đủ sự kiện để tạo luật mới
+                //nếu luatontai là true, tức sẽ có luật mới tự sinh ra(nếu độ tin cậy cao hơn luật cũ)
+                //hoặc sẽ lấy luật đã tồn tại
+                else
+                {
+                    //ta đã có query và sư kiện vế trái=> tạo ra luật mới
+                    //luật mới,lúc này chưa tạo mới
+                    Luat newluat = Luat.GetLuat(vetraiArrayInt, query, dotincay / (queryvephai.Count()), query);
+                    
+                    //nếu tồn tại luật cũ
+                    if (vephaiByvetraiArrayInt != null)
+                    {
+                        //lấy luật có độ tin cậy cao nhất dựa vào vế trái([int]) đã xác định
+                        Luat luat = Luat.getLuatByVeTrai(vetraiArrayInt);
 
-                ViewBag.ThongBao = "Luật tồn tại-Có " + laptops.Count() + " sản phẩm được gợi ý!" + "\nYêu cầu:" + mangYeuCau;
-                TempData["CheckLuatTonTai"] = "Luật tồn tại";
-                //lấy id của luật đó:
-                int id = Convert.ToInt16(Luat.GetId(vetrai, vephai).ToString());
-                TempData["LuatId"] = id;
-                //mô tả luật
-                TempData["MoTaLuat"] = Luat.GetMoTaLuat(id);
-                //lấy độ tin cậy của luật đó
-                TempData["DoTinCay"] = Luat.GetDoTinCay(id);
-                return View(laptops);
+                        //luật cũ có độ tin cậy cao hơn so với luật mới=>lấy luật cũ, ko tạo luật mới
+                        if (luat.DoTinCay >= newluat.DoTinCay)
+                        {
+                            var laptopList = Laptop.getLaptopByVePhai(vephaiByvetraiArrayInt);
+
+
+                            // hiện section đánh giá độ tin cậy
+                            TempData["CheckLuatTonTai"] = "Luật tồn tại";
+                            //lấy id của luật đó:
+                            int idold = luat.Id;
+                            TempData["LuatId"] = idold;
+                            //mô tả luật
+                            TempData["MoTaLuat"] = Luat.GetMoTaLuat(idold);
+                            //lấy độ tin cậy của luật đó
+                            TempData["DoTinCay"] = Luat.GetDoTinCay(idold);
+
+                            if (laptopList == null)
+                            {
+                                TempData["message"] = "Luật tồn tại-Chưa có sản phẩm gợi ý---\nYêu cầu: " + mangYeuCau;
+                                return RedirectToAction("Index", "Home");
+                            }
+                            ViewBag.ThongBao = "Luật tồn tại-Có: " + laptopList.Count() + " sản phẩm được gợi ý!---" + "\nYêu cầu:" + mangYeuCau;
+                            return View(laptopList);
+                        }
+                        else
+                        {
+                            //nếu luật mới sinh ra có độ tin cậy cao hơn=> tạo luật mới
+                            //tạo ở bước sau
+                        }
+                        
+                    }
+                    Luat.SaveLuat(newluat);
+                    var queryfull = "SELECT  * FROM dbo.Laptop WHERE " + query;
+                    List<Laptop> laptops = db.Laptops.SqlQuery(queryfull).ToList();
+                    if (laptops.Count == 0)
+                    {
+                        TempData["message"] = "Luật mới được tạo-Chưa có sản phẩm gợi ý---\nYêu cầu: " + mangYeuCau;
+                        return RedirectToAction("Index", "Home");
+
+                    }
+
+                    //khi có sản phẩm, hiện section đánh giá độ tin cậy
+                    TempData["CheckLuatTonTai"] = "Luật tồn tại";
+                    //lấy id của luật đó:
+                    int id = newluat.Id;
+                    TempData["LuatId"] = id;
+                    //mô tả luật
+                    TempData["MoTaLuat"] = Luat.GetMoTaLuat(id);
+                    //lấy độ tin cậy của luật đó
+                    TempData["DoTinCay"] = Luat.GetDoTinCay(id);
+
+                    ViewBag.ThongBao = "Luật mới được tạo-Có: " + laptops.Count() + " sản phẩm được gợi ý!---" + "\nYêu cầu:" + mangYeuCau;
+                    return View(laptops);
+                }
+                #endregion
+
             }
         }
-        //lấy danh sách laptop dựa vào các sự kiện(giá tiền,hệ điều hành,hãng laptop)
-        //public List<Laptop> getLaptopSimple(string mingia, string maxgia, string hangsanxuat, string hedieuhanh)
-        //{
-        //    string mingiaString = (mingia != "") ? "gia>=" + mingia : "";
-        //    string maxgiaString = (maxgia != "") ? "gia<" + maxgia : "";
-        //    string hanglaptopIdString = (hangsanxuat != "") ? " HangLaptopId=" + getHangSanXuatId(hangsanxuat) : "";
-        //    string hedieuhanhIdString = (hedieuhanh != "") ? " HeDieuHanhId=" + getHeDieuHanhId(hedieuhanh) : "";
-        //    //tạo query dùng list:(kết hợp và tạo thêm ' and ' cho query)
-        //    List<String> list = new List<string>();
-        //    if (mingiaString != "")
-        //    {
-        //        list.Add(mingiaString);
-        //    }
-        //    if (maxgiaString != "")
-        //    {
-        //        list.Add(maxgiaString);
-        //    }
-        //    if (hanglaptopIdString != "")
-        //    {
-        //        list.Add(hanglaptopIdString);
-        //    }
-        //    if (hedieuhanhIdString != "")
-        //    {
-        //        list.Add(hedieuhanhIdString);
-        //    }
-        //    String query = String.Join(" and ", list.ToArray());
-        //    var laptops = db.Laptops.SqlQuery("SELECT * FROM dbo.Laptop where " + query);
-        //    return laptops.ToList();
-        //}
-        //lấy hãng sản xuất id dựa vào name
-        //public String getHangSanXuatId(string name)
-        //{
-        //    HangLapTop rs = db.HangLapTops.SingleOrDefault(n => n.Name == name);
-        //    if (rs == null) { return null; }
-        //    return (rs.Id).ToString();
-        //}
-        //lấy hệ điều hành id dựa vào name
-        //public String getHeDieuHanhId(string name)
-        //{
-        //    HeDieuHanh rs = db.HeDieuHanhs.SingleOrDefault(n => n.Name == name);
-        //    if (rs == null) { return null; }
-        //    return (rs.Id).ToString();
-        //}
-        //lấy danh sách laptop dựa vào tên sự kiện từ vế phải Id
-        //public List<Laptop> getLaptopBySuKien(string sukien)
-        //{
-
-        //        var laptops = db.Laptops.SqlQuery("SELECT * FROM dbo.Laptop where " + sukien);
-
-        //        return laptops.ToList();
-
-        //}
-        //lấy Id của sự kiện dựa vào Name(Bảng sự kiện)
-        //public String getSuKienId(string name)
-        //{
-        //    SuKien sk= db.SuKiens.SingleOrDefault(n => n.Name == name);
-        //    if (sk == null) { return null; }
-        //    return (sk.Id).ToString();
-        //}
-        //Lấy Id của sự kiện vế phải dựa vào dãy sự kiện vế trái
-        // cần xét thêm độ tin cậy( lấy luật có độ tin cậy cao nhất)
-        //public String getVePhaiByVeTrai(string vetrai)
-        //{
-        //    //Luat sk = db.Luats.SingleOrDefault(n => n.SuKienVT == vetrai);
-        //    var query= "SELECT TOP 1 * FROM dbo.Luat WHERE SuKienVT = '"+vetrai+"'" + " ORDER BY  DoTinCay DESC ";
-        //    Luat sk = db.Luats.SqlQuery(query).FirstOrDefault();
-        //    if (sk == null) { return null; }
-        //    return sk.SukienVP;
-        //}
-        //lấy độ tin cậy(max trong các bản ghi) dựa vào vế trái của luật(tương tự lấy sự kiện vế phải)
-        //public int getDoTinCay(string vetrai)
-        //{
-        //    //Luat sk = db.Luats.SingleOrDefault(n => n.SuKienVT == vetrai);
-        //    var query = "SELECT TOP 1 * FROM dbo.Luat WHERE SuKienVT = '" + vetrai + "'" + " ORDER BY  DoTinCay DESC ";
-        //    Luat sk = db.Luats.SqlQuery(query).FirstOrDefault();
-
-        //    if (sk == null) { return 0; }
-        //    return (int)sk.DoTinCay;
-        //}
-        //Lấy giá trị sự kiện dựa vào ID(bảng sự kiện)
-        //public String getSuKienById(int id)
-        //{
-        //    SuKien sk = db.SuKiens.Single(n => n.Id == id);
-        //    return (sk.Name).ToString();
-        //}
-        //public ActionResult Index()
-        //{
-
-        //    var dk = "mausac Like N'%Hồng%'";
-        //    var query = db.Laptops.SqlQuery("SELECT * FROM dbo.Laptop where " + dk);
-
-
-        //    return View(query.ToList());
-        //}
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    string query = "SELECT * FROM Department WHERE DepartmentID = {0}";
-        //    var department = await _context.Departments
-        //        .FromSql(query, id)
-        //        .Include(d => d.Administrator)
-        //        .AsNoTracking()
-        //        .SingleOrDefaultAsync();
-
-        //    if (department == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(department);
-        //}
-        //public IEnumerable<Laptop> GetSanPham()
-        //{
-        //    List<Laptop> laptops = new List<Laptop>();
-        //    string query = "SELECT * from dbo.Laptop where mausac Like N'%Hồng%'";
-        //    string constr = ConfigurationManager.ConnectionStrings["TuVanLaptopEntities"].ConnectionString;
-        //    using (SqlConnection con = new SqlConnection(constr))
-        //    {
-        //        using (SqlCommand cmd = new SqlCommand(query))
-        //        {
-        //            cmd.Connection = con;
-        //            con.Open();
-        //            using (SqlDataReader sdr = cmd.ExecuteReader())
-        //            {
-        //                while (sdr.Read())
-        //                {
-        //                    laptops.Add(new Laptop
-        //                    {
-        //                        Id = (int)sdr["Id"],
-        //                        NgayCapNhat = (DateTime)sdr["NgayCapNhat"],
-        //                        mausac = sdr["mausac"].ToString(),
-        //                        gia = (decimal)sdr["gia"],
-        //                        Name = sdr["Name"].ToString(),
-        //                        MoTa = sdr["MoTa"].ToString(),
-        //                        AnhBia = sdr["AnhBia"].ToString(),
-        //                        cardroi = (bool)sdr["cardroi"],
-        //                        dophangiai = (Boolean)sdr["dophangiai"],
-        //                        HangLaptopId = (int)sdr["HangLaptopId"],
-        //                        HeDieuHanhId = (int)sdr["HeDieuHanhId"],
-        //                        cpu = sdr["cpu"].ToString(),
-        //                        khoiluong = (float)sdr["khoiluong"],
-        //                        manhinh = (float)sdr["manhinh"],
-        //                        ocung = (int)sdr["ocung"],
-        //                        pin = (float)sdr["pin"],
-        //                        ram = (int)sdr["ram"]
-        //                    });
-        //                }
-        //            }
-        //            con.Close();
-        //            return laptops;
-        //        }
-        //    }
-        //}
     }
 }

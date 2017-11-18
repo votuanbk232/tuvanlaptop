@@ -50,7 +50,7 @@ namespace TuVanLaptoop.Controllers
             Session["IsAdmin"] = null;
             return RedirectToAction("Login","Admin");
         }
-        [AdminFilter]
+        //[AdminFilter]
         public ActionResult QuanLiSanPham(int? page)
         {
             using (TuVanLaptopEntities db = new TuVanLaptopEntities())
@@ -60,7 +60,7 @@ namespace TuVanLaptoop.Controllers
                 return View(db.Laptops.ToList().OrderBy(n => n.Id).ToPagedList(pageNumber, pageSize));
             }
         }
-        [AdminFilter]
+        //[AdminFilter]
         public ActionResult QuanLiSuKien(int? page)
         {
             using (TuVanLaptopEntities db = new TuVanLaptopEntities())
@@ -86,7 +86,7 @@ namespace TuVanLaptoop.Controllers
                 return Json(new { data = data }, JsonRequestBehavior.AllowGet);
             }
         }
-        [AdminFilter]
+        //[AdminFilter]
         public ActionResult QuanLiLuat(int? page)
         {
             int pageNumber = (page ?? 1);
@@ -97,7 +97,7 @@ namespace TuVanLaptoop.Controllers
                foreach(var item in luats)
                 {
                     item.sukienvetrais = Luat.ConvertIntArrayToStringArray(item.SuKienVT);
-                    item.sukienvephai = SuKien.getSuKienById(Convert.ToInt16(item.SukienVP));
+                    //item.sukienvephai = SuKien.getSuKienById(Convert.ToInt16(item.SukienVP));
                 }
                 //db.Luats.ToList().OrderBy(n => n.Id).ToPagedList(pageNumber, pageSize)
                 return View(luats.OrderBy(n => n.Id).ToPagedList(pageNumber, pageSize));

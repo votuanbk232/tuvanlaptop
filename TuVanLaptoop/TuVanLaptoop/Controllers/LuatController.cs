@@ -14,7 +14,7 @@ namespace TuVanLaptoop.Controllers
         //Luật vế trái có thể giống nhau, luật vế phải khác nhau
         TuVanLaptopEntities db = new TuVanLaptopEntities();
         [HttpGet]
-        [AdminFilter]
+        //[AdminFilter]
         public ActionResult ThemLuatOrSuaLuat(int id, string stringUrl)
         {
             using (TuVanLaptopEntities db = new TuVanLaptopEntities())
@@ -27,7 +27,7 @@ namespace TuVanLaptoop.Controllers
                 {
                     luat = db.Luats.Where(x => x.Id == id).FirstOrDefault();
                     luat.SuKienSelectedIDArray = luat.SuKienVT.Split(',').ToArray();
-                    luat.SukienVP = db.SuKiens.Single(n => n.Id.ToString() == luat.SukienVP).Name;
+                    luat.GiaiThich = "tự cập nhật";
                     ViewBag.ThongBao = "Sửa luật";
                 }
                 else
@@ -35,14 +35,17 @@ namespace TuVanLaptoop.Controllers
                     ViewBag.ThongBao = "Thêm luật";
                 }
                 //luật vế trái chỉ lấy các sự kiện ở giao diện
-                luat.SuKienCollection = db.SuKiens.Take(28).ToList();
+                luat.SuKienCollection = db.SuKiens.ToList();
+                //gán giá trị độ tin cậy mặc định là 100
+                luat.DoTinCay = 100;
+                luat.GiaiThich = "tự cập nhật";
                 ViewBag.IdLuat = id;
                 return View(luat);
             }
         }
 
         //cách truyền Url bằng Request.Url.ToString(), nếu như view có error thông báo=>mất ViewBag.
-        [AdminFilter]
+        //[AdminFilter]
         [HttpPost]
         public ActionResult ThemLuatOrSuaLuat(int id, Luat luat, string[] thuoctinh, string[] toantu, string[] giatri, string stringUrl)
         {
@@ -54,11 +57,11 @@ namespace TuVanLaptoop.Controllers
                 //nếu vế phải vẫn là rỗng=> thông báo và ko lưu
                 if (thuoctinh == null && toantu == null && giatri == null)
                 {
-
+                    //trả về luật ban đầu
                     Luat luat1 = db.Luats.Where(x => x.Id == id).FirstOrDefault(); ;
                     luat.SuKienSelectedIDArray = luat1.SuKienVT.Split(',').ToArray();
 
-                    luat.SuKienCollection = db.SuKiens.Take(28).ToList();
+                    luat.SuKienCollection = db.SuKiens.ToList();
                     ViewBag.VePhaiRong = "Vui lòng chọn thêm sự kiện vế phải, không được để trống";
                     return View(luat);
 
@@ -71,7 +74,7 @@ namespace TuVanLaptoop.Controllers
                     }
                     if (thuoctinh[i] == "mausac")
                     {
-                        string giatrisau = "N" + "'%" + giatri[i] + "%'";
+                        string giatrisau = "N" + "'%" + giatri[i].Trim() + "%'";
                         vephai += thuoctinh[i] + " " + toantu[i] + " " + giatrisau;
 
                     }
@@ -81,52 +84,22 @@ namespace TuVanLaptoop.Controllers
                     }
 
                 }
-
-                //thêm sự kiện vế phải vào bảng sự kiện
-                SuKien sk = new SuKien();
-                //sk.Name = luat.SukienVP; // trước
-                sk.Name = vephai; // sau 14/11
-                                  //kiểm tra sự kiện vế phải  đã tồn tại hay chưa
-                SuKien skCheck = db.SuKiens.SingleOrDefault(n => n.Name == vephai);
-                //chưa tồn tại, thêm mới sự kiện
-                if (skCheck == null)
-                {
-                    db.SuKiens.Add(sk);
-                    db.SaveChanges();
-                    //gán Id của sự kiện vế phải vừa thêm vào csdl bằng với SukienVP của luật
-                    luat.SukienVP = sk.Id.ToString();
-                }
-                else
-                {
-                    //nếu sự kiện vế phải đã tồn tại, ko cần add nữa
-                    luat.SukienVP = skCheck.Id.ToString();
-                }
-                //chuyển sự kiện vế trái về dạng string[]
                 luat.SuKienVT = string.Join(",", luat.SuKienSelectedIDArray);
-
-                //lúc này đã có cả vế trái và vế phải của luật
-
+                luat.SukienVP = vephai;
+                if (luat.GiaiThich == "tự cập nhật")
+                {
+                    luat.GiaiThich = vephai;
+                }
+                if (luat.DoTinCay == null)
+                {
+                    luat.DoTinCay = 100;
+                }
                 //khi chưa có Id, tức đang tạo luật mới
                 if (luat.Id == 0)
                 {
-                    //khi thêm luật, kiểm tra xem luật này đã tồn tại hay chưa
-                    //nếu false: tức ko tồn tại, thêm đc luật
-                    if (!Luat.CheckLuatTonTai(luat.SuKienVT, luat.SukienVP))
-                    {
                         //thêm luật vào bảng luật
                         db.Luats.Add(luat);
-                    }
-                    //nếu ko , sẽ ko thêm đc luật
-                    //cần truyền các giá trị bắt buộc của View
-                    else
-                    {
-                        luat.SuKienCollection = db.SuKiens.Take(28).ToList();
-                        ViewBag.CheckLuat = "Luật đã tồn tại";
-                        return View(luat);
-                    }
-
                 }
-
 
                 //khi có Id tức sửa luật
                 else
@@ -134,15 +107,14 @@ namespace TuVanLaptoop.Controllers
                     db.Entry(luat).State = EntityState.Modified;
                 }
                 db.SaveChanges();
-                //return Redirect(stringUrl);
-                //return Redirect(ControllerContext.HttpContext.Request.UrlReferrer.ToString());
+               
                 return RedirectToAction("QuanLiLuat", "Admin");
             }
         }
 
         //xóa luật
         [HttpDelete]
-        [AdminFilter]
+        //[AdminFilter]
 
         public ActionResult Delete(int id)
         {

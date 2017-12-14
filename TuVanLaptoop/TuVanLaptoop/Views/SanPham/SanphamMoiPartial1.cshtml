@@ -1,0 +1,65 @@
+﻿@model IEnumerable<TuVanLaptoop.Models.Laptop>
+
+
+
+
+
+<h1 class="item-header">Sản phẩm mới</h1>
+@foreach (var item in Model)
+{
+
+
+#line default
+#line hidden
+
+#line 3 "F:\knowdge based system\git\tuvanlaptop\TuVanLaptoop\TuVanLaptoop\Views\SanPham\SanphamMoiPartial1 - Copy.cshtml"
+
+}
+
+
+
+
+
+
+#line default
+#line hidden
+
+#line 4 "F:\knowdge based system\git\tuvanlaptop\TuVanLaptoop\TuVanLaptoop\Views\SanPham\SanphamMoiPartial1 - Copy.cshtml"
+
+
+
+#line default
+#line hidden
+
+#line 5 "F:\knowdge based system\git\tuvanlaptop\TuVanLaptoop\TuVanLaptoop\Views\SanPham\SanphamMoiPartial1 - Copy.cshtml"
+foreach (var item in <div class="activity-list-update">
+        <div title="@item.Name">
+            <img src="@Url.Content("~/HinhAnhSanPham/"+item.AnhBia)" width="50" height="50" alt="Image">
+        </div>
+            <div>@item.Name</div>
+        @*nếu có sản phẩm ko có mô tả=> lỗi chỗ này*@
+            @if (item.MoTa.Length > 30)
+                {
+                <p><strong>Mô tả: @item.MoTa.Substring(0, 30)...</strong> @*<div style="color:red"><a href="@Url.Action("XemChiTiet","Sach",new { @MaSach = item.MaSach })">Xem chi tiết</a></div>*@</p>
+
+            }
+            else
+            {
+                <p><strong>Mô tả: @item.MoTa</strong> @*<div style="color:red"><a href="@Url.Action("XemChiTiet","Sach",new { @MaSach = item.MaSach })">Xem chi tiết</a></div>*@</p>
+
+            }
+
+            <div class="clear"></div>
+        </div>
+}
+
+<a href="#" class="item-footer green">
+    Tất cả sản phẩm mới
+</a>
+
+
+
+
+
+
+

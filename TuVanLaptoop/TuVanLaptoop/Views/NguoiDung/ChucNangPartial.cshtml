@@ -1,5 +1,6 @@
 ﻿<style>
 .blink {
+        margin-top: 15px;
 	-webkit-animation: blink .75s linear infinite;
 	-moz-animation: blink .75s linear infinite;
 	-o-animation: blink .75s linear infinite;
@@ -37,12 +38,8 @@
 </style>
 @if (Session["TaiKhoan"] == null && Session["IsAdmin"]==null)
 {
-    <i class="fa fa-sign-in"></i>
-                    @Html.ActionLink("Đăng Ký", "DangKy", "NguoiDung", null, htmlAttributes: new { @class = "DangKy" })
-                    @*<a href="Home/DangKy" class="="DangKy">Đăng Ký</a>*@
-                    <i class="fa fa-unlock"></i>
-
-                    @Html.ActionLink("Đăng Nhập", "DangNhap", "NguoiDung", null, htmlAttributes: new { @class = "DangNhap" })
+    <li><a href="@Url.Action("DangKy","NguoiDung")"><span class="glyphicon glyphicon-user"></span>Đăng kí</a></li>
+    <li><a href="@Url.Action("DangNhap","NguoiDung")"><span class="glyphicon glyphicon-log-in"></span>Đăng nhập</a></li>
 }
 
 else
@@ -50,13 +47,16 @@ else
 
     @*<span title="người dùng" class="blink">Xin chào</span>*@
 
-            <span title="người dùng" class="blink">@if (ViewBag.UserName!="") {
+    <li  class="blink">
+       
+                @if (ViewBag.UserName != "")
+                    {
+                        @ViewBag.UserName
+                    }
+       
+    </li>
 
-                @ViewBag.UserName
-            }</span>
-
-      
- 
     <i class="fa fa-sign-out"></i>
-                    @Html.ActionLink("Logout", "DangXuat", "NguoiDung", null, htmlAttributes: new { @class = "DangKy" })
+    <li><a href="@Url.Action("DangXuat","NguoiDung")"><span class="glyphicon glyphicon-log-out"></span>Đăng xuất</a></li>
+
 }

@@ -1,14 +1,38 @@
 ﻿@model IEnumerable<TuVanLaptoop.Models.Laptop>
 
-<link href="~/Content/TrangChuCss.css" rel="stylesheet" />
+@*<link href="~/Content/TrangChuCss.css" rel="stylesheet" />*@
+
+<style>
+    #SanPham{
+    float:left;
+    width:24%;
+    border:solid 1px rgba(0,0,0,.2);
+    margin-left:8px;
+    height:350px;
+}
+#SanPham #AnhBia{
+    width:100%;
+    height:60%;
+}
+#SanPham #AnhBia img{
+   width:100%;
+    height:100%;
+}
+#SanPham #ThongTin{
+    padding-left:2px;
+    padding-top:5px;
+   
+}
+</style>
 @{
     ViewBag.Title = "Tư vấn";
-    Layout = "~/Views/Layout/_LayoutNguoiDung.cshtml";
+   // Layout = "~/Views/Layout/_LayoutNguoiDung.cshtml";
 }
 
-
 @{int i = 0; }
-<div id="divBody">
+<div id="divBody" style="background-color:rgba(0,0,0,.2);" >
+    <div style="text-align:center;">@TempData["message"].ToString()</div>
+
     @foreach (var item in Model)
     {
         i++;

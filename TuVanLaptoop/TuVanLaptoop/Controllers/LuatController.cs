@@ -32,13 +32,13 @@ namespace TuVanLaptoop.Controllers
                 }
                 else
                 {
+                    luat.GiaiThich = "tự cập nhật";
+                    luat.DoTinCay = 100;
                     ViewBag.ThongBao = "Thêm luật";
                 }
                 //luật vế trái chỉ lấy các sự kiện ở giao diện
                 luat.SuKienCollection = db.SuKiens.ToList();
                 //gán giá trị độ tin cậy mặc định là 100
-                luat.DoTinCay = 100;
-                luat.GiaiThich = "tự cập nhật";
                 ViewBag.IdLuat = id;
                 return View(luat);
             }

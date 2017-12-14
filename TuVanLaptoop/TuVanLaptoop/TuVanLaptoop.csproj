@@ -122,6 +122,10 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Mvc.Extensions, Version=1.1.0.6, Culture=neutral, PublicKeyToken=d631f4e4b226a032, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Web.Mvc.Extensions.1.1.1.2\lib\net45\System.Web.Mvc.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -382,6 +386,7 @@
     <Content Include="HinhAnh\Anh2.png" />
     <Content Include="HinhAnh\Anh3.png" />
     <Content Include="HinhAnh\imgSearch.png" />
+    <Content Include="HinhAnh\loader4.gif" />
     <Content Include="HinhAnh\search.png" />
     <Content Include="HinhAnh\search1.png" />
     <EntityDeploy Include="Models\DatabaseModel.edmx">
@@ -490,6 +495,8 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\Layoutnguoidung\_LayoutNguoiDung.cshtml" />
+    <Content Include="Content\Layoutnguoidung\web.config" />
     <None Include="Scripts\jquery-1.12.4.intellisense.js" />
     <Content Include="Scripts\jquery-1.12.4.js" />
     <Content Include="Scripts\jquery-1.12.4.min.js" />
@@ -513,7 +520,7 @@
     <Content Include="Speech\Demo\index3.html" />
     <Content Include="Speech\Html\Index.html" />
     <Content Include="Web.config" />
-    <Content Include="Views\SanPham\SanphamMoiPartial.cshtml" />
+    <Content Include="Views\SanPham\SanphamMoiPartial1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -616,10 +623,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Layout\_LayoutNguoiDung.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Index1.cshtml" />
     <Content Include="Views\SuKien\SuKienPartial1.cshtml" />
-    <Content Include="Views\TuVan\Index.cshtml" />
-    <Content Include="Views\SuKien\SuKienPartial.cshtml" />
+    <Content Include="Views\TuVan\Index1.cshtml" />
+    <Content Include="Views\SuKien\SuKienPartialOld.cshtml" />
     <Content Include="Views\SanPham\XemChiTiet.cshtml" />
     <Content Include="Views\Layout\_LayoutAdmin.cshtml" />
     <Content Include="Views\Admin\QuanLiSanPham.cshtml" />
@@ -656,6 +663,14 @@
     <Content Include="Views\SuKien\ThemSuKienPartial.cshtml" />
     <Content Include="Views\SuKien\Edit.cshtml" />
     <Content Include="Views\Speech\SpeechResult.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\SanPham\SanphamMoiPartial.cshtml" />
+    <Content Include="Views\SuKien\SuKienPartial.cshtml" />
+    <Content Include="Views\Shared\KetQuaTuVan.cshtml" />
+    <Content Include="Views\TuVan\Index.cshtml" />
+    <Content Include="Views\Home\NotFoundSanPham.cshtml" />
+    <Content Include="Views\NguoiDung\ChucNangPartia1.cshtml" />
+    <Content Include="Views\TuVan\DoTinCayPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -676,6 +691,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

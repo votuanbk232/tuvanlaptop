@@ -1,0 +1,87 @@
+﻿@model TuVanLaptoop.ViewModels.SuKienViewModel
+<style>
+    .abc{width:170px;}
+    #xyz{background-color:#FFEBCD;
+         width:230px;    
+    }
+</style>
+<link href="~/Content/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<div id="xyz">
+    @hidden
+
+#line 3 "F:\knowdge based system\git\tuvanlaptop\TuVanLaptoop\TuVanLaptoop\Views\SuKien\SuKienPartialOld - Copy.cshtml"
+
+}
+
+
+
+
+
+
+#line default
+#line hidden
+
+#line 4 "F:\knowdge based system\git\tuvanlaptop\TuVanLaptoop\TuVanLaptoop\Views\SuKien\SuKienPartialOld - Copy.cshtml"
+    using ( Html.BeginForm("Index", "TuVan"))
+    {
+        
+
+#line default
+#line hidden
+
+#line 5 "F:\knowdge based system\git\tuvanlaptop\TuVanLaptoop\TuVanLaptoop\Views\SuKien\SuKienPartialOld - Copy.        <table style="margin-left:40px;margin-top:30px;" class="table">
+            <tr>
+                <td>
+                    <i class="fa fa-hand-o-right"></i>@Html.AntiForgeryToken()
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="fa fa-hand-o-right"></i>@Html.ValidationSummary(true)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="fa fa-hand-o-right"></i>@Html.DropDownListFor(m => m.GioiTinhs, Model.GioiTinhs, "Giới tính", htmlAttributes: new { @class = "abc" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="fa fa-hand-o-right"></i>@Html.DropDownListFor(m => m.NgheNghieps, Model.NgheNghieps, "Nghề nghiệp", htmlAttributes: new { @class = "abc" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="fa fa-hand-o-right"></i>@Html.DropDownListFor(m => m.MucDichs, Model.MucDichs, "Mục đích sử dụng", htmlAttributes: new { @class = "abc" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="fa fa-hand-o-right"></i>@Html.DropDownListFor(m => m.YeuCauGiaTiens, Model.YeuCauGiaTiens, "Giá tiền", htmlAttributes: new { @class = "abc" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="fa fa-smile-o"></i><input type="submit" name="submit" id="submit" value="Tư vấn"  />
+                </td>
+            </tr>
+
+        </table>Copy.cshtml"
+       
+}
+</div>
+
+
+
+
+@*<div>
+@if (TempData["message"] != null)
+{
+    <p>Có thông báo</p>
+    if (TempData["message"].ToString().Contains("Luật tồn tại"))
+    {
+        <h2>Mô tả luật:</h2>
+        <h3>Độ tin cậy:<i class="fa fa-thumbs-o-up"></i></h3>
+    }
+}
+</div>*@

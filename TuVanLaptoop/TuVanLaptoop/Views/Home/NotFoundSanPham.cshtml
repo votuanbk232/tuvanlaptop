@@ -1,0 +1,126 @@
+﻿@using TuVanLaptoop.Models;
+@using PagedList.Mvc
+@model PagedList.IPagedList<Laptop>
+
+
+    <div class="alert alert-success alert-dismissable fade in" style="text-align:center;">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>@TempData["message"]</strong>
+        @Html.ActionLink(
+            linkText: "Gửi yêu cầu tới admin!",
+            actionName: "MessageSend",
+            controllerName: "Sms",
+            //gửi data tới controller dùng routerValues
+            //@Html.Action("Menu", "MyController", new { data = Model.Foo.Bar})
+            routeValues: new
+            {
+                message = TempData["message"].ToString()
+
+
+            },
+            htmlAttributes: new { @class = "required" }
+        )
+    </div>
+@if (!TempData["message"].ToString().Contains("Luật không tồn tại"))
+{
+    <div class="alert alert-success alert-dismissable fade in" style="text-align:center;">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+
+        <span style="color:red;">Mô tả: </span> <span style="font-family:Arial, Helvetica, sans-serif; color:blue;">@TempData["MoTaLuat"]</span> <br />
+        <span style="color:red;">Độ tin cậy:</span><span id="dotincayId">@TempData["DoTinCay"] </span> <br />
+        @Ajax.ActionLink("Like", "TangDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString() }
+                          , new AjaxOptions
+                          {
+                              Confirm = "Bạn thực sự thích tư vấn này?",
+
+                              //thay đổi số lượng độ tin cậy
+                              OnSuccess = string.Format(
+                                                 "tangDoTinCay()"
+                                             ),
+                              HttpMethod = "GET"
+                          }, new { id = "tangdotincay", @class = "fa fa-thumbs-o-up" })
+        @Ajax.ActionLink("UnLike", "GiamDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString() }, new AjaxOptions
+   {
+       Confirm = "Bạn thực sự không thích tư vấn này?",
+
+       //thay đổi số lượng độ tin cậy
+       OnSuccess = string.Format(
+                                                        "giamDoTinCay()"
+                                                    ),
+       HttpMethod = "GET"
+   }, new { id = "giamdotincay", @class = "fa fa-thumbs-o-down" })
+
+        @Ajax.ActionLink("Reset", "ResetDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString(), @dotincay = TempData["DoTinCay"] }, new AjaxOptions
+   {
+       Confirm = "Bạn thực sự không muốn nhận xét độ tin cậy này?",
+
+       //thay đổi số lượng độ tin cậy
+       OnSuccess = string.Format(
+                             "resetDoTinCay()"
+                         ),
+       HttpMethod = "GET"
+   }, new { id = "resetDoTinCay", @class = "fa fa-undo" })
+
+    </div>
+}
+
+
+
+
+
+
+@foreach (var item in Model)
+{
+
+    <div class="col-md-3">
+        <div class="thumbnail" style="height:270px;">
+            <a href="@Url.Action("XemChiTiet","SanPham",new { @MaLaptop = item.Id })" target="_blank">
+                <img src="@Url.Content("~/HinhAnhSanPham/"+item.AnhBia)" alt="Images" style="width:100%;height:170px;">
+                <div class="caption" style="height:51px;overflow: hidden;">
+                    <p style="font-size: 14px;
+								    line-height: 1.4;
+								    color: #2d2d2d;">
+                        @item.Name
+                    </p>
+                </div>
+
+                <p style="margin-left:10px;font-size: 16px;
+							    font-weight: bold;
+							    color: #d0021b;">Giá bán:@string.Format("{0:0,0}", @item.gia)VNĐ</p>
+                            </a>
+                        </div>
+                    </div>
+}
+<div style="clear:both;"></div>
+<div>
+    @*Tạo link liên kết trang*@
+    Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount
+
+    <div id="MenuPhanTrang">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }))
+    </div>
+    <style>
+        #MenuPhanTrang li {
+            display: inline;
+        }
+    </style>
+</div>
+
+
+<script>
+    //xóa bản ghi sau khi chấp nhận confirm
+    var tangDoTinCay = function () {
+        $('#dotincayId').html(function () { return +@TempData["DoTinCay"]+ 1 });
+
+
+    };
+    var giamDoTinCay = function () {
+        $('#dotincayId').html(function () { return +@TempData["DoTinCay"]- 1 });
+
+    };
+
+    var resetDoTinCay = function () {
+        $('#dotincayId').html(function () { return +@TempData["DoTinCay"] });
+
+    }
+</script>

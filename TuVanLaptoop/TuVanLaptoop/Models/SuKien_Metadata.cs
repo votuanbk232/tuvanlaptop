@@ -27,6 +27,20 @@ namespace TuVanLaptoop.Models
             }
           
         }
+        //lấy Id.ToString() của sự kiện dựa vào Name
+        public static string getIdByName(string name)
+        {
+            using (TuVanLaptopEntities db = new TuVanLaptopEntities())
+            {
+                SuKien sk = db.SuKiens.SingleOrDefault(n => n.Name == name);
+                if (sk != null)
+                {
+                    return sk.Id.ToString();
+
+                }
+                return null;
+            }
+        }
         //Lấy giá trị sự kiện(string) dựa vào ID(int,bảng sự kiện)
         public static String getSuKienById(int id)
         {

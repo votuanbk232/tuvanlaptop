@@ -16,10 +16,22 @@ namespace TuVanLaptoop.Controllers
     {
         TuVanLaptopEntities db = new TuVanLaptopEntities();
         // GET: TuVan
+
+        //    public ActionResult Index()
+        //{
+        //    return PartialView();
+        //}
+        Luat currentLuat=null;
+        public ActionResult DoTinCayPartial()
+        {
+            return PartialView(currentLuat);
+        }
         public ActionResult Index(FormCollection model, string submit)
         {
-            //độ tin cậy của luật tạo mới
+            //tổng độ tin cậy của luật tạo mới
             int dotincay = 0;
+            //số lượng luật đã lấy
+            int soluongluatbandau = 0;
             //phụ thuộc vào các yếu tố của người dùng(nghề nghiệp,....)
             bool luattontai = true;
             //danh sách câu query thu đc từ các sự kiện
@@ -40,7 +52,8 @@ namespace TuVanLaptoop.Controllers
                 //kiểm tra submit có đc clicked chưa
                 if (string.IsNullOrEmpty(submit))
                 {
-                    return RedirectToAction("Index", "Home");
+                    TempData["message"] = "Vui lòng nhấn submit";
+                    return RedirectToAction("NotFoundSanPham", "Home");
                 }
 
                 //lấy id của item selected
@@ -60,6 +73,7 @@ namespace TuVanLaptoop.Controllers
                         //từ sự kiện ID lấy đc câu query của luật
                         string vp = Luat.getVePhaiByVeTrai(SuKien.getSuKienId(model["Gioitinhs"].ToString()));
                         dotincay += Luat.GetDoTinCayByVetrai(SuKien.getSuKienId(model["Gioitinhs"].ToString()));
+                        soluongluatbandau++;
                         queryvephai.Add(vp);
                     }
                     //lưu trạng thái tư vấn của combobox
@@ -81,7 +95,7 @@ namespace TuVanLaptoop.Controllers
                         //từ sự kiện ID lấy đc câu query của luật
                         string vp = Luat.getVePhaiByVeTrai(SuKien.getSuKienId(model["NgheNghieps"].ToString()));
                         dotincay += Luat.GetDoTinCayByVetrai(SuKien.getSuKienId(model["NgheNghieps"].ToString()));
-
+                        soluongluatbandau++;
                         queryvephai.Add(vp);
                     }
                 }
@@ -99,7 +113,7 @@ namespace TuVanLaptoop.Controllers
                         //từ sự kiện ID lấy đc câu query của luật
                         string vp = Luat.getVePhaiByVeTrai(SuKien.getSuKienId(model["MucDichs"].ToString()));
                         dotincay += Luat.GetDoTinCayByVetrai(SuKien.getSuKienId(model["MucDichs"].ToString()));
-
+                        soluongluatbandau++;
                         queryvephai.Add(vp);
                     }
                 }
@@ -107,17 +121,36 @@ namespace TuVanLaptoop.Controllers
                 {
                     yeucau.Add(model["YeuCauGiaTiens"].ToString());
                     list.Add(SuKien.getSuKienId(model["YeuCauGiaTiens"].ToString()));
+
+                    if (Luat.CheckLuatTonTaiWithVeTrai(SuKien.getSuKienId(model["YeuCauGiaTiens"].ToString())))
+                    {
+                        dotincay += Luat.GetDoTinCayByVetrai(SuKien.getSuKienId(model["YeuCauGiaTiens"].ToString()));
+                        soluongluatbandau++;
+                    }
                 }
                 if (model["HangLaptops"].ToString() != "")
                 {
                     yeucau.Add(model["HangLaptops"].ToString());
                     list.Add(SuKien.getSuKienId(model["HangLaptops"].ToString()));
+
+                    if (Luat.CheckLuatTonTaiWithVeTrai(SuKien.getSuKienId(model["HangLaptops"].ToString())))
+                    {
+                        dotincay += Luat.GetDoTinCayByVetrai(SuKien.getSuKienId(model["HangLaptops"].ToString()));
+                        soluongluatbandau++;
+                    }
                 }
 
                 if (model["HeDieuHanhs"].ToString() != "")
                 {
                     yeucau.Add(model["HeDieuHanhs"].ToString());
                     list.Add(SuKien.getSuKienId(model["HeDieuHanhs"].ToString()));
+
+
+                    if (Luat.CheckLuatTonTaiWithVeTrai(SuKien.getSuKienId(model["HeDieuHanhs"].ToString())))
+                    {
+                        dotincay += Luat.GetDoTinCayByVetrai(SuKien.getSuKienId(model["HeDieuHanhs"].ToString()));
+                        soluongluatbandau++;
+                    }
                 }
 
 
@@ -157,7 +190,7 @@ namespace TuVanLaptoop.Controllers
                 if (list.Count == 0)
                 {
                     TempData["message"] = "Không có yêu cầu được đưa ra.Vui lòng chọn các mục để được tư vấn!";
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("NotFoundSanPham", "Home");
                 }
                 #endregion
                 //Nếu có yêu cầu ( list count!=0)
@@ -206,9 +239,7 @@ namespace TuVanLaptoop.Controllers
                 if (luattontai == false)
                 {
                     TempData["message"] = "Luật không tồn tại---\nYêu cầu: " + mangYeuCau;
-
-
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("NotFoundSanPham", "Home");
                 }
                 #endregion
                 #region đủ sự kiện để tạo luật mới
@@ -218,13 +249,18 @@ namespace TuVanLaptoop.Controllers
                 {
                     //ta đã có query và sư kiện vế trái=> tạo ra luật mới
                     //luật mới,lúc này chưa tạo mới
-                    Luat newluat = Luat.GetLuat(vetraiArrayInt, query, dotincay / (queryvephai.Count()), query);
-                    
+                    //Luat newluat = Luat.GetLuat(vetraiArrayInt, query, dotincay / (queryvephai.Count()), query);
+                    Luat newluat = Luat.GetLuat(vetraiArrayInt, query, dotincay / soluongluatbandau, query);
+
+
                     //nếu tồn tại luật cũ
                     if (vephaiByvetraiArrayInt != null)
                     {
                         //lấy luật có độ tin cậy cao nhất dựa vào vế trái([int]) đã xác định
                         Luat luat = Luat.getLuatByVeTrai(vetraiArrayInt);
+
+                        currentLuat = luat;
+                        DoTinCayPartial();
 
                         //luật cũ có độ tin cậy cao hơn so với luật mới=>lấy luật cũ, ko tạo luật mới
                         if (luat.DoTinCay >= newluat.DoTinCay)
@@ -244,11 +280,11 @@ namespace TuVanLaptoop.Controllers
 
                             if (laptopList == null)
                             {
-                                TempData["message"] = "Luật tồn tại-Chưa có sản phẩm gợi ý---\nYêu cầu: " + mangYeuCau;
-                                return RedirectToAction("Index", "Home");
+                                TempData["message"] = "Luật tồn tại!Chưa có sản phẩm gợi ý---\nYêu cầu: " + mangYeuCau;
+                                return RedirectToAction("NotFoundSanPham", "Home");
                             }
-                            ViewBag.ThongBao = "Luật tồn tại-Có: " + laptopList.Count() + " sản phẩm được gợi ý!---" + "\nYêu cầu:" + mangYeuCau;
-                            return View(laptopList);
+                            ViewBag.ThongBao = "Luật tồn tại!Có " + laptopList.Count() + " sản phẩm được gợi ý!---" + "\nYêu cầu:" + mangYeuCau;
+                            return PartialView(laptopList);
                         }
                         else
                         {
@@ -260,14 +296,8 @@ namespace TuVanLaptoop.Controllers
                     Luat.SaveLuat(newluat);
                     var queryfull = "SELECT  * FROM dbo.Laptop WHERE " + query;
                     List<Laptop> laptops = db.Laptops.SqlQuery(queryfull).ToList();
-                    if (laptops.Count == 0)
-                    {
-                        TempData["message"] = "Luật mới được tạo-Chưa có sản phẩm gợi ý---\nYêu cầu: " + mangYeuCau;
-                        return RedirectToAction("Index", "Home");
 
-                    }
-
-                    //khi có sản phẩm, hiện section đánh giá độ tin cậy
+                    //hiện section đánh giá độ tin cậy
                     TempData["CheckLuatTonTai"] = "Luật tồn tại";
                     //lấy id của luật đó:
                     int id = newluat.Id;
@@ -277,8 +307,16 @@ namespace TuVanLaptoop.Controllers
                     //lấy độ tin cậy của luật đó
                     TempData["DoTinCay"] = Luat.GetDoTinCay(id);
 
-                    ViewBag.ThongBao = "Luật mới được tạo-Có: " + laptops.Count() + " sản phẩm được gợi ý!---" + "\nYêu cầu:" + mangYeuCau;
-                    return View(laptops);
+                    if (laptops.Count == 0)
+                    {
+                        TempData["message"] = "Luật mới được tạo!Chưa có sản phẩm gợi ý---\nYêu cầu: " + mangYeuCau;
+                        return RedirectToAction("NotFoundSanPham", "Home");
+
+                    }
+
+                   
+                    ViewBag.ThongBao = "Luật mới được tạo!Có " + laptops.Count() + " sản phẩm được gợi ý!---" + "\nYêu cầu:" + mangYeuCau;
+                    return PartialView(laptops);
                 }
                 #endregion
 

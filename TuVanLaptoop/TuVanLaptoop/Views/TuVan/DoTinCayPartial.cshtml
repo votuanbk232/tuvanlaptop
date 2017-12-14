@@ -1,0 +1,46 @@
+﻿@model TuVanLaptoop.Models.Luat
+
+@if (Model != null)
+{
+<div class="alert alert-success alert-dismissable fade in" style="text-align:center;">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+   @* <span style="color:red;">Mô tả: </span> <span style="font-family:Arial, Helvetica, sans-serif; color:blue;">@TempData["MoTaLuat"]</span> <br />*@
+    <span style="color:red;">Mô tả: </span> <span style="font-family:Arial, Helvetica, sans-serif; color:blue;">@Model.GiaiThich</span> <br />
+    <span style="color:red;">Độ tin cậy:</span><span id="dotincayId">@TempData["DoTinCay"] </span> <br />
+    @Ajax.ActionLink("Like", "TangDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString() }
+                     , new AjaxOptions
+                     {
+                         Confirm = "Bạn thực sự thích tư vấn này?",
+
+                         //thay đổi số lượng độ tin cậy
+                         OnSuccess = string.Format(
+                                            "tangDoTinCay()"
+                                        ),
+                         HttpMethod = "GET"
+                     }, new { id = "tangdotincay", @class = "fa fa-thumbs-o-up" })
+    @Ajax.ActionLink("UnLike", "GiamDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString() }, new AjaxOptions
+{
+    Confirm = "Bạn thực sự không thích tư vấn này?",
+
+    //thay đổi số lượng độ tin cậy
+    OnSuccess = string.Format(
+                                                   "giamDoTinCay()"
+                                               ),
+    HttpMethod = "GET"
+}, new { id = "giamdotincay", @class = "fa fa-thumbs-o-down" })
+
+    @Ajax.ActionLink("Reset", "ResetDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString(), @dotincay = TempData["DoTinCay"] }, new AjaxOptions
+{
+    Confirm = "Bạn thực sự không muốn nhận xét độ tin cậy này?",
+
+    //thay đổi số lượng độ tin cậy
+    OnSuccess = string.Format(
+                        "resetDoTinCay()"
+                    ),
+    HttpMethod = "GET"
+}, new { id = "resetDoTinCay", @class = "fa fa-undo" })
+
+</div>
+
+
+}

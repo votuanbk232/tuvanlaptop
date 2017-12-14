@@ -16,26 +16,44 @@ namespace TuVanLaptoop.Controllers
         {
             return View();
         }
-        //[HttpPost]
-        public ActionResult Index(FormCollection model)
+        [HttpPost]
+        public ActionResult Result(FormCollection model)
         {
-           
-                string speech = model["text"].ToString();
-                TempData["message"] = "Nội dung yêu cầu" + speech;
-                if (speech.Contains("hello"))
-                {
-                    using (TuVanLaptopEntities db = new TuVanLaptopEntities())
-                    {
-                        List<Laptop> laptops = db.Laptops.ToList();
-                        return PartialView("SpeechResult", laptops);
 
-                    }
-                }
-                return View();
-
-
+            string speech = model["text"].ToString();
+            TempData["message"] = "Nội dung yêu cầu : " + speech;
             
+
+            using (TuVanLaptopEntities db = new TuVanLaptopEntities())
+            {
+                List<Laptop> laptops = new List<Laptop>();
+                if (speech.Contains("Lenovo"))
+                {
+                    laptops = db.Laptops.Where(x=>x.HangLapTop.Name=="Lenovo").ToList();
+
+                }
+                if (speech.Contains("student"))
+                {
+                    laptops= (from laptop in db.Laptops
+                              where laptop.gia < 15000000
+                              orderby laptop.NgayCapNhat descending
+                             select laptop).ToList();
+
+                }
+                TempData["message"] += ".Có " + laptops.Count() + " sản phẩm phù hợp!";
+                return PartialView("SpeechResult", laptops);
+
+            }
         }
+        //[HttpPost]
+        //public string Result(FormCollection model)
+        //{
+
+        //    string speech = model["text"].ToString();
+        //    TempData["message"] = "Nội dung yêu cầu" + speech;
+
+        //    return "Xinchao";
+        //}
 
         public ActionResult GetView(string search)
         {

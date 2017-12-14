@@ -1,68 +1,74 @@
 ﻿@model TuVanLaptoop.ViewModels.SuKienViewModel
-<style>
-    .abc{width:170px;}
-    #xyz{background-color:#FFEBCD;
-         width:230px;    
-    }
-</style>
-<link href="~/Content/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-<div id="xyz">
-    @using ( Html.BeginForm("Index", "TuVan"))
-    {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true)
-        <table style="margin-left:40px;margin-top:30px;" class="table">
-            <tr>
-                <td>
-                    <i class="fa fa-hand-o-right"></i>@Html.DropDownListFor(m => m.GioiTinhs, Model.GioiTinhs, "Giới tính", htmlAttributes: new { @class = "abc" })
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <i class="fa fa-hand-o-right"></i>@Html.DropDownListFor(m => m.NgheNghieps, Model.NgheNghieps, "Nghề nghiệp", htmlAttributes: new { @class = "abc" })
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <i class="fa fa-hand-o-right"></i>@Html.DropDownListFor(m => m.MucDichs, Model.MucDichs, "Mục đích sử dụng", htmlAttributes: new { @class = "abc" })
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <i class="fa fa-hand-o-right"></i>@Html.DropDownListFor(m => m.YeuCauGiaTiens, Model.YeuCauGiaTiens, "Giá tiền", htmlAttributes: new { @class = "abc" })
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <i class="fa fa-hand-o-right"></i>@Html.DropDownListFor(m => m.HangLaptops, Model.HangLaptops, "Hãng sản xuất", htmlAttributes: new { @class = "abc" })
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <i class="fa fa-hand-o-right"></i>@Html.DropDownListFor(m => m.HeDieuHanhs, Model.HeDieuHanhs, "Hệ điều hành", htmlAttributes: new { @class = "abc" })
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <i class="fa fa-smile-o"></i><input type="submit" name="submit" id="submit" value="Tư vấn"  />
-                </td>
-            </tr>
-
-        </table>
-    }
-</div>
 
 
 
+<script>
+    $(document).ready(function () {
+        var values = "GioiTinhs,NgheNghieps,MucDichs,YeuCauGiaTiens,HangLaptops,HeDieuHanhs";
+        $.each(values.split(","), function (i, e) {
+            $('#'+e).change(function () {
+                if ($("#"+e+" :selected").val() !="") {
+                    $(this).css({ backgroundColor: '#A9A9A9' });
+                }
+                else if ($("#" + e + " :selected").val() === "") {
+                    $(this).css({ backgroundColor: 'white' });
 
-@*<div>
-@if (TempData["message"] != null)
+                }
+            });
+        });
+
+        function Success() {
+           
+        }
+
+    });
+</script>
+
+@using (Ajax.BeginForm("Index", "TuVan", null,
+                                            new AjaxOptions {
+                                        //hiển thị ảnh khi đang load partial view( chưa load xong)
+                                        LoadingElementId = "progress",
+
+                                                UpdateTargetId = "KetQuaTuVan",
+                                                InsertionMode = InsertionMode.Replace,
+                                                HttpMethod = "POST",
+
+    },
+    new {@class="col-sm-8 col-sm-offset-2"}))
 {
-    <p>Có thông báo</p>
-    if (TempData["message"].ToString().Contains("Luật tồn tại"))
-    {
-        <h2>Mô tả luật:</h2>
-        <h3>Độ tin cậy:<i class="fa fa-thumbs-o-up"></i></h3>
-    }
-}
-</div>*@
+    <div class="form-group row">
+        @Html.DropDownListFor(m => m.GioiTinhs, Model.GioiTinhs, "Giới tính",new {@class="form-control" })
+    </div>
+    <div class="form-group row">
+        @Html.DropDownListFor(m => m.NgheNghieps, Model.NgheNghieps, "Nghề nghiệp", new { @class = "form-control" })
+    </div>
+    <div class="form-group row">
+        @Html.DropDownListFor(m => m.MucDichs, Model.MucDichs, "Mục đích sử dụng", new { @class = "form-control" })
+    </div>
+    <div class="form-group row">
+        @Html.DropDownListFor(m => m.YeuCauGiaTiens, Model.YeuCauGiaTiens, "Giá tiền", new { @class = "form-control" })
+    </div>
+    <div class="form-group row">
+        @Html.DropDownListFor(m => m.HangLaptops, Model.HangLaptops, "Hãng sản xuất", new { @class = "form-control" })
+    </div>
+    <div class="form-group row">
+        @Html.DropDownListFor(m => m.HeDieuHanhs, Model.HeDieuHanhs, "Hệ điều hành", new { @class = "form-control" })
+    </div>
+    <div class="text-center" style="">
+        <input type="submit" name="submit" id="btn-result" class="btn btn-info" value="Xin trợ giúp">
+    </div>
+        }
+
+
+        <div id="progress" class="modal" style="margin-top:300px;margin-left:650px;">
+            <div class="text-center" style="">
+                <img src="@Url.Content("~/HinhAnh/loader4.gif")" />
+            </div>
+        </div>
+
+
+
+
+
+
+

@@ -1,1 +1,4 @@
 ﻿Xử lí text
+
+Check lỗi khi dùng Layout tại vị trí bất kì 
+Ta copy file web.config của thư mục View tới Thư mục chứa Layout kia.

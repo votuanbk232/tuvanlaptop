@@ -1,48 +1,43 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Layout/_LayoutNguoiDung.cshtml";
+    ViewBag.Title = "Tư vấn speech";
+    Layout = "~/Content/Layoutnguoidung/_LayoutNguoiDung.cshtml";
 }
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Speech API</title>
     <script src="~/Scripts/jquery-1.12.4.min.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <style>
-        /*body {
-            font-family: monospace;
-            font-size: 22px;
-        }*/
+     
         #speech_content{
-            width:80%;
-            float:right;
-            margin-top:-200px;
+
             border:1px solid red;
             background-color:red;
+            color:white;
+            min-height:198px;
+            margin-bottom:25px;
             
         }
     </style>
-</head>
+
 <div id="speech_content">
     <div style="text-align:center">Hãy nói yêu cầu của bạn bằng tiếng anh</div>
-    @*<form action="/Speech/Index" method="post">*@
-       @using (Ajax.BeginForm(
-                     "Index",
-                     "Speech",
-                     null,
-                     new AjaxOptions
-                     {
-                         UpdateTargetId = "speed_result",
-                         InsertionMode = InsertionMode.Replace,
-                         HttpMethod = "POST"
-                     },
-                     new { id = "SampleForm" }
-                     ))
-       {
+ 
+     @using (Ajax.BeginForm(
+                       "Result",
+                       "Speech",
+                       null,
+                       new AjaxOptions
+                       {
+                           UpdateTargetId = "lblResult",
+                           InsertionMode = InsertionMode.Replace,
+                           HttpMethod = "POST"
+                       },
+                       new { id = "SampleForm" }
+                       ))
+     {
+
             @*text cuối cùng*@
             <span name="text" id="speech" style="text-align:center"></span>
             @*text đang nói*@
@@ -50,45 +45,24 @@
             @*giá trị bằng text cuối cùng*@
             <input style="margin:20px;" type="text" name="text" id="text" />
             @*hiện kết quả sử dụng ajax*@
-            <input style="text-align:center" type="submit" name="submit" id="submit" value="Hiển thị kết quả" />
-            @*@Html.Label("Kết quả",htmlAttributes: new { @class="ShowList"})*@    
+            <button style="text-align:center" type="submit" name="submit">Hiển thị kết quả</button>
+             
        }
-    @*</form>*@
-    <div id="speed_result">
+    <div id="lblResult">
 
     </div>
-        @*<div class="model fade" id="myModel">
-            <div class="model body" id="Div1">
-
-            </div>
-        </div>
-        <div id="sanpham_result">
-
-        </div>*@
 </div>
 
-@*kết quả sau khi click*@
+
+
+
 
 <script>
-    //$(document).ready(function () {
-    //    $("#submit").click(function () {
-    //        var search = $("#text").val();
-    //        $("sanpham_result").load("/Speech/GetView", { search: search });
-    //    });
-    //})
-   
-
-   
     function upgrade() {
       alert('Please use Google Chrome for best experience');
     }
 
     window.onload = function () {
-        
-       
-       
-     
-
       if (!(window.webkitSpeechRecognition) && !(window.speechRecognition)) {
         upgrade();
       } else {
@@ -160,5 +134,5 @@
      
     };
 </script>
-</html>
+
 

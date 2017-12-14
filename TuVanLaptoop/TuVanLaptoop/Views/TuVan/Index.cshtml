@@ -1,120 +1,93 @@
 ﻿@model IEnumerable<TuVanLaptoop.Models.Laptop>
 
-<link href="~/Content/TrangChuCss.css" rel="stylesheet" />
-@{
-    ViewBag.Title = "Tư vấn";
-    Layout = "~/Views/Layout/_LayoutNguoiDung.cshtml";
-}
-@*Phần BodyIndex*@
-@if (ViewBag.ThongBao != "") { 
-<div style="text-align:center">@ViewBag.ThongBao</div>
-    if (TempData["CheckLuatTonTai"] !=null)
-    {
-  @section DoTinCay {
-<div style="margin-left: 31px;
-    width: 200px;
-    margin-top: 20px;">
+
+<div class="alert alert-success alert-dismissable fade in" style="text-align:center;">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>@ViewBag.ThongBao</strong>
+</div>
+
+
+<div class="alert alert-success alert-dismissable fade in" style="text-align:center;">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+
     <span style="color:red;">Mô tả: </span> <span style="font-family:Arial, Helvetica, sans-serif; color:blue;">@TempData["MoTaLuat"]</span> <br />
     <span style="color:red;">Độ tin cậy:</span><span id="dotincayId">@TempData["DoTinCay"] </span> <br />
-    @*<a title="Like" href="@Url.Action("TangDoTinCay", "Luat", new { @MaLuat =  @TempData["LuatId"], @strUrl = Request.Url.ToString() })"><i class="fa fa-thumbs-o-up"></i></a>*@
-    @*<i id="like" class="fa fa-thumbs-o-up"></i>*@
-    <i id="like" class="fa fa-thumbs-o-up"></i>@Ajax.ActionLink("Like", "TangDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString() }
- , new AjaxOptions
- {
-     Confirm = "Bạn thực sự thích tư vấn này?",
-
-     //thay đổi số lượng độ tin cậy
-     OnSuccess = string.Format(
-                        "tangDoTinCay()"
-                    ),
-     HttpMethod = "GET"
- }, new { id = "tangdotincay" })
-
-
-    @*<a data-ajax="true" data-ajax-confirm="Bạn thực sự thích tư vấn này?" data-ajax-method="GET"
-        data-ajax-success="tangDoTinCay()" href="/Luat/TangDoTinCay?MaLuat=10&amp;
-        strUrl=http%3A%2F%2Flocalhost%3A28617%2FTuVan"><i class="fa fa-thumbs-o-up"></i>Like</a>*@
-    @*<a title="Unlike" href="@Url.Action("GiamDoTinCay", "Luat", new { @MaLuat =  @TempData["LuatId"], @strUrl = Request.Url.ToString() })"><i class="fa fa-thumbs-o-down" ></i></a>*@
-    @*<i class="fa fa-thumbs-o-down"></i>*@
-    <i id="unlike" class="fa fa-thumbs-o-down"></i>@Ajax.ActionLink("UnLike", "GiamDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString() }, new AjaxOptions
-                                                {
-                                                    Confirm = "Bạn thực sự không thích tư vấn này?",
-
-                                                    //thay đổi số lượng độ tin cậy
-                                                    OnSuccess = string.Format(
-                        "giamDoTinCay()"
-                    ),
-                                                    HttpMethod = "GET"
-                                                }, new { id = "giamdotincay" })
-
-    <i class="fa fa-undo"></i>@Ajax.ActionLink("Reset", "ResetDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString(), @dotincay = TempData["DoTinCay"] }, new AjaxOptions
+    @Ajax.ActionLink("Like", "TangDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString() }
+                     , new AjaxOptions
                      {
-                         Confirm = "Bạn thực sự không muốn nhận xét độ tin cậy này?",
+                         Confirm = "Bạn thực sự thích tư vấn này?",
 
                          //thay đổi số lượng độ tin cậy
                          OnSuccess = string.Format(
+                                            "tangDoTinCay()"
+                                        ),
+                         HttpMethod = "GET"
+                     }, new { id = "tangdotincay",@class= "fa fa-thumbs-o-up" })
+@Ajax.ActionLink("UnLike", "GiamDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString() }, new AjaxOptions
+                                              {
+                                                  Confirm = "Bạn thực sự không thích tư vấn này?",
+
+                                                  //thay đổi số lượng độ tin cậy
+                                                  OnSuccess = string.Format(
+                                                   "giamDoTinCay()"
+                                               ),
+                                                  HttpMethod = "GET"
+                                              }, new { id = "giamdotincay", @class= "fa fa-thumbs-o-down" })
+
+   @Ajax.ActionLink("Reset", "ResetDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString(), @dotincay = TempData["DoTinCay"] }, new AjaxOptions
+{
+    Confirm = "Bạn thực sự không muốn nhận xét độ tin cậy này?",
+
+    //thay đổi số lượng độ tin cậy
+    OnSuccess = string.Format(
                         "resetDoTinCay()"
                     ),
-                         HttpMethod = "GET"
-                     }, new { id = "resetDoTinCay" })
+    HttpMethod = "GET"
+}, new { id = "resetDoTinCay",@class= "fa fa-undo" })
+
 </div>
 
-      }
-    }
+
+
+
+
+
+
+
+
+
+@foreach (var item in Model)
+{
+
+    <div class="col-md-3">
+        <div class="thumbnail" style="height:270px;">
+            <a href="@Url.Action("XemChiTiet","SanPham",new { @MaLaptop = item.Id })" target="_blank">
+                <img src="@Url.Content("~/HinhAnhSanPham/"+item.AnhBia)" alt="Images" style="width:100%;height:170px;">
+                <div class="caption" style="height:51px;overflow: hidden;">
+                    <p style="font-size: 14px;
+								    line-height: 1.4;
+								    color: #2d2d2d;">
+                        @item.Name
+                    </p>
+                </div>
+
+                <p style="margin-left:10px;font-size: 16px;
+							    font-weight: bold;
+							    color: #d0021b;">Giá bán:@string.Format("{0:0,0}", @item.gia)VNĐ</p>
+                            </a>
+                        </div>
+                    </div>
 }
-
-
-
-@{int i = 0; }
-<div id="divBody">
-    @foreach (var item in Model)
-    {
-        i++;
-        <div id="SanPham">
-            <a href="@Url.Action("XemChiTiet","SanPham",new { @MaLaptop = item.Id })"><div id="AnhBia" title="@item.Name"><img src="@Url.Content("~/HinhAnhSanPham/"+item.AnhBia)"></div></a>
-            @*<a href="@Url.Action("XemChiTiet","ChiTietLaptop",new { @MaSach = item.MaSach })"><div id="AnhBia" title="@item.TenSach"><img src="@Url.Content("~/HinhAnhSach/"+item.AnhBia)"></div></a>*@
-            <div id="ThongTin">
-                <div style="height:56px;">@item.Name</div>
-                <div id="GiaBan" style="color:orange;"><font color="green">Giá bán:</font>@string.Format("{0:0,0}", @item.gia) VNĐ</div>
-            </div>
-            <div id="GioHang">
-                @*@using (Html.BeginForm("ThemGioHang", "GioHang", new { @MaSach = item.MaSach, @strUrl = Request.Url.ToString() }))
-                    {
-                        <input type="submit" style="cursor:pointer" value="Mua hàng &#xf07a" id="btnGioHang" class="btn btn-primary">
-                    }*@
-            </div>
-        </div>
-        if (i % 4 == 0)
-        {
-            <div style="clear:both"></div>
-        }
-    }
-</div>
-<div style="clear:both"></div>
 
 <script>
     //xóa bản ghi sau khi chấp nhận confirm
     var tangDoTinCay = function () {
-        //$('#dotincayId').html(function (i, val) { return +val + 1 });
         $('#dotincayId').html(function () { return +@TempData["DoTinCay"]+ 1 });
 
-        //khi click like, thì like sẽ mất và unlike sẽ hiện
-        //$("#like").fadeOut(800);
-        //$("#tangdotincay").fadeOut(800);
-        //$("#unlike").fadeIn(800);
-        //$("#giamdotincay").fadeIn(800);
 
     };
     var giamDoTinCay = function () {
-        //$('#dotincayId').html(function (i, val) { return +val - 1 });
         $('#dotincayId').html(function () { return +@TempData["DoTinCay"]- 1 });
-
-        //$("#giamdotincay").fadeOut(800);
-        //$("#unlike").fadeOut(800);
-        //$("#like").fadeIn(800);
-        //$("#tangdotincay").fadeIn(800);
-
-
 
     };
 
@@ -123,3 +96,4 @@
 
     }
 </script>
+

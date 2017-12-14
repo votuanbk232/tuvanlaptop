@@ -9,13 +9,53 @@
 }
 
 <h2 style="text-align:center">Quản lí luật</h2>
+<div>
+    <p>
+        <i class="fa fa-plus-circle"></i>@Html.ActionLink("Thêm luật", "ThemLuatOrSuaLuat", "Luat", new { id = 0 }, null)
+        @using (Html.BeginForm("QuanLiLuat", "Admin"))
+        {
+            @Html.TextBox("txtTimKiem", "", htmlAttributes: new {  @placeholder = "Search" })
+            <div id="HinhAnhTimKiem">
 
-<p>
-    <i class="fa fa-plus-circle" ></i>@Html.ActionLink("Thêm luật", "ThemLuatOrSuaLuat", "Luat", new { id = 0 },null) 
+                <button type="submit" name="search" value="Search" style="width: 30px;
+                    height: 31px;
+                    /* float: left; */
+                    margin-left: 233px;
+                    margin-top: -72px;">
+                    <img src="~/HinhAnh/imgSearch.png" style="width:16px;height:30px;"/>
+                </button>
 
-</p>
+                <button type="submit" name="trash" value="Trash" style="width: 105px; 
+                    height: 31px;
+                    /* float: left; */
+                    margin-left: 6px;
+                    margin-top: -72px;">
+                   @* <img src="~/HinhAnh/imgSearch.png" style="width:16px;height:30px;" />*@
+                    Lọc theo tên
+                </button>
+
+                <button type="submit" name="all" value="All" style="width:60px;
+                    height: 31px;
+                    /* float: left; */
+                    margin-left: 6px;
+                    margin-top: -72px;">
+                    @* <img src="~/HinhAnh/imgSearch.png" style="width:16px;height:30px;" />*@
+                    Tất cả
+                </button>
+
+            </div>
+        }
+    </p>
+</div>
+
+<div style="text-align:center;color:red">
+    @ViewBag.ThongBao
+</div>
 <table class="table">
     <tr>
+        <th>
+            @Html.DisplayName("STT")
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.First().SuKienVT)
         </th>
@@ -28,11 +68,15 @@
         <th>
             @Html.DisplayNameFor(model => model.First().DoTinCay)
         </th>
-        <th></th>
+        <th>Chức năng</th>
     </tr>
-
+    @{int i=0;}
 @foreach (var item in Model) {
+    i++;
     <tr id="row_@item.Id">
+        <td>
+            @Html.DisplayName(i.ToString())
+        </td>
         <td>
             @*@Html.DisplayFor(modelItem => item.SuKienVT)*@
             @Html.DisplayFor(modelItem => item.sukienvetrais)

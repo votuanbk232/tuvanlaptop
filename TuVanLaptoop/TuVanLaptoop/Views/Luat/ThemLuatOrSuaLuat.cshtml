@@ -89,7 +89,7 @@
                 <br /><i class="fa fa-plus-circle"></i><span>Thêm sự kiện vế phải</span><br />
             @if (Model.SukienVP != null)
             {
-                @Html.TextBoxFor(model => model.SukienVP,new  { @class="sukienVp"})
+                @Html.TextBoxFor(model => model.SukienVP,new  { @class="sukienVp", @readonly = "readonly" })
             }
             @if(@ViewBag.VePhaiRong!=""){
                 <br/>

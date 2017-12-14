@@ -3,161 +3,63 @@
 @model PagedList.IPagedList<Laptop>
 
 
-<link href="~/Content/TrangChuCss.css" rel="stylesheet" />
+@*<link href="~/Content/TrangChuCss.css" rel="stylesheet" />*@
 @{
     ViewBag.Title = "Trang chủ";
-    Layout = "~/Views/Layout/_LayoutNguoiDung.cshtml";
+    Layout = "~/Content/Layoutnguoidung/_LayoutNguoiDung.cshtml";
 }
-
-<style>
-    .required{
-    font-size: 10px;
-    color: red;
-    float: right;
-    margin-right: 200px;
-    }
-</style>
-@*Phần BodyIndex*@
-<div style="text-align:center">
-    @if(TempData["message"]!=null){
-                //thông báo yêu cầu của người dùng
-                @TempData["message"]
-
-        //Gửi yêu cầu tới admin: nếu luật ko tồn tại( Admin thêm luật đó), 
-        //luật tồn tại mà ko có sản phẩm, gửi kèm theo độ tin cậy của luật đó
-        //(Admin sẽ sửa luật đó hoặc ....gợi ý sản phẩm khác(cụ thể hoặc ko cụ thể))
-        if (TempData["message"].ToString().Contains("Luật không tồn tại") ||
-            TempData["message"].ToString().Contains("Luật tồn tại-Chưa có sản phẩm gợi ý"))
-        {
-            @*string s = TempData["message"].ToString();
-            <form action="/Sms/SendSms" method="get">
-                <input type="text" id="sms" name="sms" value=@TempData["message"] /><br />
-                <input type="submit" name="BtnSave" value="Gửi yêu cầu tới admin!" />
-            </form>*@
-
-            @*<a  class="required" href="@Url.Action("MessageSend","Sms")">Gửi yêu cầu tới admin!<i class="fa fa-commenting-o"></i></a>*@
-            @Html.ActionLink(
-            linkText: "Gửi yêu cầu tới admin!",
-            actionName: "MessageSend",
-            controllerName: "Sms",
-            //gửi data tới controller dùng routerValues
-            //@Html.Action("Menu", "MyController", new { data = Model.Foo.Bar})
-            routeValues: new
-            {
-                message = TempData["message"].ToString()
-
-
-            },
-            htmlAttributes: new {@class= "required" }
-        )
-        }
-    }
-</div>
-
- @if (TempData["CheckLuatTonTai"] !=null)
-    {
-@section DoTinCay {
-    <div style="margin-left: 31px;
-    width: 200px;
-    margin-top: 20px;">
-        <span style="color:red;">Mô tả: </span> <span style="font-family:Arial, Helvetica, sans-serif; color:blue;">@TempData["MoTaLuat"]</span> <br />
-        <span style="color:red;">Độ tin cậy:</span><span id="dotincayId">@TempData["DoTinCay"] </span> <br />
-        @*<a title="Like" href="@Url.Action("TangDoTinCay", "Luat", new { @MaLuat =  @TempData["LuatId"], @strUrl = Request.Url.ToString() })"><i class="fa fa-thumbs-o-up"></i></a>*@
-        @*<i id="like" class="fa fa-thumbs-o-up"></i>*@
-        <i id="like" class="fa fa-thumbs-o-up"></i>@Ajax.ActionLink("Like", "TangDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString() }
- , new AjaxOptions
- {
-     Confirm = "Bạn thực sự thích tư vấn này?",
-
-     //thay đổi số lượng độ tin cậy
-     OnSuccess = string.Format(
-                        "tangDoTinCay()"
-                    ),
-     HttpMethod = "GET"
- }, new { id = "tangdotincay" })
-
-
-        @*<a data-ajax="true" data-ajax-confirm="Bạn thực sự thích tư vấn này?" data-ajax-method="GET"
-            data-ajax-success="tangDoTinCay()" href="/Luat/TangDoTinCay?MaLuat=10&amp;
-            strUrl=http%3A%2F%2Flocalhost%3A28617%2FTuVan"><i class="fa fa-thumbs-o-up"></i>Like</a>*@
-        @*<a title="Unlike" href="@Url.Action("GiamDoTinCay", "Luat", new { @MaLuat =  @TempData["LuatId"], @strUrl = Request.Url.ToString() })"><i class="fa fa-thumbs-o-down" ></i></a>*@
-        @*<i class="fa fa-thumbs-o-down"></i>*@
-        <i id="unlike" class="fa fa-thumbs-o-down"></i>@Ajax.ActionLink("UnLike", "GiamDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString() }, new AjaxOptions
-                                              {
-                                                  Confirm = "Bạn thực sự không thích tư vấn này?",
-
-                                                  //thay đổi số lượng độ tin cậy
-                                                  OnSuccess = string.Format(
-                        "giamDoTinCay()"
-                    ),
-                                                  HttpMethod = "GET"
-                                              }, new { id = "giamdotincay" })
-
-        <i class="fa fa-undo"></i>@Ajax.ActionLink("Reset", "ResetDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString(), @dotincay = TempData["DoTinCay"] }, new AjaxOptions
-                         {
-                             Confirm = "Bạn thực sự không muốn nhận xét độ tin cậy này?",
-
-                             //thay đổi số lượng độ tin cậy
-                             OnSuccess = string.Format(
-                        "resetDoTinCay()"
-                    ),
-                             HttpMethod = "GET"
-                         }, new { id = "resetDoTinCay" })
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-success alert-dismissable fade in" style="text-align:center;">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>@TempData["message"]</strong>
     </div>
 
+    
 }
-    }
 
-@{int i = 0; }
-<div id="divBody">
+
+   
     @foreach (var item in Model)
     {
-        i++;
-        <div id="SanPham">
-            <a href="@Url.Action("XemChiTiet","SanPham",new { @MaLaptop = item.Id })"><div id="AnhBia" title="@item.Name"><img src="@Url.Content("~/HinhAnhSanPham/"+item.AnhBia)"></div></a>
-            <div id="ThongTin">
-                <div style="height:56px;">@item.Name</div>
-                <div id="GiaBan" style="color:orange;"><font color="green">Giá bán:</font>@string.Format("{0:0,0}", @item.gia) VNĐ</div>
-            </div>
-            <div id="GioHang">
-                @*@using (Html.BeginForm("ThemGioHang", "GioHang", new { @MaSach = item.MaSach, @strUrl = Request.Url.ToString() }))
-                {
-                    <input type="submit" style="cursor:pointer" value="Mua hàng &#xf07a" id="btnGioHang" class="btn btn-primary">
-                }*@
-            </div>
+
+        <div class="col-md-3">
+            <div class="thumbnail" style="height:270px;">
+                <a href="@Url.Action("XemChiTiet","SanPham",new { @MaLaptop = item.Id })" target="_blank">
+                    <img src="@Url.Content("~/HinhAnhSanPham/"+item.AnhBia)" alt="Images" style="width:100%;height:170px;">
+                    <div class="caption" style="height:51px;overflow: hidden;">
+                        <p style="font-size: 14px;
+								    line-height: 1.4;
+								    color: #2d2d2d;">
+                            @item.Name
+                        </p>
+                    </div>
+
+                    <p style="margin-left:10px;font-size: 16px;
+							    font-weight: bold;
+							    color: #d0021b;">Giá bán:@string.Format("{0:0,0}", @item.gia)VNĐ</p>
+                            </a>
+                        </div>
+                    </div>
+    }
+    <div style="clear:both;"></div>
+    <div>
+        @*Tạo link liên kết trang*@
+        Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount
+
+        <div id="MenuPhanTrang">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }))
         </div>
-        if (i % 4 == 0)
-        {
-            <div style="clear:both"></div>
-        }
-    }
-</div>
-<div style="clear:both"></div>
-
-@*Tạo link liên kết trang*@
-Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount
-
-<div id="MenuPhanTrang">
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }))
-</div>
-<style>
-    #MenuPhanTrang li {
-        display: inline;
-    }
-</style>
-
-<script>
-    var tangDoTinCay = function () {
-        $('#dotincayId').html(function () { return +@TempData["DoTinCay"]+ 1 });
+        <style>
+            #MenuPhanTrang li {
+                display: inline;
+            }
+        </style>
+    </div>
 
 
-    };
 
-    var giamDoTinCay = function () {
-        $('#dotincayId').html(function () { return +@TempData["DoTinCay"]- 1 });
-    };
 
-    var resetDoTinCay = function () {
-        $('#dotincayId').html(function () { return +@TempData["DoTinCay"] });
-    }
-</script>
+
+
+

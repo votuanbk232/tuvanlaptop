@@ -1,0 +1,62 @@
+﻿<style>
+.blink {
+	-webkit-animation: blink .75s linear infinite;
+	-moz-animation: blink .75s linear infinite;
+	-o-animation: blink .75s linear infinite;
+	 animation: blink .75s linear infinite;
+}
+@@keyframes blink{
+    0%{color:black}
+    25%{color:red}
+    100%{color:yellow}
+}
+@@-webkit-keyframes blink {
+	0% { opacity: 1; }
+	50% { opacity: 1; }
+	50.01% { opacity: 0; }
+	100% { opacity: 0; }
+}
+@@-moz-keyframes blink {
+	0% { opacity: 1; }
+	50% { opacity: 1; }
+	50.01% { opacity: 0; }
+	100% { opacity: 0; }
+}
+@@-ms-keyframes blink {
+	0% { opacity: 1; }
+	50% { opacity: 1; }
+	50.01% { opacity: 0; }
+	100% { opacity: 0; }
+}
+@@-o-keyframes blink {
+	0% { opacity: 1; }
+	50% { opacity: 1; }
+	50.01% { opacity: 0; }
+	100% { opacity: 0; }
+}
+</style>
+@if (Session["TaiKhoan"] == null && Session["IsAdmin"]==null)
+{
+    <i class="fa fa-sign-in"></i>
+                    @Html.ActionLink("Đăng Ký", "DangKy", "NguoiDung", null, htmlAttributes: new { @class = "DangKy" })
+                    @*<a href="Home/DangKy" class="="DangKy">Đăng Ký</a>*@
+                    <i class="fa fa-unlock"></i>
+
+                    @Html.ActionLink("Đăng Nhập", "DangNhap", "NguoiDung", null, htmlAttributes: new { @class = "DangNhap" })
+}
+
+else
+{
+
+    @*<span title="người dùng" class="blink">Xin chào</span>*@
+
+            <span title="người dùng" class="blink">@if (ViewBag.UserName!="") {
+
+                @ViewBag.UserName
+            }</span>
+
+      
+ 
+    <i class="fa fa-sign-out"></i>
+                    @Html.ActionLink("Logout", "DangXuat", "NguoiDung", null, htmlAttributes: new { @class = "DangKy" })
+}

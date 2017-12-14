@@ -16,7 +16,8 @@ namespace TuVanLaptoop.Controllers
         // GET: ChiTietLapTop
         public ActionResult SanphamMoiPartial()
         {
-            List<Laptop> ctlt = db.Laptops.OrderBy(n => n.NgayCapNhat).Take(3).ToList();
+            //List<Laptop> ctlt = db.Laptops.OrderBy(n => n.NgayCapNhat).Take(3).ToList();
+            List<Laptop> ctlt = db.Laptops.OrderBy(n => n.NgayCapNhat).Take(2).ToList();
             return View(ctlt);
         }
         public ActionResult XemChiTiet(int MaLaptop = 0)

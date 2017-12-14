@@ -27,6 +27,16 @@ namespace TuVanLaptoop.Controllers
                 return View(db.Laptops.OrderBy(n => n.NgayCapNhat).ToPagedList(pageNumber, pageSize));
             }
         }
+
+        public ActionResult NotFoundSanPham(int? page)
+        {
+            using(TuVanLaptopEntities db=new TuVanLaptopEntities())
+            {
+                int pageSize = 8;
+                int pageNumber = (page ?? 1);
+                return PartialView(db.Laptops.OrderBy(n => n.NgayCapNhat).ToPagedList(pageNumber, pageSize));
+            }
+        }
         public string getTuVan()
         {
             string tuvan = Session["TuVan"] as string;

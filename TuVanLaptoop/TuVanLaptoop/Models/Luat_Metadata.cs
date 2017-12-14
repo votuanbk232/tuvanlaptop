@@ -211,6 +211,25 @@ namespace TuVanLaptoop.Models
             }
             return String.Join(", ", vetraisau.ToArray()); ;
         }
+
+        //xóa luật có độ ưu tiên thấp hơn dựa cùng vế trái
+        public static List<Luat> DeleteLuatByLuat(string vetrai)
+        {
+            using (TuVanLaptopEntities db = new TuVanLaptopEntities())
+            {
+                Luat luat = Luat.getLuatByVeTrai(vetrai);
+                if (luat != null)
+                {
+                    //xóa luật có độ ưu tiên thấp hơn luat này
+                    List<Luat> luatList = db.Luats.Where(x => x.DoTinCay < luat.DoTinCay).ToList();
+                    db.Luats.RemoveRange(luatList);
+                    db.SaveChanges();
+                    return luatList;
+                }
+                return null;
+                
+            }
+        }
         
 
     }

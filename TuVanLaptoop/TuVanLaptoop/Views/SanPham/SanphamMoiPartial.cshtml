@@ -1,36 +1,19 @@
-﻿@model IEnumerable<TuVanLaptoop.Models.Laptop   >
+﻿@model IEnumerable<TuVanLaptoop.Models.Laptop>
 
 
-
-
-
-<h1 class="item-header">Sản phẩm mới</h1>
+<h3>Sản phẩm mới</h3>
 @foreach (var item in Model)
 {
-    <div class="activity-list-update">
-        <div title="@item.Name">
-            <img src="@Url.Content("~/HinhAnhSanPham/"+item.AnhBia)" width="50" height="50" alt="Image">
-        </div>
-            <div>@item.Name</div>
-        @*nếu có sản phẩm ko có mô tả=> lỗi chỗ này*@
-            @if (item.MoTa.Length > 30)
-                {
-                <p><strong>Mô tả: @item.MoTa.Substring(0, 30)...</strong> @*<div style="color:red"><a href="@Url.Action("XemChiTiet","Sach",new { @MaSach = item.MaSach })">Xem chi tiết</a></div>*@</p>
-
-            }
-            else
-            {
-                <p><strong>Mô tả: @item.MoTa</strong> @*<div style="color:red"><a href="@Url.Action("XemChiTiet","Sach",new { @MaSach = item.MaSach })">Xem chi tiết</a></div>*@</p>
-
-            }
-
-            <div class="clear"></div>
-        </div>
+    <div class="thumbnail" style="height:184px">
+        <a href="@Url.Action("XemChiTiet","SanPham",new { @MaLaptop = item.Id })" target="_blank">
+            <img src="@Url.Content("~/HinhAnhSanPham/"+item.AnhBia)" alt="Lights" style="width:72%;height:125px;">
+            <div class="caption">
+                <p>@item.Name</p>
+            </div>
+        </a>
+    </div>
 }
 
-<a href="#" class="item-footer green">
-    Tất cả sản phẩm mới
-</a>
 
 
 

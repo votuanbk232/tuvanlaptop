@@ -134,7 +134,7 @@ namespace TuVanLaptoop.Controllers
 
 
         //Xử lí độ tin cậy: Người dùng đánh giá(click)-sử dụng ajax
-        public ActionResult TangDoTinCay(int MaLuat, string strUrl)
+        public ActionResult TangDoTinCay(int MaLuat, string strUrl, int dotincay)
         {
             using (TuVanLaptopEntities db=new TuVanLaptopEntities())
             {
@@ -143,13 +143,13 @@ namespace TuVanLaptoop.Controllers
                 {
                     return null;
                 }
-                luat.DoTinCay++;
+                luat.DoTinCay = dotincay + 1;
                 db.Entry(luat).State = EntityState.Modified;
                 db.SaveChanges();
             }
             return Redirect(strUrl);
         }
-        public ActionResult GiamDoTinCay(int MaLuat, string strUrl)
+        public ActionResult TangDoTinCayNew(int MaLuat, string strUrl, int dotincay)
         {
             using (TuVanLaptopEntities db = new TuVanLaptopEntities())
             {
@@ -158,11 +158,44 @@ namespace TuVanLaptoop.Controllers
                 {
                     return null;
                 }
-                luat.DoTinCay--;
+                luat.DoTinCay = dotincay+1;
+
+                db.Entry(luat).State = EntityState.Modified;
+                db.SaveChanges();
+                return Content((dotincay + 1).ToString());
+
+            }
+        }
+        public ActionResult GiamDoTinCay(int MaLuat, string strUrl,int dotincay)
+        {
+            using (TuVanLaptopEntities db = new TuVanLaptopEntities())
+            {
+                Luat luat = db.Luats.SingleOrDefault(n => n.Id == MaLuat);
+                if (luat == null)
+                {
+                    return null;
+                }
+                luat.DoTinCay = dotincay - 1;
                 db.Entry(luat).State = EntityState.Modified;
                 db.SaveChanges();
             }
             return Redirect(strUrl);
+        }
+        public ActionResult GiamDoTinCayNew(int MaLuat, string strUrl, int dotincay)
+        {
+            using (TuVanLaptopEntities db = new TuVanLaptopEntities())
+            {
+                Luat luat = db.Luats.SingleOrDefault(n => n.Id == MaLuat);
+                if (luat == null)
+                {
+                    return null;
+                }
+                luat.DoTinCay = dotincay-1;
+
+                db.Entry(luat).State = EntityState.Modified;
+                db.SaveChanges();
+                return Content((dotincay-1).ToString());
+            }
         }
         public ActionResult ResetDoTinCay(int MaLuat, string strUrl,int dotincay)
         {
@@ -178,6 +211,21 @@ namespace TuVanLaptoop.Controllers
                 db.SaveChanges();
             }
             return Redirect(strUrl);
+        }
+        public ActionResult ResetDoTinCayNew(int MaLuat, string strUrl, int dotincay)
+        {
+            using (TuVanLaptopEntities db = new TuVanLaptopEntities())
+            {
+                Luat luat = db.Luats.SingleOrDefault(n => n.Id == MaLuat);
+                if (luat == null)
+                {
+                    return null;
+                }
+                luat.DoTinCay = dotincay;
+                db.Entry(luat).State = EntityState.Modified;
+                db.SaveChanges();
+                return Content(dotincay.ToString());
+            }
         }
 
 

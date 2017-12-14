@@ -28,37 +28,46 @@
 
         <span style="color:red;">Mô tả: </span> <span style="font-family:Arial, Helvetica, sans-serif; color:blue;">@TempData["MoTaLuat"]</span> <br />
         <span style="color:red;">Độ tin cậy:</span><span id="dotincayId">@TempData["DoTinCay"] </span> <br />
-        @Ajax.ActionLink("Like", "TangDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString() }
+        @Ajax.ActionLink("Like", "TangDoTinCayNew", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString(), @dotincay = TempData["DoTinCay"] }
                           , new AjaxOptions
                           {
                               Confirm = "Bạn thực sự thích tư vấn này?",
 
                               //thay đổi số lượng độ tin cậy
-                              OnSuccess = string.Format(
-                                                 "tangDoTinCay()"
-                                             ),
-                              HttpMethod = "GET"
+                              //OnSuccess = string.Format(
+                              //                   "tangDoTinCay()"
+                              //               ),
+                              //HttpMethod = "POST"
+
+                              UpdateTargetId = "dotincayId",
+                              InsertionMode = InsertionMode.Replace,
+
+
                           }, new { id = "tangdotincay", @class = "fa fa-thumbs-o-up" })
-        @Ajax.ActionLink("UnLike", "GiamDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString() }, new AjaxOptions
+        @Ajax.ActionLink("UnLike", "GiamDoTinCayNew", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString(), @dotincay = TempData["DoTinCay"] }, new AjaxOptions
    {
        Confirm = "Bạn thực sự không thích tư vấn này?",
 
        //thay đổi số lượng độ tin cậy
-       OnSuccess = string.Format(
-                                                        "giamDoTinCay()"
-                                                    ),
-       HttpMethod = "GET"
+       //OnSuccess = string.Format(
+       //                                                 "giamDoTinCay()"
+       //                                             ),
+       //HttpMethod = "GET"
+       UpdateTargetId = "dotincayId",
+       InsertionMode = InsertionMode.Replace
    }, new { id = "giamdotincay", @class = "fa fa-thumbs-o-down" })
 
-        @Ajax.ActionLink("Reset", "ResetDoTinCay", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString(), @dotincay = TempData["DoTinCay"] }, new AjaxOptions
+        @Ajax.ActionLink("Reset", "ResetDoTinCayNew", "Luat", new { @MaLuat = @TempData["LuatId"], @strUrl = Request.Url.ToString(), @dotincay = TempData["DoTinCay"] }, new AjaxOptions
    {
        Confirm = "Bạn thực sự không muốn nhận xét độ tin cậy này?",
 
        //thay đổi số lượng độ tin cậy
-       OnSuccess = string.Format(
-                             "resetDoTinCay()"
-                         ),
-       HttpMethod = "GET"
+       //OnSuccess = string.Format(
+       //                      "resetDoTinCay()"
+       //                  ),
+       //HttpMethod = "GET"
+       UpdateTargetId = "dotincayId",
+       InsertionMode = InsertionMode.Replace
    }, new { id = "resetDoTinCay", @class = "fa fa-undo" })
 
     </div>

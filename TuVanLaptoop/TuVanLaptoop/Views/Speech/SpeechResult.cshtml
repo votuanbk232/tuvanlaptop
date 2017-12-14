@@ -31,31 +31,33 @@
 
 @{int i = 0; }
 <div id="divBody" style="background-color:rgba(0,0,0,.2);" >
-    <div style="text-align:center;">@TempData["message"].ToString()</div>
+    <div class="alert alert-success alert-dismissable fade in" style="text-align:center;">
+        <div style="text-align:center;">@TempData["message"].ToString()</div>
+    </div>
 
-    @foreach (var item in Model)
-    {
-        i++;
-        <div id="SanPham">
-            <a href="@Url.Action("XemChiTiet","SanPham",new { @MaLaptop = item.Id })"><div id="AnhBia" title="@item.Name"><img src="@Url.Content("~/HinhAnhSanPham/"+item.AnhBia)"></div></a>
-            @*<a href="@Url.Action("XemChiTiet","ChiTietLaptop",new { @MaSach = item.MaSach })"><div id="AnhBia" title="@item.TenSach"><img src="@Url.Content("~/HinhAnhSach/"+item.AnhBia)"></div></a>*@
-            <div id="ThongTin">
-                <div style="height:56px;">@item.Name</div>
-                <div id="GiaBan" style="color:orange;"><font color="green">Giá bán:</font>@string.Format("{0:0,0}", @item.gia) VNĐ</div>
-            </div>
-            <div id="GioHang">
-                @*@using (Html.BeginForm("ThemGioHang", "GioHang", new { @MaSach = item.MaSach, @strUrl = Request.Url.ToString() }))
-                    {
-                        <input type="submit" style="cursor:pointer" value="Mua hàng &#xf07a" id="btnGioHang" class="btn btn-primary">
-                    }*@
-            </div>
-        </div>
-        if (i % 4 == 0)
+        @foreach (var item in Model)
         {
-            <div style="clear:both"></div>
+            i++;
+            <div id="SanPham">
+                <a href="@Url.Action("XemChiTiet","SanPham",new { @MaLaptop = item.Id })"><div id="AnhBia" title="@item.Name"><img src="@Url.Content("~/HinhAnhSanPham/"+item.AnhBia)"></div></a>
+                @*<a href="@Url.Action("XemChiTiet","ChiTietLaptop",new { @MaSach = item.MaSach })"><div id="AnhBia" title="@item.TenSach"><img src="@Url.Content("~/HinhAnhSach/"+item.AnhBia)"></div></a>*@
+                <div id="ThongTin">
+                    <div style="height:56px;">@item.Name</div>
+                    <div id="GiaBan" style="color:orange;"><font color="green">Giá bán:</font>@string.Format("{0:0,0}", @item.gia) VNĐ</div>
+                </div>
+                <div id="GioHang">
+                    @*@using (Html.BeginForm("ThemGioHang", "GioHang", new { @MaSach = item.MaSach, @strUrl = Request.Url.ToString() }))
+                        {
+                            <input type="submit" style="cursor:pointer" value="Mua hàng &#xf07a" id="btnGioHang" class="btn btn-primary">
+                        }*@
+                </div>
+            </div>
+            if (i % 4 == 0)
+            {
+                <div style="clear:both"></div>
+            }
         }
-    }
-</div>
+    </div>
 <div style="clear:both"></div>
 
 

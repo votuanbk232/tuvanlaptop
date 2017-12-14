@@ -651,7 +651,7 @@
     <Content Include="Speech\Demo\package.json" />
     <Content Include="Speech\Demo\Procfile" />
     <Content Include="Speech\Demo\README.md" />
-    <Content Include="Views\Speech\Index.cshtml" />
+    <Content Include="Views\Speech\Index1.cshtml" />
     <Content Include="Views\Jquery\Index.cshtml" />
     <Content Include="Views\NguoiDung\DangKy.cshtml" />
     <Content Include="Views\Speech\ShowResult.cshtml" />
@@ -671,6 +671,7 @@
     <Content Include="Views\Home\NotFoundSanPham.cshtml" />
     <Content Include="Views\NguoiDung\ChucNangPartia1.cshtml" />
     <Content Include="Views\TuVan\DoTinCayPartial.cshtml" />
+    <Content Include="Views\Speech\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

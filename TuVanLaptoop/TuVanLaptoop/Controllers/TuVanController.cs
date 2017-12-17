@@ -194,6 +194,22 @@ namespace TuVanLaptoop.Controllers
                 }
                 #endregion
                 //Nếu có yêu cầu ( list count!=0)
+                //nếu chỉ chứa luật simple
+                if (model["Gioitinhs"].ToString() == "" && model["NgheNghieps"].ToString() == "" && model["MucDichs"].ToString() == "")
+                {
+                    var sql = "SELECT  * FROM dbo.Laptop WHERE " + simple;
+                    var laptops = db.Laptops.SqlQuery(sql).ToList();
+
+                    if (laptops == null)
+                    {
+                        TempData["message"] = "Truy vấn query!Chưa có sản phẩm gợi ý!";
+                        return RedirectToAction("NotFoundSanPham", "Home");
+                    }
+                    ViewBag.ThongBao = "Truy vấn query!Có " + laptops.Count() + " sản phẩm được gợi ý!";
+                    return PartialView(laptops);
+                }
+
+                //nếu tồn tại luật ko simple
                 //khi ấn tư vấn sẽ lấy đc mảng yêu cầu của khách hàng và điều kiện where
                 string mangYeuCau = String.Join(",", yeucau.ToArray());
                 string query = String.Join(" AND ", queryvephai.ToArray());

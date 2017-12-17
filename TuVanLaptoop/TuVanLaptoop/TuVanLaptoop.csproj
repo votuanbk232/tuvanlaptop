@@ -662,7 +662,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\SuKien\ThemSuKienPartial.cshtml" />
     <Content Include="Views\SuKien\Edit.cshtml" />
-    <Content Include="Views\Speech\SpeechResult.cshtml" />
+    <Content Include="Views\Speech\SpeechResult1.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\SanPham\SanphamMoiPartial.cshtml" />
     <Content Include="Views\SuKien\SuKienPartial.cshtml" />
@@ -672,6 +672,8 @@
     <Content Include="Views\NguoiDung\ChucNangPartia1.cshtml" />
     <Content Include="Views\TuVan\DoTinCayPartial.cshtml" />
     <Content Include="Views\Speech\Index.cshtml" />
+    <Content Include="Views\Speech\SpeechResult.cshtml" />
+    <Content Include="Views\Speech\NotFound.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

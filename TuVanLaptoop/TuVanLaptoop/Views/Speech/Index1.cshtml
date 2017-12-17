@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Tư vấn speech";
+    ViewBag.Title = "Index";
     Layout = "~/Content/Layoutnguoidung/_LayoutNguoiDung.cshtml";
 }
 
@@ -27,19 +27,6 @@
     </div>
 
         @using (Ajax.BeginForm(
-                           "Result",
-                           "Speech",
-                           null,
-                           new AjaxOptions
-                           {
-                               UpdateTargetId = "lblResult",
-                               InsertionMode = InsertionMode.Replace,
-                               HttpMethod = "POST"
-                           },
-                           new { id = "SampleForm" }
-                           ))
-        {
-
             @*text cuối cùng*@
             <span name="text" id="speech" style="text-align:center"></span>
             @*text đang nói*@
